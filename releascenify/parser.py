@@ -115,9 +115,13 @@ class ReleaseParser:
 
     def _extract_group_and_extra(self, filename_stripped: str, result: Dict[str, Any]):
         """Extracts the release group and sets initial extra field from the end of stripped filename."""
-        group_match = re.search(r'-([A-Za-z0-9_@\.-]+)$', filename_stripped)
+        group_match = re.search(r'(?:-(\[?[A-Za-z0-9_@\.-]+\]?)|(?:\.(\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
         if group_match:
-            parts = group_match.group(1).split('-')
+            raw_suffix = group_match.group(1) or group_match.group(2)
+            if raw_suffix.startswith('[') and raw_suffix.endswith(']'):
+                raw_suffix = raw_suffix[1:-1]
+                
+            parts = raw_suffix.split('-')
             
             # Iterate backwards through parts (excluding the last one) to find the last part containing a dot
             # Any part containing a dot (like HDMA.AC3.5.1) is not part of the group/extra suffix
@@ -156,7 +160,12 @@ class ReleaseParser:
             result['codec'] = match.group(1).upper().replace('.', '').replace('-', '')
 
     def _extract_resolution(self, filename: str, result: Dict[str, Any]):
-        """Extracts resolution (e.g. 1080p, 2160p, 4K, UHD) and normalizes it."""
+        """Extracts resolution (e.g. 1080p, 2160p, 4K, UHD, 4KLIGHT) and normalizes it."""
+        fn_up = filename.upper()
+        if "4KLIGHT" in fn_up:
+            result['resolution'] = "4KLIGHT"
+            return
+            
         match = re.search(self.patterns['resolution'], filename)
         if match:
             result['resolution'] = match.group(1).upper()
@@ -239,7 +248,7 @@ class ReleaseParser:
         title = re.split(pattern, fn_clean, flags=re.I)[0]
         
         title = title.replace('.', ' ').replace('_', ' ').strip()
-        title = re.sub(r'\s+', ' ', title).strip()
+        title = re.sub(r'\s+', ' ', title).strip(' -:_/\\')
         result['title'] = title
 
     def _cleanup_extra(self, result: Dict[str, Any]):
@@ -320,8 +329,6 @@ class ReleaseParser:
         # 10. Languages
         fn_up = filename.upper().replace('[', '.').replace(']', '.').replace('_', '.')
         result['languages'] = self._extract_langs(fn_up)
-        if "4KLIGHT" in fn_up:
-            result['resolution'] = "4KLIGHT"
             
         # 11. Cleanup Extra Field
         self._cleanup_extra(result)

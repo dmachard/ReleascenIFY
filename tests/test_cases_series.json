@@ -15,7 +15,8 @@
       "v_quality": "HDR DV",
       "languages": [
         "MULTI"
-      ]
+      ],
+      "group": "BATGirl"
     }
   },
   {
@@ -226,6 +227,52 @@
       "v_quality": "HDR10 DV",
       "languages": ["VF", "EN", "MULTI"],
       "group": "FRESH"
+    }
+  },
+  {
+    "filename": "Goldorak.U.2024.S01E06.HDTVLight.1080p.x264.VF.AC3.2.0.@BS",
+    "expected": {
+      "title": "Goldorak U",
+      "category": "series",
+      "year": 2024,
+      "season": "1",
+      "episode": "6",
+      "resolution": "1080P",
+      "quality": "HDTV",
+      "codec": "X264",
+      "audio": "AC3",
+      "channels": "2.0",
+      "languages": ["VF"],
+      "group": "@BS"
+    }
+  },
+  {
+    "filename": "Stranger.Things.Tales.From.85.S01E01.MULTi.2160p.DV.HDR.DDP5.1.Atmos.HEVC-[BATGirl]",
+    "expected": {
+      "title": "Stranger Things Tales From 85",
+      "category": "series",
+      "season": "1",
+      "episode": "1",
+      "resolution": "2160P",
+      "codec": "HEVC",
+      "audio": "DDP ATMOS",
+      "channels": "5.1",
+      "v_quality": "HDR DV",
+      "languages": ["MULTI"],
+      "group": "BATGirl"
+    }
+  },
+  {
+    "filename": "The Pitt - S01E08 - 1400 2160p.DV.HDR.x265-Amen",
+    "expected": {
+      "title": "The Pitt",
+      "category": "series",
+      "season": "1",
+      "episode": "8",
+      "resolution": "2160P",
+      "codec": "X265",
+      "v_quality": "HDR DV",
+      "group": "Amen"
     }
   }
 ]
