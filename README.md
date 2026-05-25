@@ -8,7 +8,10 @@ A robust, regex-based Python library to parse scene release names and extract te
 Release names follow a strict grammar inherited from the Scene and P2P groups. Once decoded, you can predict the quality, source, language, and release group just from the filename. This library is a modernized alternative to PTN (Parse Torrent Name).
 
 ## Installation
-*(To be published on PyPI)*
+
+```bash
+pip install releascenify
+```
 
 ## Usage
 

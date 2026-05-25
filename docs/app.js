@@ -140,6 +140,8 @@ const i18n = {
         defaultDesc: "Survolez une étiquette pour voir sa description.",
         loadingError: "Erreur lors du chargement de l'environnement Python.",
         docsTitle: "Conventions de Nommage",
+        installTitle: "Utiliser dans votre projet",
+        installDesc: "Ajoutez la bibliothèque releascenify à votre projet pour analyser et comparer les releases directement dans votre code.",
         docRes: "Résolution",
         docSrc: "Source",
         docCodec: "Codec",
@@ -231,6 +233,8 @@ const i18n = {
         defaultDesc: "Hover over a tag to see its description.",
         loadingError: "Error loading WebAssembly Python engine.",
         docsTitle: "Naming Conventions",
+        installTitle: "Use in your project",
+        installDesc: "Add the releascenify library to your project to parse and compare releases directly in your code.",
         docRes: "Resolution",
         docSrc: "Source",
         docCodec: "Codec",
@@ -316,6 +320,8 @@ function setLanguage(lang) {
 
     // Update docs
     docsTitle.innerHTML = `<i class="fa-solid fa-book-open"></i> ${i18n[currentLang].docsTitle}`;
+    document.getElementById('install-title').innerHTML = `<i class="fa-solid fa-terminal"></i> ${i18n[currentLang].installTitle}`;
+    document.getElementById('install-desc').textContent = i18n[currentLang].installDesc;
     renderDocs();
 
     // Refresh display
@@ -793,3 +799,12 @@ function renderDocs() {
 
 // Start initialization
 initPyodide();
+
+function copyInstallCommand() {
+    navigator.clipboard.writeText('pip install releascenify');
+    const btn = document.querySelector('.copy-btn i');
+    btn.className = 'fa-solid fa-check';
+    setTimeout(() => {
+        btn.className = 'fa-regular fa-copy';
+    }, 2000);
+}
