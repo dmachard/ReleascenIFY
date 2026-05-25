@@ -52,28 +52,9 @@ if is_better_release(rel_b, rel_a):
 
 # How Scoring Works
 
-Releascenify includes a **quality scoring system** to estimate the relative quality of a release from its filename metadata.
+Releascenify includes a **quality scoring system** to estimate the relative quality of a release from its filename metadata. The goal is not to determine the *absolute* visual quality of a file, because actual quality depends on factors that are often unavailable in release names (bitrate, encoding settings, source quality, etc.).
 
-The goal is not to determine the *absolute* visual quality of a file, because actual quality depends on factors that are often unavailable in release names (bitrate, encoding settings, source quality, etc.).
-
-Instead, the score provides a **heuristic ranking** that allows:
-
-- Comparing multiple releases
-- Sorting releases automatically
-- Selecting the "best candidate" in automation pipelines
-- Building recommendation or media-management workflows
-
-## Important
-
-> The score is a heuristic estimate, not a scientific measurement.
->
 > A higher score does **not always mean a better viewing experience**.
-
-For example:
-
-- A `1080p BluRay Remux` can look better than a `2160p WEB-DL`
-- A poorly encoded `x265` release may look worse than a high bitrate `x264`
-- HDR content can sometimes look worse than SDR depending on the source and display
 
 ## Scoring Factors
 
