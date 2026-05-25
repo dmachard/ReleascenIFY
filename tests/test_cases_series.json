@@ -133,5 +133,15 @@
       ],
       "group": "MPx"
     }
+  },
+  {
+    "filename": "The.Pitt.S01.1080p.x265.rar",
+    "expected": {
+      "title": "The Pitt",
+      "category": "series",
+      "season": "1",
+      "resolution": "1080P",
+      "codec": "X265"
+    }
   }
 ]

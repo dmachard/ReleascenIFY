@@ -690,3 +690,45 @@ footer {
     color: var(--text-main);
     background: rgba(255, 255, 255, 0.05);
 }
+
+/* Documentation Legend & Quality Stars */
+.docs-legend {
+    background: rgba(30, 27, 75, 0.15);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+}
+
+.legend-title {
+    font-weight: 700;
+    color: #c4b5fd;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    align-items: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.stars {
+    color: #f59e0b; /* Golden amber stars */
+    font-weight: 700;
+    letter-spacing: 1px;
+}

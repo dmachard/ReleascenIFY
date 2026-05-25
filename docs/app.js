@@ -156,9 +156,10 @@ const i18n = {
         docSpecial: "Tags spéciaux",
         docMistakes: "Erreurs courantes",
         headers: {
-            res: ["Tag", "Note"],
-            src: ["Tag", "Note / Qualité"],
-            codec: ["Tag", "Note"],
+            res: ["Tag", "Description", "Qualité"],
+            src: ["Tag", "Description", "Qualité"],
+            audio: ["Tag", "Description", "Qualité"],
+            codec: ["Tag", "Description"],
             meaning: ["Tag", "Signification"]
         },
         notes: {
@@ -187,10 +188,11 @@ const i18n = {
             langVfq: "Vraie Version Québécoise (Québec)",
             langVfi: "Version Française Internationale (VFi)",
             langVostfr: "Version Originale Sous-Titrée Français",
-            audioLossless: "Lossless (DTS-HD.MA / TrueHD)",
+            audioLossless: "Lossless (DTS-HD.MA / TrueHD / Atmos)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "AAC (audio web standard)",
             audioDdp: "Dolby Digital Plus (E-AC3 / DDP5.1)",
+            audioDts: "DTS Surround (haute fidélité)",
             vQualityHdr: "Plage dynamique étendue (High Dynamic Range)",
             vQualityDv: "Dolby Vision (métadonnées dynamiques)",
             vQualityBits: "Profondeur de couleur (10 bits / 12 bits)",
@@ -198,7 +200,17 @@ const i18n = {
             containerMkv: "Matroska (MKV) - Idéal pour le multi-pistes, sous-titres et chapitres",
             containerMp4: "MPEG-4 (MP4) - Compatibilité universelle et diffusion web",
             containerAvi: "Audio Video Interleave (AVI) - Format obsolète (DivX/XviD)",
-            specialRepack: "Correctif de release",
+            specialRepack: "Correctif de release"
+        },
+        legendTitle: "Indice de Qualité :",
+        legends: {
+            elite: "Référence",
+            excellent: "Excellente",
+            veryGood: "Très bonne",
+            good: "Bonne",
+            medium: "Moyenne",
+            low: "Basse",
+            avoid: "À éviter"
         },
         modeDecode: "Décoder",
         modeCompare: "Comparer",
@@ -264,9 +276,10 @@ const i18n = {
         docSpecial: "Special Tags",
         docMistakes: "Common Mistakes",
         headers: {
-            res: ["Tag", "Note"],
-            src: ["Tag", "Note / Quality"],
-            codec: ["Tag", "Note"],
+            res: ["Tag", "Description", "Quality"],
+            src: ["Tag", "Description", "Quality"],
+            audio: ["Tag", "Description", "Quality"],
+            codec: ["Tag", "Description"],
             meaning: ["Tag", "Meaning"]
         },
         notes: {
@@ -295,10 +308,11 @@ const i18n = {
             langVfq: "True French (Quebec)",
             langVfi: "International French version (VFi)",
             langVostfr: "Original version with French subtitles",
-            audioLossless: "Lossless audio (DTS-HD.MA / TrueHD)",
+            audioLossless: "Lossless audio (DTS-HD.MA / TrueHD / Atmos)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "Standard Web Audio (AAC)",
             audioDdp: "Dolby Digital Plus (E-AC3 / DDP5.1)",
+            audioDts: "DTS Surround (high-fidelity)",
             vQualityHdr: "High Dynamic Range (HDR, HDR10, HDR10+)",
             vQualityDv: "Dolby Vision dynamic metadata (DV)",
             vQualityBits: "10-bit / 12-bit color depth (prevents banding)",
@@ -306,7 +320,17 @@ const i18n = {
             containerMkv: "Matroska (MKV) - Best for multiple audio tracks, subtitles and chapters",
             containerMp4: "MPEG-4 (MP4) - Universal compatibility and web streaming",
             containerAvi: "Audio Video Interleave (AVI) - Legacy format (DivX/XviD)",
-            specialRepack: "Re-uploads fixing previous bad releases",
+            specialRepack: "Re-uploads fixing previous bad releases"
+        },
+        legendTitle: "Quality Legend:",
+        legends: {
+            elite: "Reference",
+            excellent: "Excellent",
+            veryGood: "Very Good",
+            good: "Good",
+            medium: "Medium",
+            low: "Low",
+            avoid: "Avoid"
         },
         modeDecode: "Decode",
         modeCompare: "Compare",
@@ -727,6 +751,21 @@ clearBBtn.addEventListener('click', () => {
 });
 
 function renderDocs() {
+    const docsLegend = document.getElementById('docs-legend');
+    if (docsLegend) {
+        docsLegend.innerHTML = `
+            <span class="legend-title">${i18n[currentLang].legendTitle}</span>
+            <div class="legend-items">
+                <div class="legend-item"><span class="stars">★★★★★</span> <span>${i18n[currentLang].legends.elite}</span></div>
+                <div class="legend-item"><span class="stars">★★★★☆</span> <span>${i18n[currentLang].legends.excellent}</span></div>
+                <div class="legend-item"><span class="stars">★★★☆☆</span> <span>${i18n[currentLang].legends.good}</span></div>
+                <div class="legend-item"><span class="stars">★★☆☆☆</span> <span>${i18n[currentLang].legends.medium}</span></div>
+                <div class="legend-item"><span class="stars">★☆☆☆☆</span> <span>${i18n[currentLang].legends.low}</span></div>
+                <div class="legend-item"><span class="stars">☆☆☆☆☆</span> <span>${i18n[currentLang].legends.avoid}</span></div>
+            </div>
+        `;
+    }
+
     const docsGrid = document.getElementById('docs-grid');
     if (!docsGrid) return;
 
@@ -739,11 +778,11 @@ function renderDocs() {
             title: i18n[currentLang].docRes,
             headers: i18n[currentLang].headers.res,
             rows: [
-                ["480p", `854x480 - ${i18n[currentLang].notes.res480}`],
-                ["720p", `1280x720 - ${i18n[currentLang].notes.res720}`],
-                ["1080p", `1920x1080 - ${i18n[currentLang].notes.res1080}`],
-                ["2160p / 4K", `3840x2160 - ${i18n[currentLang].notes.res2160}`],
-                ["4KLight", `3840x2160 - ${i18n[currentLang].notes.res4klight}`]
+                ["2160p / 4K / UHD", i18n[currentLang].notes.res2160, `<span class="stars">★★★★★</span>`],
+                ["4KLight", i18n[currentLang].notes.res4klight, `<span class="stars">★★★★☆</span>`],
+                ["1080p", i18n[currentLang].notes.res1080, `<span class="stars">★★★☆☆</span>`],
+                ["720p", i18n[currentLang].notes.res720, `<span class="stars">★★☆☆☆</span>`],
+                ["480p", i18n[currentLang].notes.res480, `<span class="stars">★☆☆☆☆</span>`]
             ]
         },
         {
@@ -752,12 +791,12 @@ function renderDocs() {
             title: i18n[currentLang].docSrc,
             headers: i18n[currentLang].headers.src,
             rows: [
-                ["UHD.BluRay / BluRay.REMUX", i18n[currentLang].notes.srcRemuxQual],
-                ["BluRay / BDRip", i18n[currentLang].notes.srcBlurayQual],
-                ["WEB-DL", i18n[currentLang].notes.srcWebdlQual],
-                ["WEBRip", i18n[currentLang].notes.srcWebripQual],
-                ["HDTV", i18n[currentLang].notes.srcHdtvQual],
-                ["HDCAM / CAM", i18n[currentLang].notes.srcCamQual]
+                ["UHD.BluRay / REMUX", i18n[currentLang].notes.srcRemuxQual, `<span class="stars">★★★★★</span>`],
+                ["BluRay / BDRip / BRRip", i18n[currentLang].notes.srcBlurayQual, `<span class="stars">★★★★☆</span>`],
+                ["WEB-DL", i18n[currentLang].notes.srcWebdlQual, `<span class="stars">★★★★☆</span>`],
+                ["WEBRip", i18n[currentLang].notes.srcWebripQual, `<span class="stars">★★★☆☆</span>`],
+                ["HDTV", i18n[currentLang].notes.srcHdtvQual, `<span class="stars">★★☆☆☆</span>`],
+                ["HDCAM / CAM", i18n[currentLang].notes.srcCamQual, `<span class="stars">☆☆☆☆☆</span>`]
             ]
         },
         {
@@ -800,12 +839,12 @@ function renderDocs() {
             id: 'audio',
             icon: 'fa-volume-high',
             title: i18n[currentLang].docAudio,
-            headers: i18n[currentLang].headers.meaning,
+            headers: i18n[currentLang].headers.audio,
             rows: [
-                ["DTS-HD.MA / TrueHD", i18n[currentLang].notes.audioLossless],
-                ["AC3 / DD5.1", i18n[currentLang].notes.audioDd],
-                ["DDP5.1 / DDP / E-AC3", i18n[currentLang].notes.audioDdp],
-                ["AAC", i18n[currentLang].notes.audioAac]
+                ["ATMOS / TRUEHD", i18n[currentLang].notes.audioLossless, `<span class="stars">★★★★★</span>`],
+                ["DTS-HD.MA / DTS", i18n[currentLang].notes.audioDts, `<span class="stars">★★★★☆</span>`],
+                ["DDP5.1 / DDP / E-AC3", i18n[currentLang].notes.audioDdp, `<span class="stars">★★★☆☆</span>`],
+                ["AAC", i18n[currentLang].notes.audioAac, `<span class="stars">★★☆☆☆</span>`]
             ]
         },
         {
