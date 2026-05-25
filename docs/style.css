@@ -256,25 +256,6 @@ input[type="text"]:focus {
 
 .tag-card:hover { transform: translateY(-5px); border-color: rgba(139, 92, 246, 0.4); }
 
-.description-box {
-    width: 100%;
-    margin-bottom: 2rem;
-    padding: 1rem 1.5rem;
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    border-radius: 12px;
-    color: var(--text-main);
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.95rem;
-    animation: fadeIn 0.3s ease forwards;
-}
-
-.description-box i {
-    color: var(--primary);
-    font-size: 1.2rem;
-}
 
 .tag-icon {
     font-size: 1.5rem;
@@ -347,8 +328,14 @@ input[type="text"]:focus {
 
 .docs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .docs-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .doc-card {
@@ -599,4 +586,29 @@ input[type="text"]:focus {
     .compare-vs {
         margin: 0.2rem 0;
     }
+}
+
+footer {
+    margin-top: 4rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--card-border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.footer-content p {
+    margin: 0.4rem 0;
+}
+
+.footer-content a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.footer-content a:hover {
+    color: var(--secondary);
+    text-decoration: underline;
 }

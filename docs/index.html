@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Releasify</title>
+    <title>Releascenify</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     <nav>
         <div class="logo">
             <i class="fa-solid fa-film"></i>
-            <span>Releas<strong>ify</strong></span>
+            <span>Releascen<strong>ify</strong></span>
         </div>
         <div class="nav-controls">
             <div class="lang-switch">
@@ -54,7 +54,7 @@
             <div id="decode-inputs" class="input-wrapper">
                 <i class="fa-solid fa-magic search-icon"></i>
                 <input type="text" id="release-input"
-                    placeholder="e.g. Dune.Part.Two.2024.MULTi.2160p.WEB-DL.DV.HDR.H265-GROUP" autocomplete="off"
+                    placeholder="e.g. Gladiator.II.2024.MULTi.2160p.WEB-DL.DV.HDR.H265-GROUP" autocomplete="off"
                     spellcheck="false">
                 <button id="clear-btn" class="clear-btn"><i class="fa-solid fa-times"></i></button>
             </div>
@@ -81,10 +81,7 @@
             </div>
         </div>
 
-        <div id="description-box" class="description-box hidden">
-            <i class="fa-solid fa-info-circle"></i> <span id="desc-text">Survolez une étiquette pour voir sa
-                description.</span>
-        </div>
+
 
         <div id="results-container" class="results-container hidden">
             <!-- Results will be injected here by JS -->
@@ -99,6 +96,13 @@
             <div class="docs-grid" id="docs-grid"></div>
         </section>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>📦 Built with python, WebAssembly</p>
+            <p>Made by <a href="https://github.com/dmachard" target="_blank">@dmachard</a></p>
+        </div>
+    </footer>
 
     <script src="app.js"></script>
 </body>

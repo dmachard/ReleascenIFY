@@ -1,8 +1,8 @@
-# Release Parser
+# Releascenify
 
 A robust, regex-based Python library to parse scene release names and extract technical metadata (title, year, resolution, quality, codec, audio, languages, etc.).
 
-**Live Demo & Web Interface:** [https://dmachard.github.io/releasify/docs/](https://dmachard.github.io/releasify/docs/)
+**Live Demo & Web Interface:** [https://dmachard.github.io/releascenify/docs/](https://dmachard.github.io/releascenify/docs/)
 
 ## Why?
 Release names follow a strict grammar inherited from the Scene and P2P groups. Once decoded, you can predict the quality, source, language, and release group just from the filename. This library is a modernized alternative to PTN (Parse Torrent Name).
@@ -16,12 +16,12 @@ Release names follow a strict grammar inherited from the Scene and P2P groups. O
 from releascenify import parse_filename
 from releascenify.comparator import get_quality_score, is_better_release
 
-filename = "Dune.Part.Two.2024.MULTi.2160p.WEB-DL.DV.HDR.H265-GROUP"
+filename = "Gladiator.II.2024.MULTi.2160p.WEB-DL.DV.HDR.H265-GROUP"
 parsed = parse_filename(filename)
 
 print(parsed)
 # {
-#   "title": "Dune Part Two",
+#   "title": "Gladiator II",
 #   "year": 2024,
 #   "resolution": "2160P",
 #   "quality": "WEB-DL",
@@ -31,9 +31,16 @@ print(parsed)
 #   ...
 # }
 
-# Compare two releases
+# Calculate quality score
 score = get_quality_score(parsed)
 print(f"Quality Score: {score}")
+
+# Compare two releases
+rel_a = parse_filename("Gladiator.II.2024.1080p.BluRay.x264-GROUP")
+rel_b = parse_filename("Gladiator.II.2024.2160p.WEB-DL.x265-GROUP")
+
+if is_better_release(rel_b, rel_a):
+    print("Release B is better than Release A")
 ```
 
 ## Development & Tests

@@ -19,8 +19,6 @@ const compareResultsContainer = document.getElementById('compare-results-contain
 const btnDecodeMode = document.getElementById('mode-decode');
 const btnCompareMode = document.getElementById('mode-compare');
 
-const descBox = document.getElementById('description-box');
-const descText = document.getElementById('desc-text');
 const btnFr = document.getElementById('btn-fr');
 const btnEn = document.getElementById('btn-en');
 const mainTitle = document.getElementById('main-title');
@@ -34,7 +32,7 @@ async function initPyodide() {
     try {
         // Load Pyodide WASM
         pyodideInstance = await loadPyodide();
-        
+
         // Fetch the python parser code
         const parserResponse = await fetch(PARSER_URL);
         if (!parserResponse.ok) throw new Error("Could not fetch " + PARSER_URL);
@@ -82,16 +80,16 @@ def js_compare(filename_a, filename_b):
     except Exception as e:
         return json.dumps({"error": str(e)})
 `;
-        
+
         await pyodideInstance.runPythonAsync(wrapperCode);
         pyodideReady = true;
-        
+
         loadingIndicator.style.display = 'none';
-        
+
         // Trigger initial parse if inputs have value
         if (input.value) handleInput();
         if (inputA.value || inputB.value) handleCompareInput();
-        
+
     } catch (err) {
         console.error("Pyodide failed to load", err);
         loadingIndicator.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ' + i18n[currentLang].loadingError;
@@ -120,10 +118,25 @@ function getIcon(key) {
 
 const i18n = {
     fr: {
-        mainTitle: "Décoder n'importe quelle release.",
-        inputPlaceholder: "ex: Dune.Part.Two.2024.MULTi.2160p...",
-        inputAPlaceholder: "Release A (ex: Dune.2024.1080p.mkv)",
-        inputBPlaceholder: "Release B (ex: Dune.2024.2160p.mkv)",
+        mainTitle: "Analysez et comparez vos releases.",
+        labels: {
+            title: "Titre",
+            category: "Catégorie",
+            year: "Année",
+            season: "Saison",
+            episode: "Épisode",
+            resolution: "Résolution",
+            v_quality: "Qualité Vidéo",
+            quality: "Source",
+            codec: "Codec",
+            audio: "Audio",
+            channels: "Canaux Audio",
+            languages: "Langues",
+            group: "Groupe"
+        },
+        inputPlaceholder: "ex: Gladiator.II.2024.MULTi.2160p...",
+        inputAPlaceholder: "Release A (ex: Gladiator.2024.1080p.mkv)",
+        inputBPlaceholder: "Release B (ex: Gladiator.2024.2160p.mkv)",
         defaultDesc: "Survolez une étiquette pour voir sa description.",
         loadingError: "Erreur lors du chargement de l'environnement Python.",
         docsTitle: "Conventions de Nommage",
@@ -141,7 +154,7 @@ const i18n = {
             meaning: ["Tag", "Signification"]
         },
         notes: {
-            res480: "SD (Rare de nos jours)",
+            res480: "SD",
             res720: "HD",
             res1080: "Full HD",
             res2160: "UHD / 4K",
@@ -168,14 +181,7 @@ const i18n = {
             audioLossless: "Lossless (DTS-HD.MA / TrueHD)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "AAC (audio web standard)",
-            specialCut: "Version Longue (EXTENDED / THEATRICAL / DC)",
-            specialRepack: "Correctif de release (REPACK / PROPER / REAL)",
-            mistakeWebdlTitle: "WEB-DL vs WEBRip",
-            mistakeWebdlDesc: "Le WEB-DL est un téléchargement direct (intouché), tandis que le WEBRip est ré-encodé et généralement de qualité inférieure.",
-            mistakeX264Title: "x264 = HD ?",
-            mistakeX264Desc: "x264 désigne l'encodeur, pas la résolution. On peut tout à fait avoir du 480p en x264.",
-            mistake4kTitle: "2160p non vérifié",
-            mistake4kDesc: "Certains groupes font de l'upscale 1080p vers 4K. Le vrai 4K provient d'un BluRay UHD ou d'un WEB-DL haute qualité."
+            specialRepack: "Correctif de release",
         },
         modeDecode: "Décoder",
         modeCompare: "Comparer",
@@ -204,9 +210,24 @@ const i18n = {
     },
     en: {
         mainTitle: "Decode any scene release.",
-        inputPlaceholder: "e.g. Dune.Part.Two.2024.MULTi.2160p...",
-        inputAPlaceholder: "Release A (e.g. Dune.2024.1080p.mkv)",
-        inputBPlaceholder: "Release B (e.g. Dune.2024.2160p.mkv)",
+        labels: {
+            title: "Title",
+            category: "Category",
+            year: "Year",
+            season: "Season",
+            episode: "Episode",
+            resolution: "Resolution",
+            v_quality: "Video Quality",
+            quality: "Source",
+            codec: "Codec",
+            audio: "Audio",
+            channels: "Audio Channels",
+            languages: "Languages",
+            group: "Group"
+        },
+        inputPlaceholder: "e.g. Gladiator.II.2024.MULTi.2160p...",
+        inputAPlaceholder: "Release A (e.g. Gladiator.2024.1080p.mkv)",
+        inputBPlaceholder: "Release B (e.g. Gladiator.2024.2160p.mkv)",
         defaultDesc: "Hover over a tag to see its description.",
         loadingError: "Error loading WebAssembly Python engine.",
         docsTitle: "Naming Conventions",
@@ -224,7 +245,7 @@ const i18n = {
             meaning: ["Tag", "Meaning"]
         },
         notes: {
-            res480: "SD (Rare nowadays)",
+            res480: "SD",
             res720: "HD",
             res1080: "Full HD",
             res2160: "UHD / 4K",
@@ -251,14 +272,7 @@ const i18n = {
             audioLossless: "Lossless audio (DTS-HD.MA / TrueHD)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "Standard Web Audio (AAC)",
-            specialCut: "Extended, Theatrical, or Director's Cut (EXTENDED / THEATRICAL / DC)",
-            specialRepack: "Re-uploads fixing previous bad releases (REPACK / PROPER / REAL)",
-            mistakeWebdlTitle: "WEB-DL vs WEBRip",
-            mistakeWebdlDesc: "WEB-DL is a direct download (untouched), WEBRip is re-encoded and usually of lower quality.",
-            mistakeX264Title: "x264 = HD?",
-            mistakeX264Desc: "x264 is the encoder, not the resolution. You can have 480p x264.",
-            mistake4kTitle: "True 4K verification",
-            mistake4kDesc: "Some groups upscale 1080p to 4K. True 4K comes from UHD BluRays or high-quality WEB-DLs."
+            specialRepack: "Re-uploads fixing previous bad releases",
         },
         modeDecode: "Decode",
         modeCompare: "Compare",
@@ -291,16 +305,15 @@ function setLanguage(lang) {
     currentLang = lang;
     btnFr.classList.toggle('active', lang === 'fr');
     btnEn.classList.toggle('active', lang === 'en');
-    descText.textContent = i18n[currentLang].defaultDesc;
     mainTitle.textContent = i18n[currentLang].mainTitle;
-    
+
     input.placeholder = i18n[currentLang].inputPlaceholder;
     inputA.placeholder = i18n[currentLang].inputAPlaceholder;
     inputB.placeholder = i18n[currentLang].inputBPlaceholder;
-    
+
     document.querySelector('.mode-text-decode').textContent = i18n[currentLang].modeDecode;
     document.querySelector('.mode-text-compare').textContent = i18n[currentLang].modeCompare;
-    
+
     // Update docs
     docsTitle.innerHTML = `<i class="fa-solid fa-book-open"></i> ${i18n[currentLang].docsTitle}`;
     renderDocs();
@@ -319,39 +332,24 @@ btnEn.addEventListener('click', () => setLanguage('en'));
 // Initialize UI with correct language
 setLanguage(currentLang);
 
-function setupHoverEffects() {
-    const cards = document.querySelectorAll('.tag-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            const key = card.getAttribute('data-key');
-            if (key && i18n[currentLang].tooltips[key]) {
-                descText.textContent = i18n[currentLang].tooltips[key];
-            }
-        });
-        card.addEventListener('mouseleave', () => {
-            descText.textContent = i18n[currentLang].defaultDesc;
-        });
-    });
-}
-
 function renderResults(data) {
     resultsContainer.innerHTML = '';
-    
+
     if (!data || Object.keys(data).length === 0 || (data.title === "" && !data.year)) {
         resultsContainer.classList.add('hidden');
-        descBox.classList.add('hidden');
         return;
     }
-    
+
     resultsContainer.classList.remove('hidden');
-    descBox.classList.remove('hidden');
 
     // Always render title first
     if (data.title) {
+        const tooltip = i18n[currentLang].tooltips.title || '';
+        const titleLabel = i18n[currentLang].labels.title || 'Title';
         const titleHtml = `
-            <div class="tag-card title-card" data-key="title">
+            <div class="tag-card title-card" data-key="title" title="${tooltip}">
                 <i class="fa-solid ${getIcon('title')} tag-icon"></i>
-                <span class="tag-label">Title</span>
+                <span class="tag-label">${titleLabel}</span>
                 <span class="tag-value">${data.title}</span>
             </div>
         `;
@@ -360,44 +358,44 @@ function renderResults(data) {
 
     // Render other valid keys
     const order = ['category', 'year', 'season', 'episode', 'resolution', 'v_quality', 'quality', 'codec', 'audio', 'channels', 'languages', 'group'];
-    
+
     order.forEach(key => {
         if (data[key] && data[key] !== "") {
             let valueHtml = '';
-            
+
             if (Array.isArray(data[key])) {
                 if (data[key].length === 0) return;
-                valueHtml = `<div class="pill-container">` + 
-                            data[key].map(v => `<span class="pill">${v}</span>`).join('') + 
-                            `</div>`;
+                valueHtml = `<div class="pill-container">` +
+                    data[key].map(v => `<span class="pill">${v}</span>`).join('') +
+                    `</div>`;
             } else {
                 valueHtml = `<span class="tag-value">${data[key]}</span>`;
             }
 
+            const tooltip = i18n[currentLang].tooltips[key] || '';
+            const displayLabel = i18n[currentLang].labels[key] || key;
             const card = `
-                <div class="tag-card" data-key="${key}">
+                <div class="tag-card" data-key="${key}" title="${tooltip}">
                     <i class="fa-solid ${getIcon(key)} tag-icon"></i>
-                    <span class="tag-label">${key}</span>
+                    <span class="tag-label">${displayLabel}</span>
                     ${valueHtml}
                 </div>
             `;
             resultsContainer.insertAdjacentHTML('beforeend', card);
         }
     });
-    
-    setupHoverEffects();
 }
 
 function getFieldComparison(key, valA, valB) {
     if (!valA && !valB) return { better: null };
     if (valA && !valB) return { better: 'a' };
     if (!valA && valB) return { better: 'b' };
-    
+
     // Normalize values
     const aStr = String(valA).toLowerCase();
     const bStr = String(valB).toLowerCase();
     if (aStr === bStr) return { better: null };
-    
+
     if (key === 'resolution') {
         const getResRank = (r) => {
             if (r.includes('2160') || r.includes('4k')) return r.includes('light') ? 4 : 5;
@@ -409,7 +407,7 @@ function getFieldComparison(key, valA, valB) {
         const rankB = getResRank(bStr);
         if (rankA !== rankB) return { better: rankA > rankB ? 'a' : 'b' };
     }
-    
+
     if (key === 'quality') {
         const getSrcRank = (q) => {
             if (q.includes('bluray') || q.includes('bdrip')) return 3;
@@ -421,7 +419,7 @@ function getFieldComparison(key, valA, valB) {
         const rankB = getSrcRank(bStr);
         if (rankA !== rankB) return { better: rankA > rankB ? 'a' : 'b' };
     }
-    
+
     if (key === 'languages') {
         const getLangRank = (l) => {
             if (l.includes('multi')) return 3;
@@ -456,7 +454,7 @@ function getFieldComparison(key, valA, valB) {
         const rankB = getCodecRank(bStr);
         if (rankA !== rankB) return { better: rankA > rankB ? 'a' : 'b' };
     }
-    
+
     if (key === 'audio') {
         const getAudioRank = (aud) => {
             if (aud.includes('atmos') || aud.includes('truehd')) return 3;
@@ -468,7 +466,7 @@ function getFieldComparison(key, valA, valB) {
         const rankB = getAudioRank(bStr);
         if (rankA !== rankB) return { better: rankA > rankB ? 'a' : 'b' };
     }
-    
+
     return { better: null };
 }
 
@@ -504,21 +502,12 @@ function renderCompareResults(data) {
 
     // Comparison Table
     const compareKeys = [
-        { key: 'title', label: { fr: 'Titre', en: 'Title' } },
-        { key: 'category', label: { fr: 'Catégorie', en: 'Category' } },
-        { key: 'year', label: { fr: 'Année', en: 'Year' } },
-        { key: 'resolution', label: { fr: 'Résolution', en: 'Resolution' } },
-        { key: 'v_quality', label: { fr: 'Qualité Vidéo', en: 'Video Quality' } },
-        { key: 'quality', label: { fr: 'Source / Qualité', en: 'Source / Quality' } },
-        { key: 'codec', label: { fr: 'Codec', en: 'Codec' } },
-        { key: 'audio', label: { fr: 'Audio', en: 'Audio' } },
-        { key: 'channels', label: { fr: 'Canaux Audio', en: 'Audio Channels' } },
-        { key: 'languages', label: { fr: 'Langues', en: 'Languages' } },
-        { key: 'group', label: { fr: 'Groupe', en: 'Group' } }
+        'title', 'category', 'year', 'resolution', 'v_quality', 'quality',
+        'codec', 'audio', 'channels', 'languages', 'group'
     ];
 
     let rowsHtml = '';
-    
+
     const formatVal = (val) => {
         if (!val) return '-';
         if (Array.isArray(val)) {
@@ -528,19 +517,19 @@ function renderCompareResults(data) {
         return val;
     };
 
-    compareKeys.forEach(item => {
-        const valA = data.a[item.key];
-        const valB = data.b[item.key];
+    compareKeys.forEach(key => {
+        const valA = data.a[key];
+        const valB = data.b[key];
         const formattedA = formatVal(valA);
         const formattedB = formatVal(valB);
-        
-        let comp = getFieldComparison(item.key, valA, valB);
-        
+
+        let comp = getFieldComparison(key, valA, valB);
+
         let classA = 'draw-val';
         let classB = 'draw-val';
         let badgeA = '';
         let badgeB = '';
-        
+
         if (comp.better === 'a') {
             classA = 'better-val';
             classB = 'worse-val';
@@ -551,9 +540,10 @@ function renderCompareResults(data) {
             badgeB = `<span class="better-badge-ui">${i18n[currentLang].betterBadge}</span>`;
         }
 
+        const displayLabel = i18n[currentLang].labels[key] || key;
         rowsHtml += `
             <tr>
-                <td class="property-name">${item.label[currentLang]}</td>
+                <td class="property-name">${displayLabel}</td>
                 <td class="value-col ${classA}">${formattedA} ${badgeA}</td>
                 <td class="value-col ${classB}">${formattedB} ${badgeB}</td>
             </tr>
@@ -605,9 +595,9 @@ function renderCompareResults(data) {
 function handleInput() {
     const val = input.value.trim();
     clearBtn.style.display = val.length > 0 ? 'block' : 'none';
-    
+
     if (!pyodideReady) return;
-    
+
     if (val.length === 0) {
         resultsContainer.classList.add('hidden');
         descBox.classList.add('hidden');
@@ -627,17 +617,17 @@ function handleInput() {
 function handleCompareInput() {
     const valA = inputA.value.trim();
     const valB = inputB.value.trim();
-    
+
     clearABtn.style.display = valA.length > 0 ? 'block' : 'none';
     clearBBtn.style.display = valB.length > 0 ? 'block' : 'none';
-    
+
     if (!pyodideReady) return;
-    
+
     if (valA.length === 0 || valB.length === 0) {
         compareResultsContainer.classList.add('hidden');
         return;
     }
-    
+
     try {
         const compareFunc = pyodideInstance.globals.get('js_compare');
         const jsonStr = compareFunc(valA, valB);
@@ -661,7 +651,6 @@ btnDecodeMode.addEventListener('click', () => {
     compareInputs.classList.add('hidden');
     resultsContainer.classList.add('hidden');
     compareResultsContainer.classList.add('hidden');
-    descBox.classList.add('hidden');
     handleInput();
 });
 
@@ -673,7 +662,6 @@ btnCompareMode.addEventListener('click', () => {
     compareInputs.classList.remove('hidden');
     resultsContainer.classList.add('hidden');
     compareResultsContainer.classList.add('hidden');
-    descBox.classList.add('hidden');
     handleCompareInput();
 });
 
@@ -703,9 +691,9 @@ clearBBtn.addEventListener('click', () => {
 function renderDocs() {
     const docsGrid = document.getElementById('docs-grid');
     if (!docsGrid) return;
-    
+
     docsGrid.innerHTML = '';
-    
+
     const cards = [
         {
             id: 'res',
@@ -774,7 +762,6 @@ function renderDocs() {
             title: i18n[currentLang].docSpecial,
             headers: i18n[currentLang].headers.meaning,
             rows: [
-                ["EXTENDED / THEATRICAL / DC", i18n[currentLang].notes.specialCut],
                 ["REPACK / PROPER / REAL", i18n[currentLang].notes.specialRepack]
             ]
         }
