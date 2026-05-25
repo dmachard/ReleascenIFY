@@ -1,0 +1,82 @@
+[
+  {
+    "filename": "Euphoria.2019.S03E06.MULTi.4KLight.DV.HDR.WEBRip.DDP5.1.Atmos.HEVC-[BATGirl]",
+    "expected": {
+      "title": "Euphoria",
+      "year": 2019,
+      "category": "series",
+      "season": "3",
+      "episode": "6",
+      "resolution": "4KLIGHT",
+      "quality": "WEBRIP",
+      "codec": "HEVC",
+      "audio": "ATMOS",
+      "channels": "5.1",
+      "v_quality": "HDR DV",
+      "languages": [
+        "MULTI"
+      ]
+    }
+  },
+  {
+    "filename": "Tongari.Boushi.no.Atelier.E08.MULTi.1080p.WEB.x264-AMB3R",
+    "expected": {
+      "title": "Tongari Boushi no Atelier",
+      "category": "series",
+      "episode": "8",
+      "resolution": "1080P",
+      "quality": "WEB",
+      "codec": "X264",
+      "languages": [
+        "MULTI"
+      ]
+    }
+  },
+  {
+    "filename": "Berlin.and.the.Lady.with.an.Ermine.S01E08.FiNAL.MULTi.HDR.DV.2160p.WEB.H265-FW-Wawacity.win",
+    "expected": {
+      "title": "Berlin and the Lady with an Ermine",
+      "category": "series",
+      "season": "1",
+      "episode": "8",
+      "resolution": "2160P",
+      "quality": "WEB",
+      "codec": "H265",
+      "v_quality": "HDR DV",
+      "languages": [
+        "MULTI"
+      ]
+    }
+  },
+  {
+    "filename": "Les.Aventures.De.Pil.S01E25.FRENCH.1080p.WEB.x264-D4KiD",
+    "expected": {
+      "title": "Les Aventures De Pil",
+      "category": "series",
+      "season": "1",
+      "episode": "25",
+      "resolution": "1080P",
+      "quality": "WEB",
+      "codec": "X264",
+      "languages": [
+        "FRENCH"
+      ]
+    }
+  },
+  {
+    "filename": "The.West.Wing.S01E12.MULTi.1080p.WEBRip.DDP2.0.HEVC-[BATGirl]",
+    "expected": {
+      "title": "The West Wing",
+      "category": "series",
+      "season": "1",
+      "episode": "12",
+      "resolution": "1080P",
+      "quality": "WEBRIP",
+      "codec": "HEVC",
+      "audio": "DDP2.0",
+      "languages": [
+        "MULTI"
+      ]
+    }
+  }
+]

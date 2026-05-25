@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release Decoder</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Load Pyodide for WebAssembly Python -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+</head>
+
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-film"></i>
+            <span>Release<strong>Decoder</strong></span>
+        </div>
+        <div class="nav-controls">
+            <div class="lang-switch">
+                <button id="btn-fr" class="lang-btn active">FR</button>
+                <button id="btn-en" class="lang-btn">EN</button>
+            </div>
+            <a href="https://github.com/ton-github/ddl-tower" target="_blank" class="github-link">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <h1 id="main-title">Decode any scene release.</h1>
+        </header>
+
+        <div class="mode-selector">
+            <button id="mode-decode" class="mode-btn active"><i class="fa-solid fa-magic"></i> <span
+                    class="mode-text-decode">Decode</span></button>
+            <button id="mode-compare" class="mode-btn"><i class="fa-solid fa-code-compare"></i> <span
+                    class="mode-text-compare">Compare</span></button>
+        </div>
+
+        <div class="search-container">
+            <!-- Decode Mode Inputs -->
+            <div id="decode-inputs" class="input-wrapper">
+                <i class="fa-solid fa-magic search-icon"></i>
+                <input type="text" id="release-input"
+                    placeholder="e.g. Dune.Part.Two.2024.MULTi.2160p.WEB-DL.DV.HDR.H265-GROUP" autocomplete="off"
+                    spellcheck="false">
+                <button id="clear-btn" class="clear-btn"><i class="fa-solid fa-times"></i></button>
+            </div>
+
+            <!-- Compare Mode Inputs -->
+            <div id="compare-inputs" class="compare-inputs-wrapper hidden">
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-circle-a search-icon" style="color: var(--primary);"></i>
+                    <input type="text" id="release-a-input" placeholder="Release A" autocomplete="off"
+                        spellcheck="false">
+                    <button id="clear-a-btn" class="clear-btn"><i class="fa-solid fa-times"></i></button>
+                </div>
+                <div class="compare-vs">VS</div>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-circle-b search-icon" style="color: var(--secondary);"></i>
+                    <input type="text" id="release-b-input" placeholder="Release B" autocomplete="off"
+                        spellcheck="false">
+                    <button id="clear-b-btn" class="clear-btn"><i class="fa-solid fa-times"></i></button>
+                </div>
+            </div>
+
+            <div id="loading-indicator" class="loading-indicator">
+                <i class="fa-solid fa-circle-notch fa-spin"></i> Initializing WebAssembly Python Engine...
+            </div>
+        </div>
+
+        <div id="description-box" class="description-box hidden">
+            <i class="fa-solid fa-info-circle"></i> <span id="desc-text">Survolez une étiquette pour voir sa
+                description.</span>
+        </div>
+
+        <div id="results-container" class="results-container hidden">
+            <!-- Results will be injected here by JS -->
+        </div>
+
+        <div id="compare-results-container" class="compare-results-container hidden">
+            <!-- Comparison results will be injected here by JS -->
+        </div>
+
+        <section class="docs-section">
+            <h2 id="docs-title"><i class="fa-solid fa-book-open"></i> Naming Conventions</h2>
+            <div class="docs-grid" id="docs-grid"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

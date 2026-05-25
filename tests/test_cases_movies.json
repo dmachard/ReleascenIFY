@@ -1,0 +1,159 @@
+[
+  {
+    "filename": "Higher Power 2018 MULTi VFF 2160p 10bit 4KLight BluRay x265 @@UnPourTous@@",
+    "expected": {
+      "title": "Higher Power",
+      "year": 2018,
+      "category": "movie",
+      "resolution": "4KLIGHT",
+      "quality": "BLURAY",
+      "codec": "X265",
+      "languages": [
+        "MULTI",
+        "FRENCH"
+      ]
+    }
+  },
+  {
+    "filename": "Lady.Gaga.MAYHEM.Requiem.2026.2160p.ATV.WEB-DL.Hybrid.H265.DV.HDR10+DDP.Atmos.5.1.English-HONE",
+    "expected": {
+      "title": "Lady Gaga MAYHEM Requiem",
+      "year": 2026,
+      "category": "movie",
+      "resolution": "2160P",
+      "quality": "WEB-DL",
+      "codec": "H265",
+      "v_quality": "HDR DV",
+      "audio": "ATMOS",
+      "channels": "5.1",
+      "languages": []
+    }
+  },
+  {
+    "filename": "The.Devil.at.4.OClock.1961.MULTi.VFi.1080p.WEBRip.AC3.2.0.H264-Wawacity.WIN",
+    "expected": {
+      "title": "The Devil at 4 OClock",
+      "year": 1961,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": "WEBRIP",
+      "codec": "H264",
+      "audio": "AC3",
+      "channels": "2.0",
+      "languages": [
+        "MULTI",
+        "VF"
+      ]
+    }
+  },
+  {
+    "filename": "Sexcrimes.(Wild Things).1998.BDRip.1080p.MULTi.VF2.HDLight.x264.AC3.5.1.AC3.2.0-BzH29",
+    "expected": {
+      "title": "Sexcrimes (Wild Things)",
+      "year": 1998,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": "BDRIP",
+      "codec": "X264",
+      "audio": "AC3",
+      "channels": "5.1",
+      "languages": [
+        "MULTI",
+        "VF"
+      ]
+    }
+  },
+  {
+    "filename": "L'Arme fatale 2 1989 MULTi VFF 1080p BluRay x265 @@UnPourTous@@",
+    "expected": {
+      "title": "L'Arme fatale 2",
+      "year": 1989,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": "BLURAY",
+      "codec": "X265",
+      "languages": [
+        "MULTI",
+        "FRENCH"
+      ]
+    }
+  },
+  {
+    "filename": "Les Trois Mousquetaires Milady 2023 VFF 1080p Web x265 @@UnPourTous@@",
+    "expected": {
+      "title": "Les Trois Mousquetaires Milady",
+      "year": 2023,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": "WEB",
+      "codec": "X265",
+      "languages": [
+        "FRENCH"
+      ]
+    }
+  },
+  {
+    "filename": "Evangelion__3.33_You_Can_(Not)_Redo.2012.VF-VOSTFR.1080p.HDlight.EAC3-AC3.x265.Wawacity.win",
+    "expected": {
+      "title": "Evangelion 3 33 You Can (Not) Redo",
+      "year": 2012,
+      "category": "movie",
+      "resolution": "1080P",
+      "codec": "X265",
+      "languages": [
+        "VF",
+        "VOSTFR"
+      ]
+    }
+  },
+  {
+    "filename": "Le.Retour.du.Roi.2003.MULTi.1080p.theatrical.version.BluRay.AC3.5.1.x264-PopHD",
+    "expected": {
+      "title": "Le Retour du Roi",
+      "year": 2003,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": "BLURAY",
+      "codec": "X264",
+      "audio": "AC3",
+      "channels": "5.1",
+      "languages": [
+        "MULTI"
+      ]
+    }
+  },
+  {
+    "filename": "Ladies First (2026) Multi.1080P.Web.Eac3X265-ParadiZe.mkv",
+    "expected": {
+      "title": "Ladies First",
+      "year": 2026,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": "WEB",
+      "codec": "X265",
+      "audio": "AC3",
+      "languages": [
+        "MULTI"
+      ],
+      "group": "ParadiZe"
+    }
+  },
+  {
+    "filename": "1917.2019.MULTi.VFF.2160p.BLURAY.4KLight.DV.HDR.x265.TrueHD.7.1.Atmos.Bender_37.mkv",
+    "expected": {
+      "title": "1917",
+      "year": 2019,
+      "category": "movie",
+      "resolution": "4KLIGHT",
+      "quality": "BLURAY",
+      "codec": "X265",
+      "audio": "TRUEHD",
+      "channels": "7.1",
+      "v_quality": "HDR DV",
+      "languages": [
+        "MULTI",
+        "FRENCH"
+      ]
+    }
+  }
+]
