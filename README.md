@@ -4,12 +4,12 @@
   <img src="imgs/logo_releascenify.png" alt="Releascenify Logo" width="400">
 </p>
 
-A regex-based Python library to parse scene release names and extract technical metadata (title, year, resolution, quality, codec, audio, languages, etc.).
+Parse Scene and P2P release names into structured metadata and compare release quality automatically. Built with a rule/regex engine.
 
 **Live Demo & Web Interface:** [https://dmachard.github.io/releascenify/docs/](https://dmachard.github.io/releascenify/docs/)
 
 ## Why?
-Release names follow a strict grammar inherited from the Scene and P2P groups. Once decoded, you can predict the quality, source, language, and release group just from the filename. This library is a modernized alternative to PTN (Parse Torrent Name).
+Release names follow a strict grammar inherited from the Scene and P2P groups. Once decoded, you can predict the quality, source, language, and release group just from the filename. This library is an alternative to PTN (Parse Torrent Name).
 
 ## Installation
 
@@ -49,6 +49,105 @@ rel_b = parse_filename("Gladiator.II.2024.2160p.WEB-DL.x265-GROUP")
 if is_better_release(rel_b, rel_a):
     print("Release B is better than Release A")
 ```
+
+# How Scoring Works
+
+Releascenify includes a **quality scoring system** to estimate the relative quality of a release from its filename metadata.
+
+The goal is not to determine the *absolute* visual quality of a file, because actual quality depends on factors that are often unavailable in release names (bitrate, encoding settings, source quality, etc.).
+
+Instead, the score provides a **heuristic ranking** that allows:
+
+- Comparing multiple releases
+- Sorting releases automatically
+- Selecting the "best candidate" in automation pipelines
+- Building recommendation or media-management workflows
+
+## Important
+
+> The score is a heuristic estimate, not a scientific measurement.
+>
+> A higher score does **not always mean a better viewing experience**.
+
+For example:
+
+- A `1080p BluRay Remux` can look better than a `2160p WEB-DL`
+- A poorly encoded `x265` release may look worse than a high bitrate `x264`
+- HDR content can sometimes look worse than SDR depending on the source and display
+
+## Scoring Factors
+
+The final score combines several weighted attributes extracted from the filename.
+
+### Source Quality
+
+Higher quality sources receive more points.
+
+| Source | Relative Weight |
+|----------|----------------|
+| REMUX | Highest |
+| UHD BluRay | Very High |
+| BluRay | High |
+| WEB-DL | Medium |
+| WEBRip | Medium-Low |
+| HDTV | Low |
+| CAM / TS | Very Low |
+
+---
+
+### Resolution
+
+Higher resolutions generally receive more points.
+
+| Resolution | Relative Weight |
+|-------------|----------------|
+| 2160p | Highest |
+| 1080p | High |
+| 720p | Medium |
+| SD | Low |
+
+---
+
+### Video Codec
+
+Modern codecs generally improve efficiency and quality.
+
+| Codec | Relative Weight |
+|---------|----------------|
+| AV1 | Highest |
+| H265 / HEVC | High |
+| H264 / x264 | Medium |
+| XviD / older codecs | Low |
+
+---
+
+### Video Enhancements
+
+Additional technologies can increase the score.
+
+Examples:
+
+- HDR
+- Dolby Vision (DV)
+- HDR10+
+- IMAX Enhanced
+
+---
+
+### Audio Quality
+
+Audio formats also contribute.
+
+Typical ranking:
+
+| Audio | Relative Weight |
+|---------|----------------|
+| TrueHD Atmos | Highest |
+| DTS-HD MA | High |
+| DTS | Medium |
+| DDP / DD+ | Medium |
+| AAC | Lower |
+
 
 ## Development & Tests
 
