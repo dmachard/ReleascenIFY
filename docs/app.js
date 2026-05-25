@@ -34,12 +34,12 @@ async function initPyodide() {
         pyodideInstance = await loadPyodide();
 
         // Fetch the python parser code
-        const parserResponse = await fetch(PARSER_URL);
+        const parserResponse = await fetch(PARSER_URL, { cache: "no-store" });
         if (!parserResponse.ok) throw new Error("Could not fetch " + PARSER_URL);
         const parserCode = await parserResponse.text();
 
         // Fetch the python comparator code
-        const comparatorResponse = await fetch(COMPARATOR_URL);
+        const comparatorResponse = await fetch(COMPARATOR_URL, { cache: "no-store" });
         if (!comparatorResponse.ok) throw new Error("Could not fetch " + COMPARATOR_URL);
         const comparatorCode = await comparatorResponse.text();
 
@@ -111,7 +111,9 @@ function getIcon(key) {
         languages: 'fa-language',
         season: 'fa-layer-group',
         episode: 'fa-play',
-        group: 'fa-users'
+        group: 'fa-users',
+        container: 'fa-file-video',
+        extra: 'fa-tags'
     };
     return icons[key] || 'fa-tag';
 }
@@ -132,7 +134,9 @@ const i18n = {
             audio: "Audio",
             channels: "Canaux Audio",
             languages: "Langues",
-            group: "Groupe"
+            group: "Groupe",
+            container: "Conteneur",
+            extra: "Extra"
         },
         inputPlaceholder: "ex: Gladiator.II.2024.MULTi.2160p...",
         inputAPlaceholder: "Release A (ex: Gladiator.2024.1080p.mkv)",
@@ -147,6 +151,8 @@ const i18n = {
         docCodec: "Codec",
         docLang: "Langue",
         docAudio: "Audio",
+        docVQuality: "Qualité Vidéo",
+        docContainer: "Conteneur",
         docSpecial: "Tags spéciaux",
         docMistakes: "Erreurs courantes",
         headers: {
@@ -179,10 +185,19 @@ const i18n = {
             langMulti: "Plusieurs langues (généralement FR + EN)",
             langVff: "Vraie Version Française (France)",
             langVfq: "Vraie Version Québécoise (Québec)",
+            langVfi: "Version Française Internationale (VFi)",
             langVostfr: "Version Originale Sous-Titrée Français",
             audioLossless: "Lossless (DTS-HD.MA / TrueHD)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "AAC (audio web standard)",
+            audioDdp: "Dolby Digital Plus (E-AC3 / DDP5.1)",
+            vQualityHdr: "Plage dynamique étendue (High Dynamic Range)",
+            vQualityDv: "Dolby Vision (métadonnées dynamiques)",
+            vQualityBits: "Profondeur de couleur (10 bits / 12 bits)",
+            vQualityHlg: "Hybrid Log-Gamma (diffusion TV HDR)",
+            containerMkv: "Matroska (MKV) - Idéal pour le multi-pistes, sous-titres et chapitres",
+            containerMp4: "MPEG-4 (MP4) - Compatibilité universelle et diffusion web",
+            containerAvi: "Audio Video Interleave (AVI) - Format obsolète (DivX/XviD)",
             specialRepack: "Correctif de release",
         },
         modeDecode: "Décoder",
@@ -207,7 +222,9 @@ const i18n = {
             languages: "Langues disponibles (MULTI, VFF...)",
             season: "Numéro de la saison",
             episode: "Numéro de l'épisode",
-            group: "Release group responsable (-NOM)"
+            group: "Release group responsable (-NOM)",
+            container: "Format du conteneur média (ex: MKV, MP4)",
+            extra: "Éléments additionnels non parsés"
         }
     },
     en: {
@@ -225,7 +242,9 @@ const i18n = {
             audio: "Audio",
             channels: "Audio Channels",
             languages: "Languages",
-            group: "Group"
+            group: "Group",
+            container: "Container",
+            extra: "Extra"
         },
         inputPlaceholder: "e.g. Gladiator.II.2024.MULTi.2160p...",
         inputAPlaceholder: "Release A (e.g. Gladiator.2024.1080p.mkv)",
@@ -240,6 +259,8 @@ const i18n = {
         docCodec: "Codec",
         docLang: "Language",
         docAudio: "Audio",
+        docVQuality: "Video Quality",
+        docContainer: "Container",
         docSpecial: "Special Tags",
         docMistakes: "Common Mistakes",
         headers: {
@@ -272,10 +293,19 @@ const i18n = {
             langMulti: "Multiple languages (usually FR + EN)",
             langVff: "True French (France)",
             langVfq: "True French (Quebec)",
+            langVfi: "International French version (VFi)",
             langVostfr: "Original version with French subtitles",
             audioLossless: "Lossless audio (DTS-HD.MA / TrueHD)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "Standard Web Audio (AAC)",
+            audioDdp: "Dolby Digital Plus (E-AC3 / DDP5.1)",
+            vQualityHdr: "High Dynamic Range (HDR, HDR10, HDR10+)",
+            vQualityDv: "Dolby Vision dynamic metadata (DV)",
+            vQualityBits: "10-bit / 12-bit color depth (prevents banding)",
+            vQualityHlg: "Hybrid Log-Gamma (HDR broadcast)",
+            containerMkv: "Matroska (MKV) - Best for multiple audio tracks, subtitles and chapters",
+            containerMp4: "MPEG-4 (MP4) - Universal compatibility and web streaming",
+            containerAvi: "Audio Video Interleave (AVI) - Legacy format (DivX/XviD)",
             specialRepack: "Re-uploads fixing previous bad releases",
         },
         modeDecode: "Decode",
@@ -300,7 +330,9 @@ const i18n = {
             languages: "Available languages (MULTI, VFF...)",
             season: "Season number",
             episode: "Episode number",
-            group: "Responsible release group (-NAME)"
+            group: "Responsible release group (-NAME)",
+            container: "Media container format (e.g. MKV, MP4)",
+            extra: "Additional unparsed elements"
         }
     }
 };
@@ -363,7 +395,7 @@ function renderResults(data) {
     }
 
     // Render other valid keys
-    const order = ['category', 'year', 'season', 'episode', 'resolution', 'v_quality', 'quality', 'codec', 'audio', 'channels', 'languages', 'group'];
+    const order = ['category', 'year', 'season', 'episode', 'resolution', 'v_quality', 'quality', 'codec', 'container', 'audio', 'channels', 'languages', 'group', 'extra'];
 
     order.forEach(key => {
         if (data[key] && data[key] !== "") {
@@ -509,7 +541,7 @@ function renderCompareResults(data) {
     // Comparison Table
     const compareKeys = [
         'title', 'category', 'year', 'resolution', 'v_quality', 'quality',
-        'codec', 'audio', 'channels', 'languages', 'group'
+        'codec', 'container', 'audio', 'channels', 'languages', 'group', 'extra'
     ];
 
     let rowsHtml = '';
@@ -729,6 +761,18 @@ function renderDocs() {
             ]
         },
         {
+            id: 'vquality',
+            icon: 'fa-wand-magic-sparkles',
+            title: i18n[currentLang].docVQuality,
+            headers: i18n[currentLang].headers.meaning,
+            rows: [
+                ["HDR / HDR10 / HDR10+", i18n[currentLang].notes.vQualityHdr],
+                ["DV / Dolby Vision", i18n[currentLang].notes.vQualityDv],
+                ["10bit / 12bit", i18n[currentLang].notes.vQualityBits],
+                ["HLG", i18n[currentLang].notes.vQualityHlg]
+            ]
+        },
+        {
             id: 'codec',
             icon: 'fa-microchip',
             title: i18n[currentLang].docCodec,
@@ -748,6 +792,7 @@ function renderDocs() {
                 ["MULTi", i18n[currentLang].notes.langMulti],
                 ["VFF", i18n[currentLang].notes.langVff],
                 ["VFQ", i18n[currentLang].notes.langVfq],
+                ["VFi", i18n[currentLang].notes.langVfi],
                 ["VOSTFR", i18n[currentLang].notes.langVostfr]
             ]
         },
@@ -759,7 +804,19 @@ function renderDocs() {
             rows: [
                 ["DTS-HD.MA / TrueHD", i18n[currentLang].notes.audioLossless],
                 ["AC3 / DD5.1", i18n[currentLang].notes.audioDd],
+                ["DDP5.1 / DDP / E-AC3", i18n[currentLang].notes.audioDdp],
                 ["AAC", i18n[currentLang].notes.audioAac]
+            ]
+        },
+        {
+            id: 'container',
+            icon: 'fa-file-video',
+            title: i18n[currentLang].docContainer,
+            headers: i18n[currentLang].headers.meaning,
+            rows: [
+                [".mkv", i18n[currentLang].notes.containerMkv],
+                [".mp4", i18n[currentLang].notes.containerMp4],
+                [".avi", i18n[currentLang].notes.containerAvi]
             ]
         },
         {

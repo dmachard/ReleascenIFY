@@ -1,6 +1,10 @@
 # Releascenify
 
-A robust, regex-based Python library to parse scene release names and extract technical metadata (title, year, resolution, quality, codec, audio, languages, etc.).
+<p align="center">
+  <img src="imgs/logo_releascenify.png" alt="Releascenify Logo" width="400">
+</p>
+
+A regex-based Python library to parse scene release names and extract technical metadata (title, year, resolution, quality, codec, audio, languages, etc.).
 
 **Live Demo & Web Interface:** [https://dmachard.github.io/releascenify/docs/](https://dmachard.github.io/releascenify/docs/)
 

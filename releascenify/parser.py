@@ -34,6 +34,8 @@ class ReleaseParser:
         if any(x in fn for x in ["DV", "DOVI"]) or re.search(r'DOLBY[\.\-\s]VISION', fn): tags.append("DV")
         if any(x in fn for x in ["HDR", "HDR10", "HDR10PLUS", "HDR10+"]): tags.append("HDR")
         if "HLG" in fn: tags.append("HLG")
+        if "10BIT" in fn or "10-BIT" in fn: tags.append("10BIT")
+        if "12BIT" in fn or "12-BIT" in fn: tags.append("12BIT")
         return " ".join(sorted(list(set(tags)), reverse=True)) if tags else None
 
     def _extract_langs(self, fn_up: str) -> List[str]:
@@ -50,15 +52,36 @@ class ReleaseParser:
         result = {
             "title": "", "category": "movie", "year": None, "season": None, "episode": None,
             "resolution": None, "quality": None, "codec": None, "audio": None, 
-            "channels": None, "network": "", "v_quality": "", "languages": [], "group": None
+            "channels": None, "network": "", "v_quality": "", "languages": [], "group": None,
+            "container": None, "extra": None
         }
         
-        # Extract group
-        group_match = re.search(r'-([A-Za-z0-9_@]+)(?:\s*\(.*?\))?(?:\.[a-z0-9]{3,4})?$', filename.strip())
+        # Extract container/extension and strip it if valid
+        fn_strip = filename.strip()
+        media_exts = {'mkv', 'mp4', 'avi', 'flv', 'mov', 'wmv', 'mpg', 'mpeg', 'm4v', 'ts', 'm2ts', 'webm', 'mp3', 'flac', 'mka', 'm4a', 'aac'}
+        ext_match = re.search(r'\.([a-z0-9]{3,4})$', fn_strip, flags=re.I)
+        if ext_match:
+            ext_val = ext_match.group(1).lower()
+            if ext_val in media_exts:
+                result['container'] = ext_val.upper()
+                fn_strip = fn_strip[:-len(ext_match.group(0))]
+                
+        # Find hyphen-separated parts at the end of the filename
+        group_match = re.search(r'-([A-Za-z0-9_@\.-]+)$', fn_strip)
         if group_match:
-            grp = group_match.group(1)
-            if grp.upper() not in ['DL', 'HDMA', 'FR', 'EN', 'HD']:
-                result['group'] = grp
+            parts = group_match.group(1).split('-')
+            # Filter out any part containing a dot (meaning it's a domain/website tag like Wawacity.win)
+            valid_parts = [p for p in parts if '.' not in p and p]
+            if valid_parts:
+                grp = valid_parts[-1]
+                if grp.upper() not in ['DL', 'HDMA', 'FR', 'EN', 'HD']:
+                    result['group'] = grp
+                    extra_parts = [p for p in parts if p != grp]
+                    if extra_parts:
+                        result['extra'] = '-'.join(extra_parts)
+            else:
+                # No valid group, all parts are extra
+                result['extra'] = '-'.join(parts)
         
         # Check for joint SxxExx
         se_match = re.search(r'(?i)\bs(\d{1,2})[\.\-\s]?[ex](\d{1,3})\b', filename)

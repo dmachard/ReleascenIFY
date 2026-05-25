@@ -78,5 +78,60 @@
         "MULTI"
       ]
     }
+  },
+  {
+    "filename": "Maximum.Pleasure.Guaranteed.S01E02.FRENCH.1080p.WEB.H264-HiggsBoson-Wawacity.win",
+    "expected": {
+      "title": "Maximum Pleasure Guaranteed",
+      "category": "series",
+      "season": "1",
+      "episode": "2",
+      "resolution": "1080P",
+      "quality": "WEB",
+      "codec": "H264",
+      "languages": [
+        "FRENCH"
+      ],
+      "group": "HiggsBoson",
+      "extra": "Wawacity.win"
+    }
+  },
+  {
+    "filename": "Maximum.Pleasure.Guaranteed.S01E02.FRENCH.1080p.WEB.H264-HiggsBoson-Wawacity.win.mkv",
+    "expected": {
+      "title": "Maximum Pleasure Guaranteed",
+      "category": "series",
+      "season": "1",
+      "episode": "2",
+      "resolution": "1080P",
+      "quality": "WEB",
+      "codec": "H264",
+      "languages": [
+        "FRENCH"
+      ],
+      "group": "HiggsBoson",
+      "container": "MKV",
+      "extra": "Wawacity.win"
+    }
+  },
+  {
+    "filename": "Mort.Ou.Vif.Joaquin.Murrieta.S01E01.2160p.AMZN.WEB-DL.MULTI.VFi.DDP5.1.HDR10+.DV.10bit.x265-MPx",
+    "expected": {
+      "title": "Mort Ou Vif Joaquin Murrieta",
+      "category": "series",
+      "season": "1",
+      "episode": "1",
+      "resolution": "2160P",
+      "quality": "WEB-DL",
+      "codec": "X265",
+      "v_quality": "HDR DV 10BIT",
+      "audio": "DDP5.1",
+      "channels": "5.1",
+      "languages": [
+        "MULTI",
+        "VF"
+      ],
+      "group": "MPx"
+    }
   }
 ]

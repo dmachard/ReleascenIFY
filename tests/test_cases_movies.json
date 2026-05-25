@@ -135,7 +135,8 @@
       "languages": [
         "MULTI"
       ],
-      "group": "ParadiZe"
+      "group": "ParadiZe",
+      "container": "MKV"
     }
   },
   {
@@ -153,7 +154,8 @@
       "languages": [
         "MULTI",
         "FRENCH"
-      ]
+      ],
+      "container": "MKV"
     }
   }
 ]
