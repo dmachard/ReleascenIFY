@@ -113,6 +113,7 @@ function getIcon(key) {
         episode: 'fa-play',
         group: 'fa-users',
         container: 'fa-file-video',
+        network: 'fa-tower-broadcast',
         extra: 'fa-tags'
     };
     return icons[key] || 'fa-tag';
@@ -136,6 +137,7 @@ const i18n = {
             languages: "Langues",
             group: "Groupe",
             container: "Conteneur",
+            network: "Diffuseur",
             extra: "Extra"
         },
         inputPlaceholder: "ex: Gladiator.II.2024.MULTi.2160p...",
@@ -159,7 +161,8 @@ const i18n = {
             res: ["Tag", "Description", "Qualité"],
             src: ["Tag", "Description", "Qualité"],
             audio: ["Tag", "Description", "Qualité"],
-            codec: ["Tag", "Description"],
+            codec: ["Tag", "Description", "Qualité"],
+            vquality: ["Tag", "Description", "Qualité"],
             meaning: ["Tag", "Signification"]
         },
         notes: {
@@ -184,10 +187,14 @@ const i18n = {
             codec265: "H.265 / HEVC (meilleure compression)",
             codecAv1: "AV1 (émergent, encodage lent)",
             langMulti: "Plusieurs langues (généralement FR + EN)",
-            langVff: "Vraie Version Française (France)",
+            langVff: "Vraie Version Française (France / Doublage d'origine, souvent marqué TRUEFRENCH)",
             langVfq: "Vraie Version Québécoise (Québec)",
             langVfi: "Version Française Internationale (VFi)",
+            langVf2: "Contient 2 versions françaises différentes (ex : VFF + VFQ, ou doublage d'origine + redoublage)",
             langVostfr: "Version Originale Sous-Titrée Français",
+            langVf: "Version Française (générique ou indéterminée)",
+            langVo: "Version Originale (sans doublage français)",
+            langFrEn: "Bilingue Français et Anglais",
             audioLossless: "Lossless (DTS-HD.MA / TrueHD / Atmos)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "AAC (audio web standard)",
@@ -197,10 +204,12 @@ const i18n = {
             vQualityDv: "Dolby Vision (métadonnées dynamiques)",
             vQualityBits: "Profondeur de couleur (10 bits / 12 bits)",
             vQualityHlg: "Hybrid Log-Gamma (diffusion TV HDR)",
+            vQualitySdr: "Standard Dynamic Range (plage dynamique standard, non-HDR)",
             containerMkv: "Matroska (MKV) - Idéal pour le multi-pistes, sous-titres et chapitres",
             containerMp4: "MPEG-4 (MP4) - Compatibilité universelle et diffusion web",
             containerAvi: "Audio Video Interleave (AVI) - Format obsolète (DivX/XviD)",
-            specialRepack: "Correctif de release"
+            specialRepack: "Correctif de release",
+            specialCustom: "Release personnalisée (ex : ajout manuel de pistes audio/sous-titres externes ou ré-encodage spécifique)"
         },
         legendTitle: "Indice de Qualité :",
         legends: {
@@ -236,6 +245,7 @@ const i18n = {
             episode: "Numéro de l'épisode",
             group: "Release group responsable (-NOM)",
             container: "Format du conteneur média (ex: MKV, MP4)",
+            network: "Diffuseur ou plateforme de streaming (NF, AMZN, ATV...)",
             extra: "Éléments additionnels non parsés"
         }
     },
@@ -256,6 +266,7 @@ const i18n = {
             languages: "Languages",
             group: "Group",
             container: "Container",
+            network: "Platform",
             extra: "Extra"
         },
         inputPlaceholder: "e.g. Gladiator.II.2024.MULTi.2160p...",
@@ -279,7 +290,8 @@ const i18n = {
             res: ["Tag", "Description", "Quality"],
             src: ["Tag", "Description", "Quality"],
             audio: ["Tag", "Description", "Quality"],
-            codec: ["Tag", "Description"],
+            codec: ["Tag", "Description", "Quality"],
+            vquality: ["Tag", "Description", "Quality"],
             meaning: ["Tag", "Meaning"]
         },
         notes: {
@@ -304,10 +316,14 @@ const i18n = {
             codec265: "Better compression",
             codecAv1: "Emerging, slow to encode",
             langMulti: "Multiple languages (usually FR + EN)",
-            langVff: "True French (France)",
+            langVff: "True French (France / Original dubbing, often marked TRUEFRENCH)",
             langVfq: "True French (Quebec)",
             langVfi: "International French version (VFi)",
+            langVf2: "Contains 2 different French versions (e.g. VFF + VFQ, or original dub + newer redub)",
             langVostfr: "Original version with French subtitles",
+            langVf: "French Version (generic or undetermined)",
+            langVo: "Original Version (no French dub)",
+            langFrEn: "Bilingual French and English",
             audioLossless: "Lossless audio (DTS-HD.MA / TrueHD / Atmos)",
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "Standard Web Audio (AAC)",
@@ -317,10 +333,12 @@ const i18n = {
             vQualityDv: "Dolby Vision dynamic metadata (DV)",
             vQualityBits: "10-bit / 12-bit color depth (prevents banding)",
             vQualityHlg: "Hybrid Log-Gamma (HDR broadcast)",
+            vQualitySdr: "Standard Dynamic Range (non-HDR)",
             containerMkv: "Matroska (MKV) - Best for multiple audio tracks, subtitles and chapters",
             containerMp4: "MPEG-4 (MP4) - Universal compatibility and web streaming",
             containerAvi: "Audio Video Interleave (AVI) - Legacy format (DivX/XviD)",
-            specialRepack: "Re-uploads fixing previous bad releases"
+            specialRepack: "Re-uploads fixing previous bad releases",
+            specialCustom: "Custom-made release (e.g. manually synced audio/subtitle tracks, or specific custom encodes)"
         },
         legendTitle: "Quality Legend:",
         legends: {
@@ -356,6 +374,7 @@ const i18n = {
             episode: "Episode number",
             group: "Responsible release group (-NAME)",
             container: "Media container format (e.g. MKV, MP4)",
+            network: "Broadcaster or streaming platform (NF, AMZN, ATV...)",
             extra: "Additional unparsed elements"
         }
     }
@@ -419,7 +438,7 @@ function renderResults(data) {
     }
 
     // Render other valid keys
-    const order = ['category', 'year', 'season', 'episode', 'resolution', 'v_quality', 'quality', 'codec', 'container', 'audio', 'channels', 'languages', 'group', 'extra'];
+    const order = ['category', 'year', 'season', 'episode', 'resolution', 'v_quality', 'quality', 'network', 'codec', 'container', 'audio', 'channels', 'languages', 'group', 'extra'];
 
     order.forEach(key => {
         if (data[key] && data[key] !== "") {
@@ -564,7 +583,7 @@ function renderCompareResults(data) {
 
     // Comparison Table
     const compareKeys = [
-        'title', 'category', 'year', 'resolution', 'v_quality', 'quality',
+        'title', 'category', 'year', 'resolution', 'v_quality', 'quality', 'network',
         'codec', 'container', 'audio', 'channels', 'languages', 'group', 'extra'
     ];
 
@@ -803,12 +822,13 @@ function renderDocs() {
             id: 'vquality',
             icon: 'fa-wand-magic-sparkles',
             title: i18n[currentLang].docVQuality,
-            headers: i18n[currentLang].headers.meaning,
+            headers: i18n[currentLang].headers.vquality,
             rows: [
-                ["HDR / HDR10 / HDR10+", i18n[currentLang].notes.vQualityHdr],
-                ["DV / Dolby Vision", i18n[currentLang].notes.vQualityDv],
-                ["10bit / 12bit", i18n[currentLang].notes.vQualityBits],
-                ["HLG", i18n[currentLang].notes.vQualityHlg]
+                ["DV / Dolby Vision", i18n[currentLang].notes.vQualityDv, `<span class="stars">★★★★★</span>`],
+                ["HDR / HDR10 / HDR10+", i18n[currentLang].notes.vQualityHdr, `<span class="stars">★★★★☆</span>`],
+                ["10bit / 12bit", i18n[currentLang].notes.vQualityBits, `<span class="stars">★★★★☆</span>`],
+                ["HLG", i18n[currentLang].notes.vQualityHlg, `<span class="stars">★★★☆☆</span>`],
+                ["SDR", i18n[currentLang].notes.vQualitySdr, `<span class="stars">★★☆☆☆</span>`]
             ]
         },
         {
@@ -817,9 +837,9 @@ function renderDocs() {
             title: i18n[currentLang].docCodec,
             headers: i18n[currentLang].headers.codec,
             rows: [
-                ["x264", `H.264 - ${i18n[currentLang].notes.codec264}`],
-                ["x265 / HEVC", `H.265 - ${i18n[currentLang].notes.codec265}`],
-                ["AV1", `AV1 - ${i18n[currentLang].notes.codecAv1}`]
+                ["AV1", `AV1 - ${i18n[currentLang].notes.codecAv1}`, `<span class="stars">★★★★★</span>`],
+                ["x265 / HEVC", `H.265 - ${i18n[currentLang].notes.codec265}`, `<span class="stars">★★★★☆</span>`],
+                ["x264", `H.264 - ${i18n[currentLang].notes.codec264}`, `<span class="stars">★★★☆☆</span>`]
             ]
         },
         {
@@ -829,10 +849,14 @@ function renderDocs() {
             headers: i18n[currentLang].headers.meaning,
             rows: [
                 ["MULTi", i18n[currentLang].notes.langMulti],
-                ["VFF", i18n[currentLang].notes.langVff],
+                ["TRUEFRENCH / VFF", i18n[currentLang].notes.langVff],
                 ["VFQ", i18n[currentLang].notes.langVfq],
                 ["VFi", i18n[currentLang].notes.langVfi],
-                ["VOSTFR", i18n[currentLang].notes.langVostfr]
+                ["VF2", i18n[currentLang].notes.langVf2],
+                ["VF", i18n[currentLang].notes.langVf],
+                ["VOSTFR", i18n[currentLang].notes.langVostfr],
+                ["VO", i18n[currentLang].notes.langVo],
+                ["FR EN / FR-EN", i18n[currentLang].notes.langFrEn]
             ]
         },
         {
@@ -864,7 +888,8 @@ function renderDocs() {
             title: i18n[currentLang].docSpecial,
             headers: i18n[currentLang].headers.meaning,
             rows: [
-                ["REPACK / PROPER / REAL", i18n[currentLang].notes.specialRepack]
+                ["REPACK / PROPER / REAL", i18n[currentLang].notes.specialRepack],
+                ["CUSTOM", i18n[currentLang].notes.specialCustom]
             ]
         }
     ];

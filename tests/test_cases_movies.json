@@ -23,8 +23,8 @@
       "resolution": "2160P",
       "quality": "WEB-DL",
       "codec": "H265",
-      "v_quality": "HDR DV",
-      "audio": "ATMOS",
+      "v_quality": "HDR10+ DV",
+      "audio": "DDP ATMOS",
       "channels": "5.1",
       "languages": []
     }
@@ -42,7 +42,7 @@
       "channels": "2.0",
       "languages": [
         "MULTI",
-        "VF"
+        "VFI"
       ]
     }
   },
@@ -59,7 +59,7 @@
       "channels": "5.1",
       "languages": [
         "MULTI",
-        "VF"
+        "VF2"
       ]
     }
   },
@@ -131,7 +131,7 @@
       "resolution": "1080P",
       "quality": "WEB",
       "codec": "X265",
-      "audio": "AC3",
+      "audio": "EAC3",
       "languages": [
         "MULTI"
       ],
@@ -148,7 +148,7 @@
       "resolution": "4KLIGHT",
       "quality": "BLURAY",
       "codec": "X265",
-      "audio": "TRUEHD",
+      "audio": "TRUEHD ATMOS",
       "channels": "7.1",
       "v_quality": "HDR DV",
       "languages": [
@@ -156,6 +156,92 @@
         "FRENCH"
       ],
       "container": "MKV"
+    }
+  },
+  {
+    "filename": "Oppenheimer.2023.MULTi.TRUEFRENCH.2160p.UHD.BluRay.REMUX.HDR.HEVC-GROUP",
+    "expected": {
+      "title": "Oppenheimer",
+      "year": 2023,
+      "category": "movie",
+      "resolution": "2160P",
+      "quality": "REMUX",
+      "codec": "HEVC",
+      "v_quality": "HDR",
+      "languages": [
+        "FRENCH",
+        "MULTI"
+      ],
+      "group": "GROUP"
+    }
+  },
+  {
+    "filename": "Big+Fish+%282003%29+MULTi+VFI+2160p+10bit+4KLight+HDR+BluRay+DTS-HD+MA+7.1+x265-QTZ",
+    "expected": {
+      "title": "Big Fish",
+      "category": "movie",
+      "year": 2003,
+      "resolution": "4KLIGHT",
+      "quality": "BLURAY",
+      "codec": "X265",
+      "audio": "DTS-HD",
+      "channels": "7.1",
+      "v_quality": "HDR 10BIT",
+      "languages": [
+        "MULTI",
+        "VFI"
+      ],
+      "group": "QTZ"
+    }
+  },
+  {
+    "filename": "Ghostbusters.Afterlife.2021.MULTi.VF2.2160p.UHD.BluRay.REMUX.HEVC.HDR.DV.TrueHD.Atmos.7.1.DTS-HDMA.AC3.5.1-TSC",
+    "expected": {
+      "title": "Ghostbusters Afterlife",
+      "category": "movie",
+      "year": 2021,
+      "resolution": "2160P",
+      "quality": "REMUX",
+      "codec": "HEVC",
+      "audio": "TRUEHD ATMOS",
+      "channels": "7.1",
+      "v_quality": "HDR DV",
+      "languages": [
+        "MULTI",
+        "VF2"
+      ],
+      "group": "TSC",
+      "extra": null
+    }
+  },
+  {
+    "filename": "Scary Movie 5 (2013)   1080p FR EN x264 ac3 mHDgz-Zone-Telechargement.OrG",
+    "expected": {
+      "title": "Scary Movie 5",
+      "category": "movie",
+      "year": 2013,
+      "resolution": "1080P",
+      "codec": "X264",
+      "audio": "AC3",
+      "languages": ["MULTI", "VF", "EN"],
+      "group": "Zone",
+      "extra": "Telechargement.OrG"
+    }
+  },
+  {
+    "filename": "Indiana Jones et la Dernière Croisade 1989 VFI VO DOLBY TRUEHD ATMOS 2160P UHD BLURAY REMUX HEVC HDR10 DOLBY VISION-Obi (Indiana Jones and the Last Crusade)",
+    "expected": {
+      "title": "Indiana Jones et la Derniere Croisade",
+      "category": "movie",
+      "year": 1989,
+      "resolution": "2160P",
+      "quality": "REMUX",
+      "codec": "HEVC",
+      "audio": "TRUEHD ATMOS",
+      "v_quality": "HDR10 DV",
+      "languages": ["VFI", "VO", "MULTI"],
+      "group": null,
+      "extra": null
     }
   }
 ]

@@ -1,30 +1,43 @@
 import re
 import html
 import unicodedata
+import urllib.parse
 from typing import Dict, Any, Optional, List
 
 class ReleaseParser:
     def __init__(self):
-        # Base patterns to extract common release info
         self.patterns = {
             'season': r'(?i)\b(?:s|saison)[\.\-\s]*(\d{1,2})\b',
             'episode': r'(?i)\b(?:e|ep|episode)[\.\-\s]*(\d{1,3})\b',
             'year': r'\b(19\d{2}|20[0-2]\d)\b',
             'resolution': r'(?i)(4KLIGHT|4K|2160[pP]|1080[pP]|720[pP]|UHD)',
-            'quality': r'(?i)(WEB-DL|WEBRIP|WEBLIGHT|WEB|BLURAY|BDRIP|BRRIP|DVDRIP|HDTV)',
-            'codec': r'(?i)(x265|x264|h265|h264|HEVC)',
+            'codec': r'(?i)(x265|x264|h[\.\-]?265|h[\.\-]?264|HEVC)',
             'audio': r'(?i)(AAC|AC3|E-AC3|DTS-HD|DTS|ATMOS|TRUEHD|DDP\d\.\d)',
             'channels': r'(7\.1|5\.1|2\.0)\b',
+            'network': r'(?i)\b(NF|AMZN|DSNP|ATV|DSNY|HMAX|HBO|HULU)\b',
         }
         
-    def clean_network_name(self, name: str) -> str:
+    def normalize_network(self, name: str) -> str:
         """Normalizes network names for better UI display."""
         if not name: return name
+        name_up = name.upper()
         mapping = {
-            "Disney Plus": "Disney+", "Amazon Studios": "Amazon", "Amazon Prime": "Amazon",
-            "HBO Max": "HBO", "Apple TV Plus": "Apple TV+", "Paramount Plus": "Paramount+"
+            "AMZN": "Amazon Prime",
+            "NF": "Netflix",
+            "DSNP": "Disney+",
+            "DSNY": "Disney+",
+            "ATV": "Apple TV+",
+            "HMAX": "HBO Max",
+            "HBO": "HBO",
+            "HULU": "Hulu",
+            "DISNEY PLUS": "Disney+",
+            "AMAZON STUDIOS": "Amazon Prime",
+            "AMAZON PRIME": "Amazon Prime",
+            "HBO MAX": "HBO Max",
+            "APPLE TV PLUS": "Apple TV+",
+            "PARAMOUNT PLUS": "Paramount+"
         }
-        return mapping.get(name, name)
+        return mapping.get(name_up, name)
 
     def extract_v_quality(self, filename: str) -> Optional[str]:
         """Detects HDR, DV, etc. from filename."""
@@ -32,8 +45,16 @@ class ReleaseParser:
         fn = filename.upper()
         tags = []
         if any(x in fn for x in ["DV", "DOVI"]) or re.search(r'DOLBY[\.\-\s]VISION', fn): tags.append("DV")
-        if any(x in fn for x in ["HDR", "HDR10", "HDR10PLUS", "HDR10+"]): tags.append("HDR")
+        
+        if "HDR10+" in fn or "HDR10PLUS" in fn or "HDR10+PLUS" in fn:
+            tags.append("HDR10+")
+        elif "HDR10" in fn:
+            tags.append("HDR10")
+        elif "HDR" in fn:
+            tags.append("HDR")
+            
         if "HLG" in fn: tags.append("HLG")
+        if "SDR" in fn: tags.append("SDR")
         if "10BIT" in fn or "10-BIT" in fn: tags.append("10BIT")
         if "12BIT" in fn or "12-BIT" in fn: tags.append("12BIT")
         return " ".join(sorted(list(set(tags)), reverse=True)) if tags else None
@@ -43,20 +64,45 @@ class ReleaseParser:
         if "TRUEFRENCH" in fn_up or "VFF" in fn_up or "FRENCH" in fn_up: langs.append("FRENCH")
         if "MULTI" in fn_up: langs.append("MULTI")
         if "VOSTFR" in fn_up or "VOST" in fn_up: langs.append("VOSTFR")
-        if "VFI" in fn_up or "VFQ" in fn_up or "VF2" in fn_up or re.search(r'\bVF\b', fn_up.replace('.', ' ').replace('-', ' ').replace('_', ' ')): langs.append("VF")
+        
+        if "VF2" in fn_up: langs.append("VF2")
+        elif "VFI" in fn_up: langs.append("VFI")
+        elif "VFQ" in fn_up: langs.append("VFQ")
+        elif re.search(r'\bVF\b', fn_up.replace('.', ' ').replace('-', ' ').replace('_', ' ')): langs.append("VF")
+        
+        # Detect FR, EN and VO tags
+        fn_space = fn_up.replace('.', ' ').replace('-', ' ').replace('_', ' ').replace('/', ' ')
+        has_fr = re.search(r'\bFR\b', fn_space) is not None
+        has_en = re.search(r'\bEN\b', fn_space) is not None
+        has_vo = re.search(r'\bVO\b', fn_space) is not None
+        
+        if has_fr:
+            # Only append generic VF if we didn't capture a more specific version
+            if not any(x in langs for x in ["VF2", "VFI", "VFQ"]):
+                langs.append("VF")
+        if has_en:
+            langs.append("EN")
+        if has_vo:
+            langs.append("VO")
+            
+        # If we have both a French language tag and English/VO, it is MULTI
+        has_any_french = any(x in langs for x in ["FRENCH", "VF", "VF2", "VFI", "VFQ"]) or has_fr
+        has_any_original = has_en or has_vo or "VO" in langs or "EN" in langs
+        if has_any_french and has_any_original:
+            langs.append("MULTI")
+            
         return list(dict.fromkeys(langs))
 
-    def parse(self, filename: str) -> Dict[str, Any]:
-        if not filename: return {}
-        
-        result = {
-            "title": "", "category": "movie", "year": None, "season": None, "episode": None,
-            "resolution": None, "quality": None, "codec": None, "audio": None, 
-            "channels": None, "network": "", "v_quality": "", "languages": [], "group": None,
-            "container": None, "extra": None
-        }
-        
-        # Extract container/extension and strip it if valid
+    def _unquote_filename(self, filename: str) -> str:
+        """Decodes percent-encoded and plus-encoded characters in filename."""
+        if not filename: return filename
+        if '%' in filename or '+' in filename:
+            cleaned = re.sub(r'(?i)(?<!HDR10)\+', ' ', filename)
+            return urllib.parse.unquote(cleaned)
+        return filename
+
+    def _extract_container(self, filename: str, result: Dict[str, Any]) -> str:
+        """Extracts media container from filename extension and returns stripped filename."""
         fn_strip = filename.strip()
         media_exts = {'mkv', 'mp4', 'avi', 'flv', 'mov', 'wmv', 'mpg', 'mpeg', 'm4v', 'ts', 'm2ts', 'webm', 'mp3', 'flac', 'mka', 'm4a', 'aac'}
         ext_match = re.search(r'\.([a-z0-9]{3,4})$', fn_strip, flags=re.I)
@@ -64,13 +110,22 @@ class ReleaseParser:
             ext_val = ext_match.group(1).lower()
             if ext_val in media_exts:
                 result['container'] = ext_val.upper()
-                fn_strip = fn_strip[:-len(ext_match.group(0))]
-                
-        # Find hyphen-separated parts at the end of the filename
-        group_match = re.search(r'-([A-Za-z0-9_@\.-]+)$', fn_strip)
+                return fn_strip[:-len(ext_match.group(0))]
+        return fn_strip
+
+    def _extract_group_and_extra(self, filename_stripped: str, result: Dict[str, Any]):
+        """Extracts the release group and sets initial extra field from the end of stripped filename."""
+        group_match = re.search(r'-([A-Za-z0-9_@\.-]+)$', filename_stripped)
         if group_match:
             parts = group_match.group(1).split('-')
-            # Filter out any part containing a dot (meaning it's a domain/website tag like Wawacity.win)
+            
+            # Iterate backwards through parts (excluding the last one) to find the last part containing a dot
+            # Any part containing a dot (like HDMA.AC3.5.1) is not part of the group/extra suffix
+            for i in range(len(parts) - 2, -1, -1):
+                if '.' in parts[i]:
+                    parts = parts[i+1:]
+                    break
+            
             valid_parts = [p for p in parts if '.' not in p and p]
             if valid_parts:
                 grp = valid_parts[-1]
@@ -80,47 +135,92 @@ class ReleaseParser:
                     if extra_parts:
                         result['extra'] = '-'.join(extra_parts)
             else:
-                # No valid group, all parts are extra
                 result['extra'] = '-'.join(parts)
-        
-        # Check for joint SxxExx
+
+    def _extract_season_episode(self, filename: str, result: Dict[str, Any]):
+        """Extracts season and episode number, supporting joint and separate formats."""
         se_match = re.search(r'(?i)\bs(\d{1,2})[\.\-\s]?[ex](\d{1,3})\b', filename)
         if se_match:
             result['season'] = str(int(se_match.group(1)))
             result['episode'] = str(int(se_match.group(2)))
         else:
-            # Check individual fallbacks
             s_match = re.search(self.patterns['season'], filename)
             if s_match: result['season'] = str(int(s_match.group(1)))
             e_match = re.search(self.patterns['episode'], filename)
             if e_match: result['episode'] = str(int(e_match.group(1)))
 
-        # Extract basic info using regex (except audio and year, handled below)
-        for key, pattern in self.patterns.items():
-            if key in ['season', 'episode', 'audio', 'year']: continue # Already handled
-            match = re.search(pattern, filename)
-            if match:
-                result[key] = match.group(1).upper()
+    def _extract_codec(self, filename: str, result: Dict[str, Any]):
+        """Extracts codec tag (e.g. x265, x264, HEVC) and normalizes it."""
+        match = re.search(self.patterns['codec'], filename)
+        if match:
+            result['codec'] = match.group(1).upper().replace('.', '').replace('-', '')
 
-        # Extract year (prefer the last matching year if multiple are present, e.g., 1917 (2019))
+    def _extract_resolution(self, filename: str, result: Dict[str, Any]):
+        """Extracts resolution (e.g. 1080p, 2160p, 4K, UHD) and normalizes it."""
+        match = re.search(self.patterns['resolution'], filename)
+        if match:
+            result['resolution'] = match.group(1).upper()
+
+    def _extract_network(self, filename: str, result: Dict[str, Any]):
+        """Extracts network name (streaming platform) and normalizes it."""
+        match = re.search(self.patterns['network'], filename)
+        if match:
+            result['network'] = self.normalize_network(match.group(1).upper())
+
+    def _extract_channels(self, filename: str, result: Dict[str, Any]):
+        """Extracts audio channels count (e.g. 5.1, 7.1, 2.0)."""
+        match = re.search(self.patterns['channels'], filename)
+        if match:
+            result['channels'] = match.group(1)
+
+    def _extract_year(self, filename: str, result: Dict[str, Any]):
+        """Extracts the release year, preferring the last match."""
         years = re.findall(self.patterns['year'], filename)
         if years:
             result['year'] = int(years[-1])
 
-        # Extract audio with priority (Atmos/TrueHD > DTS > AC3/DDP/AAC)
-        for pat in [r'(?i)(ATMOS|TRUEHD)', r'(?i)(DTS-HD|DTS)', r'(?i)(E-AC3|AC3|AAC|DDP\d\.\d|DDP)']:
+    def _extract_audio(self, filename: str, result: Dict[str, Any]):
+        """Extracts audio format with priority matching and normalization."""
+        fn = filename.upper()
+        
+        # Check for Atmos
+        has_atmos = "ATMOS" in fn
+        
+        # Find base codec
+        codec = None
+        for pat in [r'(TRUEHD)', r'(DTS-HD|DTS)', r'(E-AC3|EAC3|AC3|AAC|DDP\d\.\d|DDP)']:
+            match = re.search(pat, fn)
+            if match:
+                codec = match.group(1)
+                break
+                
+        if codec:
+            base_audio = codec
+            if base_audio in ["E-AC3", "EAC3"]:
+                base_audio = "EAC3"
+            elif base_audio.startswith("DDP"):
+                base_audio = "DDP"
+                
+            if has_atmos:
+                result['audio'] = f"{base_audio} ATMOS"
+            else:
+                if codec in ["E-AC3", "EAC3"]:
+                    result['audio'] = "EAC3"
+                else:
+                    result['audio'] = codec
+        elif has_atmos:
+            result['audio'] = "ATMOS"
+
+    def _extract_quality(self, filename: str, result: Dict[str, Any]):
+        """Extracts source quality with priority matching."""
+        for pat in [r'(?i)(REMUX)', r'(?i)(BLURAY|BDRIP|BRRIP)', r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)', r'(?i)(DVDRIP)', r'(?i)(HDTV)']:
             match = re.search(pat, filename)
             if match:
-                result['audio'] = match.group(1).upper()
+                result['quality'] = match.group(1).upper()
                 break
 
-        if result['season'] or result['episode']:
-            result['category'] = 'series'
-            
-        # V_Quality
-        result['v_quality'] = self.extract_v_quality(filename) or ""
-        
-        # Clean title
+    def _extract_title(self, filename: str, result: Dict[str, Any]):
+        """Cleans the filename and extracts the title using split tags."""
         fn_clean = html.unescape(filename)
         fn_clean = unicodedata.normalize('NFKD', fn_clean).encode('ASCII', 'ignore').decode('utf-8')
         
@@ -128,11 +228,11 @@ class ReleaseParser:
         fn_clean = re.sub(r'\b(Vol|Pt|Part|Partie)[\.\s]?\d+\b', ' ', fn_clean, flags=re.I)
         fn_clean = re.sub(r'\b\d+(?:e|ème|re|nd|rd|th)?\s+partie\b', ' ', fn_clean, flags=re.I)
         
-        # Split point for title
         tags_to_split = [
-            r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'VFF', 'VFI', 'VFQ', 'VOST', 'STFI',
+            r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBLIGHT', 'WEB',
-            'HDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
+            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
+            'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]
         pattern = r'[\.\[\(\s\-\_](?:' + '|'.join(tags_to_split) + r')\b'
@@ -140,17 +240,92 @@ class ReleaseParser:
         
         title = title.replace('.', ' ').replace('_', ' ').strip()
         title = re.sub(r'\s+', ' ', title).strip()
-        
         result['title'] = title
+
+    def _cleanup_extra(self, result: Dict[str, Any]):
+        """Removes already parsed elements from the extra field."""
+        if not result['extra']: return
         
-        # Languages
+        extra_parts = []
+        for p in result['extra'].split('-'):
+            parts = re.split(r'\.(?![0-9])', p)
+            extra_parts.extend(parts)
+        
+        cleaned_parts = []
+        for part in extra_parts:
+            part_up = part.upper()
+            if not part_up: continue
+            already_parsed = False
+            part_clean = part_up.replace('.', '').replace('-', '')
+            for k in ['resolution', 'quality', 'codec', 'audio', 'channels', 'network', 'v_quality']:
+                val = result.get(k)
+                if val:
+                    if isinstance(val, list):
+                        if any(part_clean == str(x).upper().replace('.', '').replace('-', '') for x in val):
+                            already_parsed = True
+                            break
+                    else:
+                        val_up = str(val).upper().replace('.', '').replace('-', '')
+                        if part_clean == val_up or part_clean in val_up or val_up in part_clean:
+                            already_parsed = True
+                            break
+            if not already_parsed:
+                cleaned_parts.append(part)
+        result['extra'] = '.'.join(cleaned_parts) if cleaned_parts else None
+
+    def parse(self, filename: str) -> Dict[str, Any]:
+        if not filename: return {}
+        
+        filename = self._unquote_filename(filename)
+        
+        result = {
+            "title": "", "category": "movie", "year": None, "season": None, "episode": None,
+            "resolution": None, "quality": None, "codec": None, "audio": None, 
+            "channels": None, "network": "", "v_quality": "", "languages": [], "group": None,
+            "container": None, "extra": None
+        }
+        
+        # 1. Container & stripping
+        fn_stripped = self._extract_container(filename, result)
+        
+        # 2. Release Group & Extra
+        self._extract_group_and_extra(fn_stripped, result)
+        
+        # 3. Season & Episode
+        self._extract_season_episode(filename, result)
+        if result['season'] or result['episode']:
+            result['category'] = 'series'
+            
+        # 4. Specific Fields
+        self._extract_codec(filename, result)
+        self._extract_resolution(filename, result)
+        self._extract_network(filename, result)
+        self._extract_channels(filename, result)
+        
+        # 5. Release Year
+        self._extract_year(filename, result)
+        
+        # 6. Audio
+        self._extract_audio(filename, result)
+        
+        # 7. Quality
+        self._extract_quality(filename, result)
+        
+        # 8. Video Quality Enhancements
+        result['v_quality'] = self.extract_v_quality(filename) or ""
+        
+        # 9. Title Clean & Extraction
+        self._extract_title(filename, result)
+        
+        # 10. Languages
         fn_up = filename.upper().replace('[', '.').replace(']', '.').replace('_', '.')
         result['languages'] = self._extract_langs(fn_up)
-        
-        # Fix resolution for 4KLIGHT
         if "4KLIGHT" in fn_up:
             result['resolution'] = "4KLIGHT"
-
+            
+        # 11. Cleanup Extra Field
+        self._cleanup_extra(result)
+        
         return result
 
 def parse_filename(filename: str) -> Dict[str, Any]:

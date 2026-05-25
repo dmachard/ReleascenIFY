@@ -37,9 +37,10 @@ def get_quality_score(parsed_release: Dict[str, Any]) -> int:
     elif "dts" in aud: score += 10
     elif "ac3" in aud or "ddp" in aud: score += 5
 
-    # 5. Source Quality (BluRay > WEB-DL > HDTV)
+    # 5. Source Quality (REMUX > BluRay > WEB-DL > HDTV)
     q = (parsed_release.get("quality") or "").lower()
-    if "bluray" in q or "bdrip" in q: score += 10
+    if "remux" in q: score += 12
+    elif "bluray" in q or "bdrip" in q: score += 10
     elif "web" in q: score += 7
     elif "hdtv" in q: score += 3
     

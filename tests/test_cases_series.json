@@ -10,7 +10,7 @@
       "resolution": "4KLIGHT",
       "quality": "WEBRIP",
       "codec": "HEVC",
-      "audio": "ATMOS",
+      "audio": "DDP ATMOS",
       "channels": "5.1",
       "v_quality": "HDR DV",
       "languages": [
@@ -124,12 +124,12 @@
       "resolution": "2160P",
       "quality": "WEB-DL",
       "codec": "X265",
-      "v_quality": "HDR DV 10BIT",
+      "v_quality": "HDR10+ DV 10BIT",
       "audio": "DDP5.1",
       "channels": "5.1",
       "languages": [
         "MULTI",
-        "VF"
+        "VFI"
       ],
       "group": "MPx"
     }
@@ -142,6 +142,90 @@
       "season": "1",
       "resolution": "1080P",
       "codec": "X265"
+    }
+  },
+  {
+    "filename": "The.Last.of.Us.S02E03.MULTi.1080p.AMZN.WEB-DL.DDP5.1.H.264-FLUX",
+    "expected": {
+      "title": "The Last of Us",
+      "category": "series",
+      "season": "2",
+      "episode": "3",
+      "resolution": "1080P",
+      "quality": "WEB-DL",
+      "codec": "H264",
+      "audio": "DDP5.1",
+      "channels": "5.1",
+      "network": "Amazon Prime",
+      "languages": ["MULTI"],
+      "group": "FLUX"
+    }
+  },
+  {
+    "filename": "Arcane.S01.COMPLETE.2160p.NF.WEB-DL.DDP5.1.Atmos.HDR.H265",
+    "expected": {
+      "title": "Arcane",
+      "category": "series",
+      "season": "1",
+      "resolution": "2160P",
+      "quality": "WEB-DL",
+      "codec": "H265",
+      "audio": "DDP ATMOS",
+      "channels": "5.1",
+      "network": "Netflix",
+      "v_quality": "HDR"
+    }
+  },
+  {
+    "filename": "B.R.I.S02E02.FRENCH.AD.2160p.WEB.SDR.H265-THESYNDiCATE",
+    "expected": {
+      "title": "B R I",
+      "category": "series",
+      "season": "2",
+      "episode": "2",
+      "resolution": "2160P",
+      "quality": "WEB",
+      "codec": "H265",
+      "v_quality": "SDR",
+      "languages": ["FRENCH"],
+      "group": "THESYNDiCATE",
+      "extra": null
+    }
+  },
+  {
+    "filename": "Leverage.S03E15.CUSTOM.2160p.MULTI.AMZN.WEB-DL.DDP5.1.H.265-Mad.Darks27",
+    "expected": {
+      "title": "Leverage",
+      "category": "series",
+      "season": "3",
+      "episode": "15",
+      "resolution": "2160P",
+      "quality": "WEB-DL",
+      "codec": "H265",
+      "audio": "DDP5.1",
+      "channels": "5.1",
+      "network": "Amazon Prime",
+      "languages": ["MULTI"],
+      "group": null,
+      "extra": "Mad.Darks27"
+    }
+  },
+  {
+    "filename": "Firefly Lane (2021) - S02E10 - All The World’s A Stage [WEBDL-2160p][DV HDR10][EAC3 Atmos 5.1][EN+FR][h265]-FRESH",
+    "expected": {
+      "title": "Firefly Lane",
+      "category": "series",
+      "year": 2021,
+      "season": "2",
+      "episode": "10",
+      "resolution": "2160P",
+      "quality": "WEBDL",
+      "codec": "H265",
+      "audio": "EAC3 ATMOS",
+      "channels": "5.1",
+      "v_quality": "HDR10 DV",
+      "languages": ["VF", "EN", "MULTI"],
+      "group": "FRESH"
     }
   }
 ]
