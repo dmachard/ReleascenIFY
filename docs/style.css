@@ -58,7 +58,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 2rem 5%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -130,7 +130,7 @@ nav {
 
 /* Main Layout */
 main {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 2rem auto;
     padding: 0 5%;
     display: flex;

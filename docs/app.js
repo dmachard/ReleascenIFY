@@ -27,8 +27,8 @@ const mainTitle = document.getElementById('main-title');
 const docsTitle = document.getElementById('docs-title');
 
 // Configuration
-const PARSER_URL = '../releasify/parser.py';
-const COMPARATOR_URL = '../releasify/comparator.py';
+const PARSER_URL = '../releascenify/parser.py';
+const COMPARATOR_URL = '../releascenify/comparator.py';
 
 async function initPyodide() {
     try {
@@ -135,11 +135,10 @@ const i18n = {
         docSpecial: "Tags spéciaux",
         docMistakes: "Erreurs courantes",
         headers: {
-            res: ["Tag", "Pixels", "Note"],
-            src: ["Tag", "Source", "Qualité"],
-            codec: ["Tag", "Codec", "Note"],
-            meaning: ["Tag", "Signification"],
-            mistakes: ["Piège", "Explication"]
+            res: ["Tag", "Note"],
+            src: ["Tag", "Note / Qualité"],
+            codec: ["Tag", "Note"],
+            meaning: ["Tag", "Signification"]
         },
         notes: {
             res480: "SD (Rare de nos jours)",
@@ -219,11 +218,10 @@ const i18n = {
         docSpecial: "Special Tags",
         docMistakes: "Common Mistakes",
         headers: {
-            res: ["Tag", "Pixels", "Note"],
-            src: ["Tag", "Source", "Quality"],
-            codec: ["Tag", "Codec", "Note"],
-            meaning: ["Tag", "Meaning"],
-            mistakes: ["Mistake", "Explanation"]
+            res: ["Tag", "Note"],
+            src: ["Tag", "Note / Quality"],
+            codec: ["Tag", "Note"],
+            meaning: ["Tag", "Meaning"]
         },
         notes: {
             res480: "SD (Rare nowadays)",
@@ -715,11 +713,11 @@ function renderDocs() {
             title: i18n[currentLang].docRes,
             headers: i18n[currentLang].headers.res,
             rows: [
-                ["480p", "854x480", i18n[currentLang].notes.res480],
-                ["720p", "1280x720", i18n[currentLang].notes.res720],
-                ["1080p", "1920x1080", i18n[currentLang].notes.res1080],
-                ["2160p / 4K", "3840x2160", i18n[currentLang].notes.res2160],
-                ["4KLight", "3840x2160", i18n[currentLang].notes.res4klight]
+                ["480p", `854x480 - ${i18n[currentLang].notes.res480}`],
+                ["720p", `1280x720 - ${i18n[currentLang].notes.res720}`],
+                ["1080p", `1920x1080 - ${i18n[currentLang].notes.res1080}`],
+                ["2160p / 4K", `3840x2160 - ${i18n[currentLang].notes.res2160}`],
+                ["4KLight", `3840x2160 - ${i18n[currentLang].notes.res4klight}`]
             ]
         },
         {
@@ -728,12 +726,12 @@ function renderDocs() {
             title: i18n[currentLang].docSrc,
             headers: i18n[currentLang].headers.src,
             rows: [
-                ["UHD.BluRay / BluRay.REMUX", i18n[currentLang].notes.srcRemuxSrc, i18n[currentLang].notes.srcRemuxQual],
-                ["BluRay / BDRip", i18n[currentLang].notes.srcBluraySrc, i18n[currentLang].notes.srcBlurayQual],
-                ["WEB-DL", i18n[currentLang].notes.srcWebdlSrc, i18n[currentLang].notes.srcWebdlQual],
-                ["WEBRip", i18n[currentLang].notes.srcWebripSrc, i18n[currentLang].notes.srcWebripQual],
-                ["HDTV", i18n[currentLang].notes.srcHdtvSrc, i18n[currentLang].notes.srcHdtvQual],
-                ["HDCAM / CAM", i18n[currentLang].notes.srcCamSrc, i18n[currentLang].notes.srcCamQual]
+                ["UHD.BluRay / BluRay.REMUX", i18n[currentLang].notes.srcRemuxQual],
+                ["BluRay / BDRip", i18n[currentLang].notes.srcBlurayQual],
+                ["WEB-DL", i18n[currentLang].notes.srcWebdlQual],
+                ["WEBRip", i18n[currentLang].notes.srcWebripQual],
+                ["HDTV", i18n[currentLang].notes.srcHdtvQual],
+                ["HDCAM / CAM", i18n[currentLang].notes.srcCamQual]
             ]
         },
         {
@@ -742,9 +740,9 @@ function renderDocs() {
             title: i18n[currentLang].docCodec,
             headers: i18n[currentLang].headers.codec,
             rows: [
-                ["x264", "H.264", i18n[currentLang].notes.codec264],
-                ["x265 / HEVC", "H.265", i18n[currentLang].notes.codec265],
-                ["AV1", "AV1", i18n[currentLang].notes.codecAv1]
+                ["x264", `H.264 - ${i18n[currentLang].notes.codec264}`],
+                ["x265 / HEVC", `H.265 - ${i18n[currentLang].notes.codec265}`],
+                ["AV1", `AV1 - ${i18n[currentLang].notes.codecAv1}`]
             ]
         },
         {
@@ -778,17 +776,6 @@ function renderDocs() {
             rows: [
                 ["EXTENDED / THEATRICAL / DC", i18n[currentLang].notes.specialCut],
                 ["REPACK / PROPER / REAL", i18n[currentLang].notes.specialRepack]
-            ]
-        },
-        {
-            id: 'mistakes',
-            icon: 'fa-triangle-exclamation',
-            title: i18n[currentLang].docMistakes,
-            headers: i18n[currentLang].headers.mistakes,
-            rows: [
-                [i18n[currentLang].notes.mistakeWebdlTitle, i18n[currentLang].notes.mistakeWebdlDesc],
-                [i18n[currentLang].notes.mistakeX264Title, i18n[currentLang].notes.mistakeX264Desc],
-                [i18n[currentLang].notes.mistake4kTitle, i18n[currentLang].notes.mistake4kDesc]
             ]
         }
     ];

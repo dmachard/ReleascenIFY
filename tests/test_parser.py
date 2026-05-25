@@ -1,7 +1,7 @@
 import json
 import os
 import pytest
-from releasify.parser import parse_filename
+from releascenify.parser import parse_filename
 
 def load_test_cases(category):
     filename = f'test_cases_{category}.json'
