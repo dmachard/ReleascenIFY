@@ -119,7 +119,7 @@ class ReleaseParser:
 
     def _extract_group_and_extra(self, filename_stripped: str, result: Dict[str, Any]):
         """Extracts the release group and sets initial extra field from the end of stripped filename."""
-        group_match = re.search(r'(?:-(\[?[A-Za-z0-9_@\.-]+\]?)|(?:\.(\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
+        group_match = re.search(r'(?:-(\[?[A-Za-z0-9_@\.-]+\]?)|(?:[\.\s](\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
         if group_match:
             raw_suffix = group_match.group(1) or group_match.group(2)
             if raw_suffix.startswith('[') and raw_suffix.endswith(']'):

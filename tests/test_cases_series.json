@@ -274,5 +274,18 @@
       "v_quality": "HDR DV",
       "group": "Amen"
     }
+  },
+  {
+    "filename": "Zorro (Dujardin) S01E07 1080p Web H264 @@UnPourTous@@",
+    "expected": {
+      "title": "Zorro (Dujardin)",
+      "category": "series",
+      "season": "1",
+      "episode": "7",
+      "resolution": "1080P",
+      "quality": "WEB",
+      "codec": "H264",
+      "group": "@@UnPourTous@@"
+    }
   }
 ]
