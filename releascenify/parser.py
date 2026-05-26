@@ -61,7 +61,11 @@ class ReleaseParser:
 
     def _extract_langs(self, fn_up: str) -> List[str]:
         langs = []
-        if "TRUEFRENCH" in fn_up or "VFF" in fn_up or "FRENCH" in fn_up: langs.append("FRENCH")
+        if "TRUEFRENCH" in fn_up or "VFF" in fn_up:
+            langs.append("VFF")
+        elif "FRENCH" in fn_up:
+            langs.append("FRENCH")
+            
         if "MULTI" in fn_up: langs.append("MULTI")
         if "VOSTFR" in fn_up or "VOST" in fn_up: langs.append("VOSTFR")
         
@@ -86,7 +90,7 @@ class ReleaseParser:
             langs.append("VO")
             
         # If we have both a French language tag and English/VO, it is MULTI
-        has_any_french = any(x in langs for x in ["FRENCH", "VF", "VF2", "VFI", "VFQ"]) or has_fr
+        has_any_french = any(x in langs for x in ["FRENCH", "VFF", "VF", "VF2", "VFI", "VFQ"]) or has_fr
         has_any_original = has_en or has_vo or "VO" in langs or "EN" in langs
         if has_any_french and has_any_original:
             langs.append("MULTI")
@@ -328,7 +332,17 @@ class ReleaseParser:
         
         # 10. Languages
         fn_up = filename.upper().replace('[', '.').replace(']', '.').replace('_', '.')
-        result['languages'] = self._extract_langs(fn_up)
+        if result['title']:
+            chars = [re.escape(c) for c in result['title'] if c != ' ']
+            if chars:
+                pattern = r'^[\.\s\-\_]*' + r'[\.\s\-\_]*'.join(chars)
+                fn_up_no_title = re.sub(pattern, '', fn_up, flags=re.I)
+            else:
+                fn_up_no_title = fn_up
+        else:
+            fn_up_no_title = fn_up
+            
+        result['languages'] = self._extract_langs(fn_up_no_title)
             
         # 11. Cleanup Extra Field
         self._cleanup_extra(result)

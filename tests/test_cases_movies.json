@@ -10,7 +10,7 @@
       "codec": "X265",
       "languages": [
         "MULTI",
-        "FRENCH"
+        "VFF"
       ]
     }
   },
@@ -74,7 +74,7 @@
       "codec": "X265",
       "languages": [
         "MULTI",
-        "FRENCH"
+        "VFF"
       ]
     }
   },
@@ -88,7 +88,7 @@
       "quality": "WEB",
       "codec": "X265",
       "languages": [
-        "FRENCH"
+        "VFF"
       ]
     }
   },
@@ -153,7 +153,7 @@
       "v_quality": "HDR DV",
       "languages": [
         "MULTI",
-        "FRENCH"
+        "VFF"
       ],
       "container": "MKV"
     }
@@ -169,7 +169,7 @@
       "codec": "HEVC",
       "v_quality": "HDR",
       "languages": [
-        "FRENCH",
+        "VFF",
         "MULTI"
       ],
       "group": "GROUP"
@@ -242,6 +242,22 @@
       "languages": ["VFI", "VO", "MULTI"],
       "group": null,
       "extra": null
+    }
+  },
+  {
+    "filename": "Si.J.En.Avais.La.Force.2025.MULTi.VFF.2160p.DV.HDR.WEB.EAC3.5.1.H265-TFA",
+    "expected": {
+      "title": "Si J En Avais La Force",
+      "category": "movie",
+      "year": 2025,
+      "resolution": "2160P",
+      "quality": "WEB",
+      "codec": "H265",
+      "audio": "EAC3",
+      "channels": "5.1",
+      "v_quality": "HDR DV",
+      "languages": ["VFF", "MULTI"],
+      "group": "TFA"
     }
   }
 ]
