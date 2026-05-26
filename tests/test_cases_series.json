@@ -287,5 +287,23 @@
       "codec": "H264",
       "group": "@@UnPourTous@@"
     }
+  },
+  {
+    "filename": "1923.S01E05.Ghost.of.Zebrina.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb.mkv",
+    "expected": {
+      "title": "1923",
+      "category": "series",
+      "year": 1923,
+      "season": "1",
+      "episode": "5",
+      "episode_name": "Ghost of Zebrina",
+      "resolution": "1080P",
+      "quality": "WEB-DL",
+      "codec": "H264",
+      "audio": "DDP5.1",
+      "channels": "5.1",
+      "group": "NTb",
+      "container": "MKV"
+    }
   }
 ]

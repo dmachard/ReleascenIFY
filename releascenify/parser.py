@@ -243,7 +243,7 @@ class ReleaseParser:
         
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
-            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBLIGHT', 'WEB',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
@@ -254,6 +254,45 @@ class ReleaseParser:
         title = title.replace('.', ' ').replace('_', ' ').strip()
         title = re.sub(r'\s+', ' ', title).strip(' -:_/\\')
         result['title'] = title
+
+    def _extract_episode_name(self, filename: str, result: Dict[str, Any]):
+        """Extracts the episode name for series if present after the season/episode tag."""
+        if result['category'] != 'series' or not result['episode']:
+            return
+            
+        se_match = re.search(r'(?i)\bs(\d{1,2})[\.\-\s]?[ex](\d{1,3})\b', filename)
+        if not se_match:
+            e_match = re.search(self.patterns['episode'], filename)
+            if e_match:
+                se_match = e_match
+                
+        if not se_match:
+            return
+            
+        post_se = filename[se_match.end():]
+        tags_to_split = [
+            'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
+            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
+            'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
+            r'19\d{2}', r'20[0-2]\d'
+        ]
+        pattern = r'[\.\[\(\s\-\_](?:' + '|'.join(tags_to_split) + r')\b'
+        parts = re.split(pattern, post_se, flags=re.I)
+        if parts:
+            ep_name = parts[0]
+            for ext in ['.mkv', '.mp4', '.avi', '.ts']:
+                if ep_name.lower().endswith(ext):
+                    ep_name = ep_name[:-len(ext)]
+            
+            ep_name = ep_name.replace('.', ' ').replace('_', ' ').strip()
+            ep_name = re.sub(r'\s+', ' ', ep_name).strip(' -:_/\\')
+            
+            if result.get('group') and ep_name.upper() == result['group'].upper():
+                ep_name = ""
+                
+            if ep_name:
+                result['episode_name'] = ep_name
 
     def _cleanup_extra(self, result: Dict[str, Any]):
         """Removes already parsed elements from the extra field."""
@@ -293,6 +332,7 @@ class ReleaseParser:
         
         result = {
             "title": "", "category": "movie", "year": None, "season": None, "episode": None,
+            "episode_name": None,
             "resolution": None, "quality": None, "codec": None, "audio": None, 
             "channels": None, "network": "", "v_quality": "", "languages": [], "group": None,
             "container": None, "extra": None
@@ -329,6 +369,9 @@ class ReleaseParser:
         
         # 9. Title Clean & Extraction
         self._extract_title(filename, result)
+        
+        # 9b. Episode Name
+        self._extract_episode_name(filename, result)
         
         # 10. Languages
         fn_up = filename.upper().replace('[', '.').replace(']', '.').replace('_', '.')

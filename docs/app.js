@@ -111,6 +111,7 @@ function getIcon(key) {
         languages: 'fa-language',
         season: 'fa-layer-group',
         episode: 'fa-play',
+        episode_name: 'fa-quote-left',
         group: 'fa-users',
         container: 'fa-file-video',
         network: 'fa-tower-broadcast',
@@ -128,6 +129,7 @@ const i18n = {
             year: "Année",
             season: "Saison",
             episode: "Épisode",
+            episode_name: "Nom d'épisode",
             resolution: "Résolution",
             v_quality: "Qualité Vidéo",
             quality: "Source",
@@ -243,6 +245,7 @@ const i18n = {
             languages: "Langues disponibles (MULTI, VFF...)",
             season: "Numéro de la saison",
             episode: "Numéro de l'épisode",
+            episode_name: "Nom de l'épisode de la série",
             group: "Release group responsable (-NOM)",
             container: "Format du conteneur média (ex: MKV, MP4)",
             network: "Diffuseur ou plateforme de streaming (NF, AMZN, ATV...)",
@@ -257,6 +260,7 @@ const i18n = {
             year: "Year",
             season: "Season",
             episode: "Episode",
+            episode_name: "Episode Name",
             resolution: "Resolution",
             v_quality: "Video Quality",
             quality: "Source",
@@ -372,6 +376,7 @@ const i18n = {
             languages: "Available languages (MULTI, VFF...)",
             season: "Season number",
             episode: "Episode number",
+            episode_name: "Title/name of the specific episode",
             group: "Responsible release group (-NAME)",
             container: "Media container format (e.g. MKV, MP4)",
             network: "Broadcaster or streaming platform (NF, AMZN, ATV...)",
@@ -438,7 +443,7 @@ function renderResults(data) {
     }
 
     // Render other valid keys
-    const order = ['category', 'year', 'season', 'episode', 'resolution', 'v_quality', 'quality', 'network', 'codec', 'container', 'audio', 'channels', 'languages', 'group', 'extra'];
+    const order = ['category', 'year', 'season', 'episode', 'episode_name', 'resolution', 'v_quality', 'quality', 'network', 'codec', 'container', 'audio', 'channels', 'languages', 'group', 'extra'];
 
     order.forEach(key => {
         if (data[key] && data[key] !== "") {
