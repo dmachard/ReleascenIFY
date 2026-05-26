@@ -6,7 +6,7 @@
 
 Parse Scene and P2P release names into structured metadata and compare release quality automatically. Built with a rule/regex engine.
 
-**Live Demo & Web Interface:** [https://dmachard.github.io/releascenify/docs/](https://dmachard.github.io/releascenify/docs/)
+**Live Demo:** [https://dmachard.github.io/releascenify/docs/](https://dmachard.github.io/releascenify/docs/)
 
 ## Why?
 Release names follow a strict grammar inherited from the Scene and P2P groups. Once decoded, you can predict the quality, source, language, and release group just from the filename. This library is an alternative to PTN (Parse Torrent Name).
