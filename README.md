@@ -61,13 +61,8 @@ For details on how files are rated, scoring weights, and priority factors, see [
 To set up the development environment, create a virtual environment and install the package in editable mode with development dependencies:
 
 ```bash
-# Create the virtual environment
 virtualenv .venv
-
-# Activate the virtual environment
 source .venv/bin/activate
-
-# Install the package in editable/development mode
 pip install -e .[dev]
 ```
 
@@ -81,7 +76,7 @@ pytest tests/ -v
 
 ### Run Website Locally
 
-Due to browser CORS security policies, opening the HTML files directly as a local file (via `file://`) will block loading the relative Python files. You need to run a local web server from the repository root:
+You need to run a local web server from the repository root:
 
 ```bash
 # Start a local HTTP server
