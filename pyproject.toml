@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
+requires = ["setuptools>=61.0.0", "wheel", "setuptools-scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "releascenify"
-version = "0.1.0"
+dynamic = ["version"]
 description = "A regex-based Python library to parse scene release names and extract technical metadata"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -23,3 +23,6 @@ dev = [
 
 [tool.setuptools]
 packages = ["releascenify"]
+
+[tool.setuptools_scm]
+write_to = "releascenify/_version.py"

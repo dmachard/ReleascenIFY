@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# setuptools-scm auto-generated file
+releascenify/_version.py
