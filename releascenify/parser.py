@@ -119,7 +119,11 @@ class ReleaseParser:
 
     def _extract_group_and_extra(self, filename_stripped: str, result: Dict[str, Any]):
         """Extracts the release group and sets initial extra field from the end of stripped filename."""
-        group_match = re.search(r'(?:-(\[?[A-Za-z0-9_@\.-]+\]?)|(?:[\.\s](\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
+        # Strip trailing bracketed/parenthesized distributor tag if it's not the whole group (e.g. -ASAP[ettv] -> -ASAP)
+        filename_stripped = re.sub(r'((?:\-|[\.\s]\@)[^\[\(]+)(\[[^\s\]]+\]|\([^\s\)]+\))$', r'\1', filename_stripped)
+        filename_stripped = filename_stripped.strip()
+        
+        group_match = re.search(r'(?:-[\s\.]*(\[?[A-Za-z0-9_@\.-]+\]?)|(?:[\.\s](\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
         if group_match:
             raw_suffix = group_match.group(1) or group_match.group(2)
             if raw_suffix.startswith('[') and raw_suffix.endswith(']'):
@@ -242,7 +246,7 @@ class ReleaseParser:
         fn_clean = re.sub(r'\b\d+(?:e|ème|re|nd|rd|th)?\s+partie\b', ' ', fn_clean, flags=re.I)
         
         tags_to_split = [
-            r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
+            r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
@@ -271,7 +275,7 @@ class ReleaseParser:
             
         post_se = filename[se_match.end():]
         tags_to_split = [
-            'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
+            'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',

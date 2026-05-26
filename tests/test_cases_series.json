@@ -305,5 +305,49 @@
       "group": "NTb",
       "container": "MKV"
     }
+  },
+  {
+    "filename": "The Walking Dead S05E03 720p HDTV x264-ASAP[ettv]",
+    "expected": {
+      "title": "The Walking Dead",
+      "category": "series",
+      "season": "5",
+      "episode": "3",
+      "resolution": "720P",
+      "quality": "HDTV",
+      "codec": "X264",
+      "group": "ASAP"
+    }
+  },
+  {
+    "filename": "Deadliest.Catch.S00E66.No.Safe.Passage.720p.AMZN.WEB-DL.DDP2.0.H.264-NTb[TGx]",
+    "expected": {
+      "title": "Deadliest Catch",
+      "category": "series",
+      "season": "0",
+      "episode": "66",
+      "episode_name": "No Safe Passage",
+      "resolution": "720P",
+      "quality": "WEB-DL",
+      "codec": "H264",
+      "audio": "DDP2.0",
+      "channels": "2.0",
+      "network": "Amazon Prime",
+      "group": "NTb"
+    }
+  },
+  {
+    "filename": "Insecure.S04.COMPLETE.720p.AMZN.WEBRip.x264-GalaxyTV",
+    "expected": {
+      "title": "Insecure",
+      "category": "series",
+      "season": "4",
+      "episode": null,
+      "resolution": "720P",
+      "quality": "WEBRIP",
+      "codec": "X264",
+      "network": "Amazon Prime",
+      "group": "GalaxyTV"
+    }
   }
 ]
