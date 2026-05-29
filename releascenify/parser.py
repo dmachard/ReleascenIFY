@@ -4,17 +4,6 @@ import unicodedata
 import urllib.parse
 from typing import Dict, Any, Optional, List
 
-def _is_in_obfuscated_token(fn: str, start: int, end: int) -> bool:
-    """Checks if the match at [start:end] is part of an obfuscated alphanumeric token (length >= 18)."""
-    left = start
-    while left > 0 and fn[left-1].isalnum():
-        left -= 1
-    right = end
-    while right < len(fn) and fn[right].isalnum():
-        right += 1
-    token = fn[left:right]
-    return len(token) >= 18
-
 class ReleaseParser:
     def __init__(self):
         self.patterns = {
@@ -55,43 +44,19 @@ class ReleaseParser:
         if not filename: return None
         fn = filename.upper()
         tags = []
-        
-        for match in re.finditer(r'(DV|DOVI)', fn):
-            if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                tags.append("DV")
-                break
-        if not any(x == "DV" for x in tags) and re.search(r'DOLBY[\.\-\s]VISION', fn):
-            tags.append("DV")
+        if any(x in fn for x in ["DV", "DOVI"]) or re.search(r'DOLBY[\.\-\s]VISION', fn): tags.append("DV")
         
         if "HDR10+" in fn or "HDR10PLUS" in fn or "HDR10+PLUS" in fn:
             tags.append("HDR10+")
-        else:
-            for match in re.finditer(r'HDR10', fn):
-                if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                    tags.append("HDR10")
-                    break
-            if not any(x == "HDR10" for x in tags):
-                for match in re.finditer(r'HDR', fn):
-                    if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                        tags.append("HDR")
-                        break
+        elif "HDR10" in fn:
+            tags.append("HDR10")
+        elif "HDR" in fn:
+            tags.append("HDR")
             
-        for match in re.finditer(r'HLG', fn):
-            if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                tags.append("HLG")
-                break
-        for match in re.finditer(r'SDR', fn):
-            if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                tags.append("SDR")
-                break
-        for match in re.finditer(r'(10BIT|10-BIT)', fn):
-            if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                tags.append("10BIT")
-                break
-        for match in re.finditer(r'(12BIT|12-BIT)', fn):
-            if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                tags.append("12BIT")
-                break
+        if "HLG" in fn: tags.append("HLG")
+        if "SDR" in fn: tags.append("SDR")
+        if "10BIT" in fn or "10-BIT" in fn: tags.append("10BIT")
+        if "12BIT" in fn or "12-BIT" in fn: tags.append("12BIT")
         return " ".join(sorted(list(set(tags)), reverse=True)) if tags else None
 
     def _extract_langs(self, fn_up: str) -> List[str]:
@@ -272,33 +237,30 @@ class ReleaseParser:
 
     def _extract_codec(self, filename: str, result: Dict[str, Any]):
         """Extracts codec tag (e.g. x265, x264, HEVC) and normalizes it."""
-        for match in re.finditer(self.patterns['codec'], filename):
-            if not _is_in_obfuscated_token(filename, match.start(), match.end()):
-                codec_raw = match.group(1).upper().replace('.', '').replace('-', '')
-                if codec_raw in ('X265', 'H265', 'HEVC'):
-                    result['codec'] = 'H265'
-                elif codec_raw in ('X264', 'H264'):
-                    result['codec'] = 'H264'
-                else:
-                    result['codec'] = codec_raw
-                break
+        match = re.search(self.patterns['codec'], filename)
+        if match:
+            codec_raw = match.group(1).upper().replace('.', '').replace('-', '')
+            if codec_raw in ('X265', 'H265', 'HEVC'):
+                result['codec'] = 'H265'
+            elif codec_raw in ('X264', 'H264'):
+                result['codec'] = 'H264'
+            else:
+                result['codec'] = codec_raw
 
     def _extract_resolution(self, filename: str, result: Dict[str, Any]):
         """Extracts resolution (e.g. 1080p, 2160p, 4K, UHD, 4KLIGHT) and normalizes it."""
         fn_up = filename.upper()
-        for match in re.finditer(r'4KLIGHT', fn_up):
-            if not _is_in_obfuscated_token(fn_up, match.start(), match.end()):
-                result['resolution'] = "4KLIGHT"
-                return
+        if "4KLIGHT" in fn_up:
+            result['resolution'] = "4KLIGHT"
+            return
             
-        for match in re.finditer(self.patterns['resolution'], filename):
-            if not _is_in_obfuscated_token(filename, match.start(), match.end()):
-                res_raw = match.group(1).upper()
-                if res_raw in ('4K', 'UHD', '2160P'):
-                    result['resolution'] = '2160P'
-                else:
-                    result['resolution'] = res_raw
-                break
+        match = re.search(self.patterns['resolution'], filename)
+        if match:
+            res_raw = match.group(1).upper()
+            if res_raw in ('4K', 'UHD', '2160P'):
+                result['resolution'] = '2160P'
+            else:
+                result['resolution'] = res_raw
 
     def _extract_network(self, filename: str, result: Dict[str, Any]):
         """Extracts network name (streaming platform) and normalizes it."""
@@ -323,22 +285,14 @@ class ReleaseParser:
         fn = filename.upper()
         
         # Check for Atmos
-        has_atmos = False
-        for match in re.finditer(r'ATMOS', fn):
-            if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                has_atmos = True
-                break
+        has_atmos = "ATMOS" in fn
         
         # Find base codec
         codec = None
         for pat in [r'(TRUEHD)', r'(DTS-HD|DTS)', r'(E-AC3|EAC3|AC3|AAC|DDP\d\.\d|DDP)']:
-            found = False
-            for match in re.finditer(pat, fn):
-                if not _is_in_obfuscated_token(fn, match.start(), match.end()):
-                    codec = match.group(1)
-                    found = True
-                    break
-            if found:
+            match = re.search(pat, fn)
+            if match:
+                codec = match.group(1)
                 break
                 
         if codec:
@@ -361,17 +315,13 @@ class ReleaseParser:
     def _extract_quality(self, filename: str, result: Dict[str, Any]):
         """Extracts source quality with priority matching."""
         for pat in [r'(?i)(REMUX)', r'(?i)(BLURAY|BDRIP|BRRIP)', r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)', r'(?i)(DVDRIP)', r'(?i)(HDTV)']:
-            found = False
-            for match in re.finditer(pat, filename):
-                if not _is_in_obfuscated_token(filename, match.start(), match.end()):
-                    qual_raw = match.group(1).upper()
-                    if qual_raw in ('WEBDL', 'WEB-DL', 'WEB'):
-                        result['quality'] = 'WEB-DL'
-                    else:
-                        result['quality'] = qual_raw
-                    found = True
-                    break
-            if found:
+            match = re.search(pat, filename)
+            if match:
+                qual_raw = match.group(1).upper()
+                if qual_raw in ('WEBDL', 'WEB-DL', 'WEB'):
+                    result['quality'] = 'WEB-DL'
+                else:
+                    result['quality'] = qual_raw
                 break
 
     def _extract_title(self, filename: str, result: Dict[str, Any]):
@@ -535,22 +485,8 @@ class ReleaseParser:
         # 11. Cleanup Extra Field
         self._cleanup_extra(result)
         
-        # Check if we successfully parsed any meaningful metadata
-        has_metadata = any([
-            result.get('year') is not None,
-            result.get('season') is not None,
-            result.get('episode') is not None,
-            result.get('resolution') is not None,
-            result.get('quality') is not None,
-            result.get('codec') is not None,
-            result.get('audio') is not None,
-            result.get('group') is not None and len(result.get('group', '')) < 18,
-            len(result.get('languages', [])) > 0,
-        ])
-        
-        # Obfuscation pattern: sequence of 18 or more alphanumeric characters
-        is_obfuscated = re.search(r'[a-zA-Z0-9]{18,}', filename) is not None
-        if is_obfuscated and not has_metadata:
+        # Check if the title length equals the filename length (indicating no metadata was parsed to split the title)
+        if len(result['title']) == len(filename):
             raise ValueError("Filename contains no valid metadata")
             
         return result

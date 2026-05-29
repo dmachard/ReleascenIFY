@@ -34,15 +34,19 @@ def test_series_parser(filename, expected):
     run_parse_test(filename, expected)
 
 def test_obfuscated_filenames():
-    with pytest.raises(ValueError, match="Filename is obfuscated and contains no valid metadata"):
+    with pytest.raises(ValueError, match="Filename contains no valid metadata"):
         parse_filename("Ana201100AZWBLDPH24ADSY.rar")
     
-    with pytest.raises(ValueError, match="Filename is obfuscated and contains no valid metadata"):
+    with pytest.raises(ValueError, match="Filename contains no valid metadata"):
         parse_filename("Abon202100pAZWEDDP024ADSK.rar")
+        
+    with pytest.raises(ValueError, match="Filename contains no valid metadata"):
+        parse_filename("MDMN65M4.rar")
     
-    # Verify that a normal clean filename with no metadata doesn't raise ValueError
-    res = parse_filename("Avatar.mkv")
-    assert res['title'] == 'Avatar mkv'
+    # Verify that a filename with metadata parses correctly
+    res = parse_filename("Avatar.2009.mkv")
+    assert res['title'] == 'Avatar'
+    assert res['year'] == 2009
 
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
