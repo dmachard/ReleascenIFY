@@ -248,7 +248,7 @@
         "VO",
         "MULTI"
       ],
-      "group": null,
+      "group": "Obi",
       "extra": null
     }
   },
@@ -283,5 +283,60 @@
       "channels": "2.0",
       "group": "Shadow"
     }
+  },
+  {
+    "filename": "J_accuse_2019_VFF_1080p_HDLight_x264.mkv",
+    "expected": {
+      "title": "J accuse",
+      "year": 2019,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": "H264",
+      "languages": [
+        "VFF"
+      ],
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Malcolm X (1992) - 1080p FR EN x264 aac mHDgz.mkv",
+    "expected": {
+      "title": "Malcolm X",
+      "year": 1992,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": "H264",
+      "audio": "AAC",
+      "languages": [
+        "VF",
+        "EN",
+        "MULTI"
+      ],
+      "group": "mHDgz",
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Kingsman.The.Golden.Circle.2017.MULTi.VFF.2160p.BLURAY.4KLight.DV.HDR.x265.TrueHD.Atmos.7.1.Bender_37.mkv",
+    "expected": {
+      "title": "Kingsman The Golden Circle",
+      "year": 2017,
+      "category": "movie",
+      "resolution": "4KLIGHT",
+      "quality": "BLURAY",
+      "codec": "H265",
+      "audio": "TRUEHD ATMOS",
+      "channels": "7.1",
+      "v_quality": "HDR DV",
+      "languages": [
+        "VFF",
+        "MULTI"
+      ],
+      "group": "Bender_37",
+      "container": "MKV"
+    }
   }
 ]
+

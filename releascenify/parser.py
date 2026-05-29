@@ -120,7 +120,7 @@ class ReleaseParser:
     def _extract_group_and_extra(self, filename_stripped: str, result: Dict[str, Any]):
         """Extracts the release group and sets initial extra field from the end of stripped filename."""
         # Strip trailing bracketed/parenthesized distributor tag if it's not the whole group (e.g. -ASAP[ettv] -> -ASAP)
-        filename_stripped = re.sub(r'((?:\-|[\.\s]\@)[^\[\(]+)(\[[^\s\]]+\]|\([^\s\)]+\))$', r'\1', filename_stripped)
+        filename_stripped = re.sub(r'((?:\-|[\.\s]\@)[^\[\(]+)(\[[^\]]+\]|\([^\]\)]+\))$', r'\1', filename_stripped)
         filename_stripped = filename_stripped.strip()
         
         group_match = re.search(r'(?:-[\s\.]*(\[?[A-Za-z0-9_@\.-]+\]?)|(?:[\.\s](\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
@@ -148,6 +148,50 @@ class ReleaseParser:
                         result['extra'] = '-'.join(extra_parts)
             else:
                 result['extra'] = '-'.join(parts)
+        else:
+            # Fallback for P2P/French releases where group is separated by a space/dot at the end without hyphen/at
+            # Determine separator heuristic for underscores (e.g. Bender_37 is a single word if the rest uses dots/spaces)
+            sep_chars = sum(filename_stripped.count(c) for c in [' ', '.', '-'])
+            underscore_count = filename_stripped.count('_')
+            
+            if sep_chars > underscore_count:
+                parts = re.split(r'[\s\.\-]+', filename_stripped)
+            else:
+                parts = re.split(r'[\s\.\-\_]+', filename_stripped)
+                
+            if parts:
+                last_part = parts[-1]
+                # Check if it is a bracketed/parenthesized tag and strip it, e.g. [ettv] -> ettv
+                if last_part.startswith('[') and last_part.endswith(']'):
+                    last_part = last_part[1:-1]
+                elif last_part.startswith('(') and last_part.endswith(')'):
+                    last_part = last_part[1:-1]
+                
+                # Check if last_part is a known tag
+                known_tags_upper = {
+                    # Codecs
+                    'X264', 'X265', 'H264', 'H265', 'HEVC', 'AV1', 'DIVX', 'XVID',
+                    # Resolutions
+                    '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT', '576P', '480P',
+                    # Source/Quality
+                    'REMUX', 'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'WEBLIGHT', 'WEB', 'DVDRIP', 'HDTV', 'HD', 'SDR',
+                    # Audio
+                    'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP',
+                    # Languages
+                    'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN',
+                    # Other common release properties
+                    'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'SUBBED', 'SUBS', 'MSUB'
+                }
+                
+                last_part_up = last_part.upper()
+                is_known = (
+                    last_part_up in known_tags_upper or
+                    re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', last_part_up) or
+                    re.match(r'^(19\d{2}|20\d{2})$', last_part_up) or
+                    not last_part
+                )
+                if not is_known:
+                    result['group'] = last_part
 
     def _extract_season_episode(self, filename: str, result: Dict[str, Any]):
         """Extracts season and episode number, supporting joint and separate formats."""
@@ -361,6 +405,9 @@ class ReleaseParser:
         
         # 2. Release Group & Extra
         self._extract_group_and_extra(fn_stripped, result)
+        
+        # Replace underscores with spaces to support word boundaries during tag extraction
+        filename = filename.replace('_', ' ')
         
         # 3. Season & Episode
         self._extract_season_episode(filename, result)
