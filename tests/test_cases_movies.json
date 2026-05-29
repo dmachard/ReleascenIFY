@@ -354,6 +354,43 @@
       "group": "GROUP",
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Marie-Martine_1943_french_hdlight_1080p_ac3_x264.mkv",
+    "expected": {
+      "title": "Marie-Martine",
+      "year": 1943,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": "H264",
+      "audio": "AC3",
+      "languages": [
+        "FRENCH"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Hunter_Killer_(2018)_MULTi_VFF_2160p_10bit_4KLight_HDR_BluRay_x265_HE-AAC_5.1_-_QTZ.mkv",
+    "expected": {
+      "title": "Hunter Killer",
+      "year": 2018,
+      "category": "movie",
+      "resolution": "4KLIGHT",
+      "quality": "BLURAY",
+      "codec": "H265",
+      "audio": "AAC",
+      "channels": "5.1",
+      "v_quality": "HDR 10BIT",
+      "languages": [
+        "VFF",
+        "MULTI"
+      ],
+      "group": "QTZ",
+      "container": "MKV"
+    }
   }
 ]
 

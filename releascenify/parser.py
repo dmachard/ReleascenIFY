@@ -109,7 +109,7 @@ class ReleaseParser:
     def _extract_container(self, filename: str, result: Dict[str, Any]) -> str:
         """Extracts media container from filename extension and returns stripped filename."""
         fn_strip = filename.strip()
-        media_exts = {'mkv', 'mp4', 'avi', 'flv', 'mov', 'wmv', 'mpg', 'mpeg', 'm4v', 'ts', 'm2ts', 'webm', 'mp3', 'flac', 'mka', 'm4a', 'aac'}
+        media_exts = {'mkv', 'mp4', 'avi', 'flv', 'mov', 'wmv', 'mpg', 'mpeg', 'm4v', 'ts', 'm2ts', 'webm', 'mp3', 'flac', 'mka', 'm4a', 'aac', 'zip', 'rar', '7z'}
         ext_match = re.search(r'\.([a-z0-9]{3,4})$', fn_strip, flags=re.I)
         if ext_match:
             ext_val = ext_match.group(1).lower()
@@ -125,8 +125,37 @@ class ReleaseParser:
         filename_stripped = filename_stripped.strip()
         
         group_match = re.search(r'(?:-[\s\.]*(\[?[A-Za-z0-9_@\.-]+\]?)|(?:[\.\s](\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
+        is_valid_match = False
+        raw_suffix = None
         if group_match:
             raw_suffix = group_match.group(1) or group_match.group(2)
+            if raw_suffix.startswith('[') and raw_suffix.endswith(']'):
+                raw_suffix_clean = raw_suffix[1:-1]
+            else:
+                raw_suffix_clean = raw_suffix
+                
+            # Split suffix into tokens to check for invalid metadata tags
+            tokens = [t.upper() for t in re.split(r'[\s\.\-\_]+', raw_suffix_clean) if t]
+            invalid_tags = {
+                # Codecs
+                'X264', 'X265', 'H264', 'H265', 'HEVC', 'AV1',
+                # Resolutions
+                '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT',
+                # Languages
+                'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2',
+                # Source/Quality
+                'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDTV'
+            }
+            has_invalid_tag = False
+            for token in tokens:
+                if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
+                    has_invalid_tag = True
+                    break
+            
+            if not has_invalid_tag:
+                is_valid_match = True
+                
+        if is_valid_match and raw_suffix:
             if raw_suffix.startswith('[') and raw_suffix.endswith(']'):
                 raw_suffix = raw_suffix[1:-1]
                 
@@ -141,10 +170,10 @@ class ReleaseParser:
             
             valid_parts = [p for p in parts if '.' not in p and p]
             if valid_parts:
-                grp = valid_parts[-1]
-                if grp.upper() not in ['DL', 'HDMA', 'FR', 'EN', 'HD']:
+                grp = valid_parts[-1].strip('_-')
+                if grp.upper() not in ['DL', 'HDMA', 'FR', 'EN', 'HD'] and grp:
                     result['group'] = grp
-                    extra_parts = [p for p in parts if p != grp]
+                    extra_parts = [p for p in parts if p != valid_parts[-1]]
                     if extra_parts:
                         result['extra'] = '-'.join(extra_parts)
             else:
@@ -161,7 +190,7 @@ class ReleaseParser:
                 parts = re.split(r'[\s\.\-\_]+', filename_stripped)
                 
             if parts:
-                last_part = parts[-1]
+                last_part = parts[-1].strip('_-')
                 # Check if it is a bracketed/parenthesized tag and strip it, e.g. [ettv] -> ettv
                 if last_part.startswith('[') and last_part.endswith(']'):
                     last_part = last_part[1:-1]

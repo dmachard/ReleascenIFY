@@ -363,5 +363,46 @@
       "network": "Amazon Prime",
       "group": "GalaxyTV"
     }
+  },
+  {
+    "filename": "Landman.S02.MULTi.VFF.1080p.WEB.EAC3.5.1.H265-TyHD.zip",
+    "expected": {
+      "title": "Landman",
+      "category": "series",
+      "season": "2",
+      "episode": null,
+      "resolution": "1080P",
+      "quality": "WEB-DL",
+      "codec": "H265",
+      "audio": "EAC3",
+      "channels": "5.1",
+      "languages": [
+        "VFF",
+        "MULTI"
+      ],
+      "group": "TyHD",
+      "container": "ZIP"
+    }
+  },
+  {
+    "filename": "The Mandalorian S03 MULTi VFI 2160p 10bit 4KLight DV HDR WebRip DDP 5.1 Atmos x265-QTZ.rar",
+    "expected": {
+      "title": "The Mandalorian",
+      "category": "series",
+      "season": "3",
+      "episode": null,
+      "resolution": "4KLIGHT",
+      "quality": "WEBRIP",
+      "codec": "H265",
+      "audio": "DDP ATMOS",
+      "channels": "5.1",
+      "v_quality": "HDR DV 10BIT",
+      "languages": [
+        "MULTI",
+        "VFI"
+      ],
+      "group": "QTZ",
+      "container": "RAR"
+    }
   }
 ]
