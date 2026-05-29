@@ -181,13 +181,13 @@ class ReleaseParser:
         else:
             # Fallback for P2P/French releases where group is separated by a space/dot at the end without hyphen/at
             # Determine separator heuristic for underscores (e.g. Bender_37 is a single word if the rest uses dots/spaces)
-            sep_chars = sum(filename_stripped.count(c) for c in [' ', '.', '-'])
+            sep_chars = sum(filename_stripped.count(c) for c in [' ', '.'])
             underscore_count = filename_stripped.count('_')
             
             if sep_chars > underscore_count:
-                parts = re.split(r'[\s\.\-]+', filename_stripped)
+                parts = re.split(r'[\s\.]+', filename_stripped)
             else:
-                parts = re.split(r'[\s\.\-\_]+', filename_stripped)
+                parts = re.split(r'[\s\.\_]+', filename_stripped)
                 
             if parts:
                 last_part = parts[-1].strip('_-')

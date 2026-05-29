@@ -404,5 +404,26 @@
       "group": "QTZ",
       "container": "RAR"
     }
+  },
+  {
+    "filename": "Halo (2024) - S02E06 - Onyx Multi.VFF.2160p.10bit.4KLight.HDR+Dolby.Vision.WEB.Custom.AC3.h265.⚡XRS-LazerTeam⚡.mkv",
+    "expected": {
+      "title": "Halo",
+      "category": "series",
+      "season": "2",
+      "episode": "6",
+      "episode_name": "Onyx",
+      "resolution": "4KLIGHT",
+      "quality": "WEB-DL",
+      "codec": "H265",
+      "audio": "AC3",
+      "v_quality": "HDR DV 10BIT",
+      "languages": [
+        "VFF",
+        "MULTI"
+      ],
+      "group": "⚡XRS-LazerTeam⚡",
+      "container": "MKV"
+    }
   }
 ]
