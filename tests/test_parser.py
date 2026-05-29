@@ -37,6 +37,9 @@ def test_obfuscated_filenames():
     with pytest.raises(ValueError, match="Filename is obfuscated and contains no valid metadata"):
         parse_filename("Ana201100AZWBLDPH24ADSY.rar")
     
+    with pytest.raises(ValueError, match="Filename is obfuscated and contains no valid metadata"):
+        parse_filename("Abon202100pAZWEDDP024ADSK.rar")
+    
     # Verify that a normal clean filename with no metadata doesn't raise ValueError
     res = parse_filename("Avatar.mkv")
     assert res['title'] == 'Avatar mkv'
