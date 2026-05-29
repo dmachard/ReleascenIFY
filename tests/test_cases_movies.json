@@ -7,7 +7,7 @@
       "category": "movie",
       "resolution": "4KLIGHT",
       "quality": "BLURAY",
-      "codec": "X265",
+      "codec": "H265",
       "languages": [
         "MULTI",
         "VFF"
@@ -54,7 +54,7 @@
       "category": "movie",
       "resolution": "1080P",
       "quality": "BDRIP",
-      "codec": "X264",
+      "codec": "H264",
       "audio": "AC3",
       "channels": "5.1",
       "languages": [
@@ -71,7 +71,7 @@
       "category": "movie",
       "resolution": "1080P",
       "quality": "BLURAY",
-      "codec": "X265",
+      "codec": "H265",
       "languages": [
         "MULTI",
         "VFF"
@@ -86,7 +86,7 @@
       "category": "movie",
       "resolution": "1080P",
       "quality": "WEB",
-      "codec": "X265",
+      "codec": "H265",
       "languages": [
         "VFF"
       ]
@@ -99,7 +99,7 @@
       "year": 2012,
       "category": "movie",
       "resolution": "1080P",
-      "codec": "X265",
+      "codec": "H265",
       "languages": [
         "VF",
         "VOSTFR"
@@ -114,7 +114,7 @@
       "category": "movie",
       "resolution": "1080P",
       "quality": "BLURAY",
-      "codec": "X264",
+      "codec": "H264",
       "audio": "AC3",
       "channels": "5.1",
       "languages": [
@@ -130,7 +130,7 @@
       "category": "movie",
       "resolution": "1080P",
       "quality": "WEB",
-      "codec": "X265",
+      "codec": "H265",
       "audio": "EAC3",
       "languages": [
         "MULTI"
@@ -147,7 +147,7 @@
       "category": "movie",
       "resolution": "4KLIGHT",
       "quality": "BLURAY",
-      "codec": "X265",
+      "codec": "H265",
       "audio": "TRUEHD ATMOS",
       "channels": "7.1",
       "v_quality": "HDR DV",
@@ -166,7 +166,7 @@
       "category": "movie",
       "resolution": "2160P",
       "quality": "REMUX",
-      "codec": "HEVC",
+      "codec": "H265",
       "v_quality": "HDR",
       "languages": [
         "VFF",
@@ -183,7 +183,7 @@
       "year": 2003,
       "resolution": "4KLIGHT",
       "quality": "BLURAY",
-      "codec": "X265",
+      "codec": "H265",
       "audio": "DTS-HD",
       "channels": "7.1",
       "v_quality": "HDR 10BIT",
@@ -202,7 +202,7 @@
       "year": 2021,
       "resolution": "2160P",
       "quality": "REMUX",
-      "codec": "HEVC",
+      "codec": "H265",
       "audio": "TRUEHD ATMOS",
       "channels": "7.1",
       "v_quality": "HDR DV",
@@ -221,9 +221,13 @@
       "category": "movie",
       "year": 2013,
       "resolution": "1080P",
-      "codec": "X264",
+      "codec": "H264",
       "audio": "AC3",
-      "languages": ["MULTI", "VF", "EN"],
+      "languages": [
+        "MULTI",
+        "VF",
+        "EN"
+      ],
       "group": "Zone",
       "extra": "Telechargement.OrG"
     }
@@ -236,10 +240,14 @@
       "year": 1989,
       "resolution": "2160P",
       "quality": "REMUX",
-      "codec": "HEVC",
+      "codec": "H265",
       "audio": "TRUEHD ATMOS",
       "v_quality": "HDR10 DV",
-      "languages": ["VFI", "VO", "MULTI"],
+      "languages": [
+        "VFI",
+        "VO",
+        "MULTI"
+      ],
       "group": null,
       "extra": null
     }
@@ -256,7 +264,10 @@
       "audio": "EAC3",
       "channels": "5.1",
       "v_quality": "HDR DV",
-      "languages": ["VFF", "MULTI"],
+      "languages": [
+        "VFF",
+        "MULTI"
+      ],
       "group": "TFA"
     }
   },
@@ -268,7 +279,7 @@
       "year": 2007,
       "resolution": "720P",
       "quality": "BLURAY",
-      "codec": "X264",
+      "codec": "H264",
       "channels": "2.0",
       "group": "Shadow"
     }

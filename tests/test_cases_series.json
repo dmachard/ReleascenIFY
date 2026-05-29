@@ -9,7 +9,7 @@
       "episode": "6",
       "resolution": "4KLIGHT",
       "quality": "WEBRIP",
-      "codec": "HEVC",
+      "codec": "H265",
       "audio": "DDP ATMOS",
       "channels": "5.1",
       "v_quality": "HDR DV",
@@ -27,7 +27,7 @@
       "episode": "8",
       "resolution": "1080P",
       "quality": "WEB",
-      "codec": "X264",
+      "codec": "H264",
       "languages": [
         "MULTI"
       ]
@@ -58,7 +58,7 @@
       "episode": "25",
       "resolution": "1080P",
       "quality": "WEB",
-      "codec": "X264",
+      "codec": "H264",
       "languages": [
         "FRENCH"
       ]
@@ -73,7 +73,7 @@
       "episode": "12",
       "resolution": "1080P",
       "quality": "WEBRIP",
-      "codec": "HEVC",
+      "codec": "H265",
       "audio": "DDP2.0",
       "languages": [
         "MULTI"
@@ -124,7 +124,7 @@
       "episode": "1",
       "resolution": "2160P",
       "quality": "WEB-DL",
-      "codec": "X265",
+      "codec": "H265",
       "v_quality": "HDR10+ DV 10BIT",
       "audio": "DDP5.1",
       "channels": "5.1",
@@ -142,7 +142,7 @@
       "category": "series",
       "season": "1",
       "resolution": "1080P",
-      "codec": "X265"
+      "codec": "H265"
     }
   },
   {
@@ -158,7 +158,9 @@
       "audio": "DDP5.1",
       "channels": "5.1",
       "network": "Amazon Prime",
-      "languages": ["MULTI"],
+      "languages": [
+        "MULTI"
+      ],
       "group": "FLUX"
     }
   },
@@ -188,7 +190,9 @@
       "quality": "WEB",
       "codec": "H265",
       "v_quality": "SDR",
-      "languages": ["FRENCH"],
+      "languages": [
+        "FRENCH"
+      ],
       "group": "THESYNDiCATE",
       "extra": null
     }
@@ -206,7 +210,9 @@
       "audio": "DDP5.1",
       "channels": "5.1",
       "network": "Amazon Prime",
-      "languages": ["MULTI"],
+      "languages": [
+        "MULTI"
+      ],
       "group": null,
       "extra": "Mad.Darks27"
     }
@@ -225,7 +231,11 @@
       "audio": "EAC3 ATMOS",
       "channels": "5.1",
       "v_quality": "HDR10 DV",
-      "languages": ["VF", "EN", "MULTI"],
+      "languages": [
+        "VF",
+        "EN",
+        "MULTI"
+      ],
       "group": "FRESH"
     }
   },
@@ -239,10 +249,12 @@
       "episode": "6",
       "resolution": "1080P",
       "quality": "HDTV",
-      "codec": "X264",
+      "codec": "H264",
       "audio": "AC3",
       "channels": "2.0",
-      "languages": ["VF"],
+      "languages": [
+        "VF"
+      ],
       "group": "@BS"
     }
   },
@@ -254,11 +266,13 @@
       "season": "1",
       "episode": "1",
       "resolution": "2160P",
-      "codec": "HEVC",
+      "codec": "H265",
       "audio": "DDP ATMOS",
       "channels": "5.1",
       "v_quality": "HDR DV",
-      "languages": ["MULTI"],
+      "languages": [
+        "MULTI"
+      ],
       "group": "BATGirl"
     }
   },
@@ -270,7 +284,7 @@
       "season": "1",
       "episode": "8",
       "resolution": "2160P",
-      "codec": "X265",
+      "codec": "H265",
       "v_quality": "HDR DV",
       "group": "Amen"
     }
@@ -315,7 +329,7 @@
       "episode": "3",
       "resolution": "720P",
       "quality": "HDTV",
-      "codec": "X264",
+      "codec": "H264",
       "group": "ASAP"
     }
   },
@@ -345,7 +359,7 @@
       "episode": null,
       "resolution": "720P",
       "quality": "WEBRIP",
-      "codec": "X264",
+      "codec": "H264",
       "network": "Amazon Prime",
       "group": "GalaxyTV"
     }

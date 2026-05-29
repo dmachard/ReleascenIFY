@@ -165,7 +165,13 @@ class ReleaseParser:
         """Extracts codec tag (e.g. x265, x264, HEVC) and normalizes it."""
         match = re.search(self.patterns['codec'], filename)
         if match:
-            result['codec'] = match.group(1).upper().replace('.', '').replace('-', '')
+            codec_raw = match.group(1).upper().replace('.', '').replace('-', '')
+            if codec_raw in ('X265', 'H265', 'HEVC'):
+                result['codec'] = 'H265'
+            elif codec_raw in ('X264', 'H264'):
+                result['codec'] = 'H264'
+            else:
+                result['codec'] = codec_raw
 
     def _extract_resolution(self, filename: str, result: Dict[str, Any]):
         """Extracts resolution (e.g. 1080p, 2160p, 4K, UHD, 4KLIGHT) and normalizes it."""
