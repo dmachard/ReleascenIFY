@@ -26,7 +26,7 @@
       "category": "series",
       "episode": "8",
       "resolution": "1080P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H264",
       "languages": [
         "MULTI"
@@ -41,7 +41,7 @@
       "season": "1",
       "episode": "8",
       "resolution": "2160P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H265",
       "v_quality": "HDR DV",
       "languages": [
@@ -57,7 +57,7 @@
       "season": "1",
       "episode": "25",
       "resolution": "1080P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H264",
       "languages": [
         "FRENCH"
@@ -88,7 +88,7 @@
       "season": "1",
       "episode": "2",
       "resolution": "1080P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H264",
       "languages": [
         "FRENCH"
@@ -105,7 +105,7 @@
       "season": "1",
       "episode": "2",
       "resolution": "1080P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H264",
       "languages": [
         "FRENCH"
@@ -187,7 +187,7 @@
       "season": "2",
       "episode": "2",
       "resolution": "2160P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H265",
       "v_quality": "SDR",
       "languages": [
@@ -226,7 +226,7 @@
       "season": "2",
       "episode": "10",
       "resolution": "2160P",
-      "quality": "WEBDL",
+      "quality": "WEB-DL",
       "codec": "H265",
       "audio": "EAC3 ATMOS",
       "channels": "5.1",
@@ -297,7 +297,7 @@
       "season": "1",
       "episode": "7",
       "resolution": "1080P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H264",
       "group": "@@UnPourTous@@"
     }

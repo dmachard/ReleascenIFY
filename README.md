@@ -63,15 +63,19 @@ To make release metadata processing and quality comparison consistent, the parse
 - **`H265`**: Normalized from inputs containing `H265`, `x265`, `HEVC` (including variants with dots or hyphens like `H.265` or `H-265`).
 - **`H264`**: Normalized from inputs containing `H264`, `x264` (including variants with dots or hyphens like `H.264` or `H-264`).
 
-> [!NOTE]
-> **HEVC** (High Efficiency Video Coding) and **H.265** are terms for the same ITU-T video compression standard, while **x265** is the open-source encoder library that encodes video into HEVC/H.265 format.
-> Similarly, **AVC** and **H.264** refer to the same standard, and **x264** is the encoder library. `releascenify` normalizes these into the standard tags `H265` and `H264` for simplicity.
-
 ### Resolutions (`resolution`)
-- Normalized to standard resolution keys: **`2160P`** / **`1080P`** / **`720P`** / **`4K`** / **`UHD`** / **`4KLIGHT`**
+To keep resolution metadata consistent, they are normalized to standard keys:
+- **`2160P`**: Normalized from inputs containing `2160p`, `2160P`, `4K`, or `UHD`.
+- **`1080P`**: Normalized from inputs containing `1080p` or `1080P`.
+- **`720P`**: Normalized from inputs containing `720p` or `720P`.
+- **`4KLIGHT`**: Extracted from inputs containing `4KLIGHT`.
 
 ### Source Quality (`quality`)
-- Normalized to standard quality keys: **`REMUX`** / **`BLURAY`** / **`BDRIP`** / **`BRRIP`** / **`WEB-DL`** / **`WEBDL`** / **`WEBRIP`** / **`WEBLIGHT`** / **`WEB`** / **`DVDRIP`** / **`HDTV`**
+The source tags are normalized to standard quality keys:
+- **`WEB-DL`**: Normalized from inputs containing `WEB-DL`, `WEBDL`, or `WEB`.
+- **`WEBRIP`**: Extracted from inputs containing `WEBRip` or `WEBRIP`.
+- **`BLURAY`**: Extracted from `BLURAY`, `BDRIP`, or `BRRIP`.
+- **`REMUX`** / **`DVDRIP`** / **`HDTV`** / **`WEBLIGHT`**
 
 ### Audio Quality (`audio`)
 - Standard audio codecs: **`ATMOS`** / **`TRUEHD`** / **`DTS-HD`** / **`DTS`** / **`EAC3`** / **`AC3`** / **`AAC`** / **`DDP`** (Atmos can be appended, e.g., `EAC3 ATMOS`).

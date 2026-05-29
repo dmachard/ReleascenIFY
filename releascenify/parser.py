@@ -182,7 +182,11 @@ class ReleaseParser:
             
         match = re.search(self.patterns['resolution'], filename)
         if match:
-            result['resolution'] = match.group(1).upper()
+            res_raw = match.group(1).upper()
+            if res_raw in ('4K', 'UHD', '2160P'):
+                result['resolution'] = '2160P'
+            else:
+                result['resolution'] = res_raw
 
     def _extract_network(self, filename: str, result: Dict[str, Any]):
         """Extracts network name (streaming platform) and normalizes it."""
@@ -239,7 +243,11 @@ class ReleaseParser:
         for pat in [r'(?i)(REMUX)', r'(?i)(BLURAY|BDRIP|BRRIP)', r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)', r'(?i)(DVDRIP)', r'(?i)(HDTV)']:
             match = re.search(pat, filename)
             if match:
-                result['quality'] = match.group(1).upper()
+                qual_raw = match.group(1).upper()
+                if qual_raw in ('WEBDL', 'WEB-DL', 'WEB'):
+                    result['quality'] = 'WEB-DL'
+                else:
+                    result['quality'] = qual_raw
                 break
 
     def _extract_title(self, filename: str, result: Dict[str, Any]):

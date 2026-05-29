@@ -85,7 +85,7 @@
       "year": 2023,
       "category": "movie",
       "resolution": "1080P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H265",
       "languages": [
         "VFF"
@@ -129,7 +129,7 @@
       "year": 2026,
       "category": "movie",
       "resolution": "1080P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H265",
       "audio": "EAC3",
       "languages": [
@@ -259,7 +259,7 @@
       "category": "movie",
       "year": 2025,
       "resolution": "2160P",
-      "quality": "WEB",
+      "quality": "WEB-DL",
       "codec": "H265",
       "audio": "EAC3",
       "channels": "5.1",
