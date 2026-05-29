@@ -485,6 +485,24 @@ class ReleaseParser:
         # 11. Cleanup Extra Field
         self._cleanup_extra(result)
         
+        # Check if we successfully parsed any meaningful metadata
+        has_metadata = any([
+            result.get('year') is not None,
+            result.get('season') is not None,
+            result.get('episode') is not None,
+            result.get('resolution') is not None,
+            result.get('quality') is not None,
+            result.get('codec') is not None,
+            result.get('audio') is not None,
+            result.get('group') is not None and len(result.get('group', '')) < 18,
+            len(result.get('languages', [])) > 0,
+        ])
+        
+        # Obfuscation pattern: sequence of 18 or more alphanumeric characters
+        is_obfuscated = re.search(r'[a-zA-Z0-9]{18,}', filename) is not None
+        if is_obfuscated and not has_metadata:
+            raise ValueError("Filename is obfuscated and contains no valid metadata")
+            
         return result
 
 def parse_filename(filename: str) -> Dict[str, Any]:
