@@ -337,6 +337,23 @@
       "group": "Bender_37",
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Kingsman.The.Golden.Circle.2017.FASTSUB.VOSTFR.1080p.x264-GROUP.mkv",
+    "expected": {
+      "title": "Kingsman The Golden Circle",
+      "year": 2017,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": "H264",
+      "languages": [
+        "VOSTFR",
+        "FASTSUB"
+      ],
+      "group": "GROUP",
+      "container": "MKV"
+    }
   }
 ]
 

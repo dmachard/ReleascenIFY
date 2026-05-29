@@ -84,7 +84,7 @@ The source tags are normalized to standard quality keys:
 - **`HDR`** / **`HDR10`** / **`HDR10+`** / **`DV`** (Dolby Vision) / **`HLG`** / **`SDR`** / **`10BIT`** / **`12BIT`**
 
 ### Languages (`languages`)
-- Lists of extracted language tags: **`VFF`** (TrueFrench) / **`FRENCH`** / **`VF`** / **`VF2`** / **`VFI`** / **`VFQ`** / **`VOSTFR`** / **`EN`** / **`VO`** / **`MULTI`**
+- Lists of extracted language tags: **`VFF`** (TrueFrench) / **`FRENCH`** / **`VF`** / **`VF2`** / **`VFI`** / **`VFQ`** / **`VOSTFR`** / **`FASTSUB`** / **`EN`** / **`VO`** / **`MULTI`**
 
 ### Network/Platform (`network`)
 - Stream/broadcast platform names normalized:

@@ -68,6 +68,7 @@ class ReleaseParser:
             
         if "MULTI" in fn_up: langs.append("MULTI")
         if "VOSTFR" in fn_up or "VOST" in fn_up: langs.append("VOSTFR")
+        if "FASTSUB" in fn_up: langs.append("FASTSUB")
         
         if "VF2" in fn_up: langs.append("VF2")
         elif "VFI" in fn_up: langs.append("VFI")
@@ -178,7 +179,7 @@ class ReleaseParser:
                     # Audio
                     'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP',
                     # Languages
-                    'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN',
+                    'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN', 'FASTSUB',
                     # Other common release properties
                     'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'SUBBED', 'SUBS', 'MSUB'
                 }
@@ -304,7 +305,7 @@ class ReleaseParser:
         fn_clean = re.sub(r'\b\d+(?:e|ème|re|nd|rd|th)?\s+partie\b', ' ', fn_clean, flags=re.I)
         
         tags_to_split = [
-            r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
+            r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
@@ -333,7 +334,7 @@ class ReleaseParser:
             
         post_se = filename[se_match.end():]
         tags_to_split = [
-            'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI',
+            'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',

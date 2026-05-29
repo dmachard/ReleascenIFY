@@ -194,6 +194,7 @@ const i18n = {
             langVfi: "Version Française Internationale (VFi)",
             langVf2: "Contient 2 versions françaises différentes (ex : VFF + VFQ, ou doublage d'origine + redoublage)",
             langVostfr: "Version Originale Sous-Titrée Français",
+            langFastsub: "Sous-titres rapides (traduction communautaire précoce)",
             langVf: "Version Française (générique ou indéterminée)",
             langVo: "Version Originale (sans doublage français)",
             langFrEn: "Bilingue Français et Anglais",
@@ -325,6 +326,7 @@ const i18n = {
             langVfi: "International French version (VFi)",
             langVf2: "Contains 2 different French versions (e.g. VFF + VFQ, or original dub + newer redub)",
             langVostfr: "Original version with French subtitles",
+            langFastsub: "Fast subtitles (early community translation)",
             langVf: "French Version (generic or undetermined)",
             langVo: "Original Version (no French dub)",
             langFrEn: "Bilingual French and English",
@@ -860,6 +862,7 @@ function renderDocs() {
                 ["VF2", i18n[currentLang].notes.langVf2],
                 ["VF", i18n[currentLang].notes.langVf],
                 ["VOSTFR", i18n[currentLang].notes.langVostfr],
+                ["FASTSUB", i18n[currentLang].notes.langFastsub],
                 ["VO", i18n[currentLang].notes.langVo],
                 ["FR EN / FR-EN", i18n[currentLang].notes.langFrEn]
             ]
