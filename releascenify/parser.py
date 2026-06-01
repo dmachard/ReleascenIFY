@@ -190,12 +190,7 @@ class ReleaseParser:
                 parts = re.split(r'[\s\.\_]+', filename_stripped)
                 
             if parts:
-                last_part = parts[-1].strip('_-')
-                # Check if it is a bracketed/parenthesized tag and strip it, e.g. [ettv] -> ettv
-                if last_part.startswith('[') and last_part.endswith(']'):
-                    last_part = last_part[1:-1]
-                elif last_part.startswith('(') and last_part.endswith(')'):
-                    last_part = last_part[1:-1]
+                last_part = parts[-1].strip('[]()_-')
                 
                 # Check if last_part is a known tag
                 known_tags_upper = {

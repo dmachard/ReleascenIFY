@@ -391,6 +391,25 @@
       "group": "QTZ",
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Rango (2011) [1080p.MULTi.x264.AC3].mkv",
+    "expected": {
+      "title": "Rango",
+      "year": 2011,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": "H264",
+      "audio": "AC3",
+      "channels": null,
+      "v_quality": "",
+      "languages": [
+        "MULTI"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]
 

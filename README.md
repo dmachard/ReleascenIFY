@@ -4,6 +4,13 @@
   <img src="imgs/logo_releascenify.png" alt="Releascenify Logo" width="400">
 </p>
 
+<p align="center">
+  <a href="https://pypi.org/project/releascenify/"><img src="https://img.shields.io/pypi/v/releascenify.svg" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/releascenify/"><img src="https://img.shields.io/pypi/pyversions/releascenify.svg" alt="Python version"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-50%20passed-success" alt="Tests status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
 Parse Scene and P2P release names into structured metadata and compare release quality automatically. Built with a rule/regex engine.
 
 **Live Demo:** [https://dmachard.github.io/releascenify/docs/](https://dmachard.github.io/releascenify/docs/)
