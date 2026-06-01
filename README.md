@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://pypi.org/project/releascenify/"><img src="https://img.shields.io/pypi/v/releascenify.svg" alt="PyPI version"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-50%20passed-success" alt="Tests status"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-55%20passed-success" alt="Tests status"></a>
 </p>
 
 Parse Scene and P2P release names into structured metadata and compare release quality automatically. Built with a rule/regex engine.
@@ -83,7 +83,10 @@ The source tags are normalized to standard quality keys:
 - **`REMUX`** / **`DVDRIP`** / **`HDTV`** / **`WEBLIGHT`**
 
 ### Audio Quality (`audio`)
-- Standard audio codecs: **`ATMOS`** / **`TRUEHD`** / **`DTS-HD`** / **`DTS`** / **`EAC3`** / **`AC3`** / **`AAC`** / **`DDP`** (Atmos can be appended, e.g., `EAC3 ATMOS`).
+- Standard audio codecs: **`ATMOS`** / **`TRUEHD`** / **`DTS-HD`** (extracted from `DTS-HD`, `DTS-HDMA`, or `DTS-HD MA`) / **`DTS`** / **`EAC3`** / **`AC3`** / **`AAC`** / **`DDP`** / **`FLAC`** / **`MP3`** (Atmos can be appended, e.g., `EAC3 ATMOS`).
+
+### Audio Channels (`channels`)
+- Standard channel counts: **`7.1`** / **`5.1`** / **`2.1`** / **`2.0`** / **`1.0`** (mono).
 
 ### Video Enhancements (`v_quality`)
 - **`HDR`** / **`HDR10`** / **`HDR10+`** / **`DV`** (Dolby Vision) / **`HLG`** / **`SDR`** / **`10BIT`** / **`12BIT`**
@@ -100,6 +103,9 @@ The source tags are normalized to standard quality keys:
   - `HBO Max` / `HBO` (from `HMAX`, `HBO MAX`, `HBO`)
   - `Hulu` (from `HULU`)
   - `Paramount+` (from `PARAMOUNT PLUS`)
+
+### Special Tags (`extra`)
+- Extracted modifiers: **`REPACK`** / **`PROPER`** / **`FINAL`** / **`INTERNAL`** / **`CUSTOM`**.
 
 ## Development & Tests
 

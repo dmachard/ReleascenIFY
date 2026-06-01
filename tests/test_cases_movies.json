@@ -410,6 +410,103 @@
       "group": null,
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Pirates des Caraibes - La malediction du Black Pearl (2003) [1080p.MULTI.x264.AC3].mkv",
+    "expected": {
+      "title": "Pirates des Caraibes - La malediction du Black Pearl",
+      "year": 2003,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": "H264",
+      "audio": "AC3",
+      "channels": null,
+      "v_quality": "",
+      "languages": [
+        "MULTI"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Dip.huet.seung.hung.1989.AKA.The.Killer.2160p.GBR.UHD.Blu-ray.Remux.DV.HDR.HEVC.FLAC.1.0-CiNEPHiLES",
+    "expected": {
+      "title": "Dip huet seung hung",
+      "year": 1989,
+      "category": "movie",
+      "resolution": "2160P",
+      "quality": "REMUX",
+      "codec": "H265",
+      "audio": "FLAC",
+      "channels": "1.0",
+      "v_quality": "HDR DV",
+      "languages": [],
+      "group": "CiNEPHiLES",
+      "container": null
+    }
+  },
+  {
+    "filename": "Love and Monsters (2020) [2160p HDR10 DV8 x265 MULTI VFI 5.1 DDP VO 7.1 DTS-HDMA].mkv",
+    "expected": {
+      "title": "Love and Monsters",
+      "year": 2020,
+      "category": "movie",
+      "resolution": "2160P",
+      "quality": null,
+      "codec": "H265",
+      "audio": "DTS-HD",
+      "channels": "5.1",
+      "v_quality": "HDR10 DV",
+      "languages": [
+        "MULTI",
+        "VFI",
+        "VO"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "La.Derniere.Maison.Sur.La.Gauche.(The.Last.House.On.The.Left).2009.BD.Remux.Custom.2160p.UHD.4k.HDR10.DV.x265.DTS-HD.DTS.5.1.Repack-Wolverine59500.mkv",
+    "expected": {
+      "title": "La Derniere Maison Sur La Gauche (The Last House On The Left)",
+      "year": 2009,
+      "category": "movie",
+      "resolution": "2160P",
+      "quality": "REMUX",
+      "codec": "H265",
+      "audio": "DTS-HD",
+      "channels": "5.1",
+      "v_quality": "HDR10 DV",
+      "languages": [],
+      "group": "Wolverine59500",
+      "extra": null,
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Vacances.Romaines.(Roman Holiday) 1953.BDRip.2160p.UHD.4K.HDR10.MULTi.FR-EN.x265.TrueHD.AC3.2.0-DON.Repack.mkv",
+    "expected": {
+      "title": "Vacances Romaines (Roman Holiday)",
+      "year": 1953,
+      "category": "movie",
+      "resolution": "2160P",
+      "quality": "BDRIP",
+      "codec": "H265",
+      "audio": "TRUEHD",
+      "channels": "2.0",
+      "v_quality": "HDR10",
+      "languages": [
+        "MULTI",
+        "VF",
+        "EN"
+      ],
+      "group": "DON",
+      "extra": "Repack",
+      "container": "MKV"
+    }
   }
 ]
 

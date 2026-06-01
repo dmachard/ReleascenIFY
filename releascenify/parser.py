@@ -12,8 +12,8 @@ class ReleaseParser:
             'year': r'\b(19\d{2}|20[0-2]\d)\b',
             'resolution': r'(?i)(4KLIGHT|4K|2160[pP]|1080[pP]|720[pP]|UHD)',
             'codec': r'(?i)(x265|x264|h[\.\-]?265|h[\.\-]?264|HEVC)',
-            'audio': r'(?i)(AAC|AC3|E-AC3|DTS-HD|DTS|ATMOS|TRUEHD|DDP\d\.\d)',
-            'channels': r'(7\.1|5\.1|2\.0)\b',
+            'audio': r'(?i)(AAC|AC3|E-AC3|DTS-HD|DTS|ATMOS|TRUEHD|DDP\d\.\d|FLAC|MP3)',
+            'channels': r'(7\.1|5\.1|2\.1|2\.0|1\.0)\b',
             'network': r'(?i)\b(NF|AMZN|DSNP|ATV|DSNY|HMAX|HBO|HULU)\b',
         }
         
@@ -124,36 +124,88 @@ class ReleaseParser:
         filename_stripped = re.sub(r'((?:\-|[\.\s]\@)[^\[\(]+)(\[[^\]]+\]|\([^\]\)]+\))$', r'\1', filename_stripped)
         filename_stripped = filename_stripped.strip()
         
-        group_match = re.search(r'(?:-[\s\.]*(\[?[A-Za-z0-9_@\.-]+\]?)|(?:[\.\s](\[?@[A-Za-z0-9_@\.-]+\]?)))$', filename_stripped)
+        invalid_tags = {
+            # Codecs
+            'X264', 'X265', 'H264', 'H265', 'HEVC', 'AV1',
+            # Resolutions
+            '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT',
+            # Languages
+            'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2',
+            # Source/Quality
+            'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDTV',
+            # Audio
+            'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA',
+            # Other common properties
+            'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM'
+        }
+        
         is_valid_match = False
         raw_suffix = None
-        if group_match:
-            raw_suffix = group_match.group(1) or group_match.group(2)
-            if raw_suffix.startswith('[') and raw_suffix.endswith(']'):
-                raw_suffix_clean = raw_suffix[1:-1]
-            else:
-                raw_suffix_clean = raw_suffix
-                
-            # Split suffix into tokens to check for invalid metadata tags
-            tokens = [t.upper() for t in re.split(r'[\s\.\-\_]+', raw_suffix_clean) if t]
-            invalid_tags = {
-                # Codecs
-                'X264', 'X265', 'H264', 'H265', 'HEVC', 'AV1',
-                # Resolutions
-                '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT',
-                # Languages
-                'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2',
-                # Source/Quality
-                'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDTV'
-            }
-            has_invalid_tag = False
-            for token in tokens:
-                if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
-                    has_invalid_tag = True
-                    break
-            
-            if not has_invalid_tag:
-                is_valid_match = True
+        
+        # Find all possible starting positions of the group separator ('-' or '@')
+        # We search from left to right to find the first candidate suffix that does not contain invalid tags.
+        for i in range(len(filename_stripped)):
+            char = filename_stripped[i]
+            if char == '-':
+                # Suffix starts after the hyphen
+                suffix_candidate = filename_stripped[i+1:]
+                match = re.match(r'^[\s\.]*(\[?[A-Za-z0-9_@\.-]+\]?)$', suffix_candidate)
+                if match:
+                    candidate_raw = match.group(1)
+                    # Check for invalid tags in this candidate
+                    if candidate_raw.startswith('[') and candidate_raw.endswith(']'):
+                        candidate_clean = candidate_raw[1:-1]
+                    else:
+                        candidate_clean = candidate_raw
+                    candidate_clean = candidate_clean.strip('[]()_-')
+                    sub_parts = re.split(r'[\s\.\-]+', candidate_clean)
+                    while len(sub_parts) > 1:
+                        last_sub = sub_parts[-1].upper().strip('[]()_-')
+                        if last_sub in invalid_tags or last_sub in {'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM'}:
+                            sub_parts.pop()
+                        else:
+                            break
+                    candidate_clean = '-'.join(sub_parts)
+                    tokens = [t.upper().strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_clean) if t]
+                    has_invalid_tag = False
+                    for token in tokens:
+                        if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
+                            has_invalid_tag = True
+                            break
+                    if not has_invalid_tag:
+                        raw_suffix = candidate_raw
+                        is_valid_match = True
+                        break
+            elif char == '@':
+                # Suffix starts with @ (must be preceded by a space, dot, or another @, or start of string)
+                if i == 0 or filename_stripped[i-1] in (' ', '.', '@'):
+                    suffix_candidate = filename_stripped[i:]
+                    match = re.match(r'^(\[?@[A-Za-z0-9_@\.-]+\]?)$', suffix_candidate)
+                    if match:
+                        candidate_raw = match.group(1)
+                        if candidate_raw.startswith('[') and candidate_raw.endswith(']'):
+                            candidate_clean = candidate_raw[1:-1]
+                        else:
+                            candidate_clean = candidate_raw
+                        candidate_clean = candidate_clean.strip('[]()_-')
+                        sub_parts = re.split(r'[\s\.\-]+', candidate_clean)
+                        while len(sub_parts) > 1:
+                            last_sub = sub_parts[-1].upper().strip('[]()_-')
+                            if last_sub in invalid_tags or last_sub in {'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM'}:
+                                sub_parts.pop()
+                            else:
+                                break
+                        candidate_clean = '-'.join(sub_parts)
+                        tokens = [t.upper().strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_clean) if t]
+                        has_invalid_tag = False
+                        for token in tokens:
+                            if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
+                                has_invalid_tag = True
+                                break
+                        if not has_invalid_tag:
+                            raw_suffix = candidate_raw
+                            is_valid_match = True
+                            break
                 
         if is_valid_match and raw_suffix:
             if raw_suffix.startswith('[') and raw_suffix.endswith(']'):
@@ -161,23 +213,44 @@ class ReleaseParser:
                 
             parts = raw_suffix.split('-')
             
-            # Iterate backwards through parts (excluding the last one) to find the last part containing a dot
-            # Any part containing a dot (like HDMA.AC3.5.1) is not part of the group/extra suffix
-            for i in range(len(parts) - 2, -1, -1):
-                if '.' in parts[i]:
-                    parts = parts[i+1:]
+            # Clean each part of trailing known tags separated by dots
+            cleaned_parts = []
+            removed_tags = []
+            for part in parts:
+                if '.' in part:
+                    sub_parts = part.split('.')
+                    while len(sub_parts) > 1:
+                        last_sub = sub_parts[-1].upper().strip('[]()_-')
+                        if last_sub in invalid_tags or last_sub in {'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM'}:
+                            removed_tags.append(sub_parts.pop())
+                        else:
+                            break
+                    cleaned_parts.append('.'.join(sub_parts))
+                else:
+                    cleaned_parts.append(part)
+            
+            # Iterate backwards through cleaned_parts (excluding the last one) to find the last part containing a dot
+            for i in range(len(cleaned_parts) - 2, -1, -1):
+                if '.' in cleaned_parts[i]:
+                    cleaned_parts = cleaned_parts[i+1:]
                     break
             
-            valid_parts = [p for p in parts if '.' not in p and p]
+            valid_parts = [p for p in cleaned_parts if '.' not in p and p]
             if valid_parts:
-                grp = valid_parts[-1].strip('_-')
+                grp = valid_parts[-1].strip('[]()_-')
                 if grp.upper() not in ['DL', 'HDMA', 'FR', 'EN', 'HD'] and grp:
                     result['group'] = grp
-                    extra_parts = [p for p in parts if p != valid_parts[-1]]
+                    extra_parts = [p for p in cleaned_parts if p != valid_parts[-1]]
+                    if removed_tags:
+                        extra_parts.extend(removed_tags)
                     if extra_parts:
                         result['extra'] = '-'.join(extra_parts)
             else:
-                result['extra'] = '-'.join(parts)
+                extra_parts = list(cleaned_parts)
+                if removed_tags:
+                    extra_parts.extend(removed_tags)
+                if extra_parts:
+                    result['extra'] = '-'.join(extra_parts)
         else:
             # Fallback for P2P/French releases where group is separated by a space/dot at the end without hyphen/at
             # Determine separator heuristic for underscores (e.g. Bender_37 is a single word if the rest uses dots/spaces)
@@ -201,7 +274,7 @@ class ReleaseParser:
                     # Source/Quality
                     'REMUX', 'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'WEBLIGHT', 'WEB', 'DVDRIP', 'HDTV', 'HD', 'SDR',
                     # Audio
-                    'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP',
+                    'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA',
                     # Languages
                     'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN', 'FASTSUB',
                     # Other common release properties
@@ -209,12 +282,17 @@ class ReleaseParser:
                 }
                 
                 last_part_up = last_part.upper()
-                is_known = (
-                    last_part_up in known_tags_upper or
-                    re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', last_part_up) or
-                    re.match(r'^(19\d{2}|20\d{2})$', last_part_up) or
-                    not last_part
-                )
+                sub_parts = [sp for sp in last_part_up.split('-') if sp]
+                is_known = False
+                if not last_part_up:
+                    is_known = True
+                elif sub_parts:
+                    is_known = all(
+                        sp in known_tags_upper or
+                        re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', sp) or
+                        re.match(r'^(19\d{2}|20\d{2})$', sp)
+                        for sp in sub_parts
+                    )
                 if not is_known:
                     result['group'] = last_part
 
@@ -284,7 +362,7 @@ class ReleaseParser:
         
         # Find base codec
         codec = None
-        for pat in [r'(TRUEHD)', r'(DTS-HD|DTS)', r'(E-AC3|EAC3|AC3|AAC|DDP\d\.\d|DDP)']:
+        for pat in [r'(TRUEHD)', r'(DTS-HD|DTS)', r'(E-AC3|EAC3|AC3|AAC|FLAC|MP3|DDP\d\.\d|DDP)']:
             match = re.search(pat, fn)
             if match:
                 codec = match.group(1)
@@ -327,7 +405,7 @@ class ReleaseParser:
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
+            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]
@@ -356,7 +434,7 @@ class ReleaseParser:
         tags_to_split = [
             'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS',
+            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]
