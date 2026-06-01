@@ -328,11 +328,7 @@ class ReleaseParser:
         """Cleans the filename and extracts the title using split tags."""
         fn_clean = html.unescape(filename)
         fn_clean = unicodedata.normalize('NFKD', fn_clean).encode('ASCII', 'ignore').decode('utf-8')
-        
-        # Remove Volume/Part markers
-        fn_clean = re.sub(r'\b(Vol|Pt|Part|Partie)[\.\s]?\d+\b', ' ', fn_clean, flags=re.I)
-        fn_clean = re.sub(r'\b\d+(?:e|ème|re|nd|rd|th)?\s+partie\b', ' ', fn_clean, flags=re.I)
-        
+
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',

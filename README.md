@@ -105,7 +105,6 @@ To set up the development environment, create a virtual environment and install 
 ```bash
 virtualenv .venv
 source .venv/bin/activate
-pip install -e .[dev]
 ```
 
 ### Run Tests
