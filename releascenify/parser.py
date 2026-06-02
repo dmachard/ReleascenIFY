@@ -136,8 +136,20 @@ class ReleaseParser:
             # Audio
             'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA',
             # Other common properties
-            'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM'
+            'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG'
         }
+        
+        # Check for Anime style group at the beginning: [Group] Title...
+        anime_match = re.match(r'^\[([^\]]+)\][\s\.]+', filename_stripped)
+        if anime_match:
+            candidate_grp = anime_match.group(1).strip()
+            is_invalid = False
+            for token in re.split(r'[\s\.\-\_]+', candidate_grp.upper()):
+                if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
+                    is_invalid = True
+                    break
+            if not is_invalid and candidate_grp:
+                result['group'] = candidate_grp
         
         is_valid_match = False
         raw_suffix = None
@@ -238,9 +250,23 @@ class ReleaseParser:
             valid_parts = [p for p in cleaned_parts if '.' not in p and p]
             if valid_parts:
                 grp = valid_parts[-1].strip('[]()_-')
+                if len(valid_parts) > 1 and (grp.isdigit() or len(grp) <= 2):
+                    grp_prev = valid_parts[-2].strip('[]()_-')
+                    grp = f"{grp_prev}-{grp}"
+                    used_parts = [valid_parts[-2], valid_parts[-1]]
+                else:
+                    used_parts = [valid_parts[-1]]
+
                 if grp.upper() not in ['DL', 'HDMA', 'FR', 'EN', 'HD'] and grp:
                     result['group'] = grp
-                    extra_parts = [p for p in cleaned_parts if p != valid_parts[-1]]
+                    # We create a new list preserving order but without the parts we used for the group
+                    extra_parts = []
+                    for p in cleaned_parts:
+                        if p in used_parts:
+                            used_parts.remove(p) # only remove one instance if duplicates exist
+                        else:
+                            extra_parts.append(p)
+                            
                     if removed_tags:
                         extra_parts.extend(removed_tags)
                     if extra_parts:
@@ -257,13 +283,21 @@ class ReleaseParser:
             sep_chars = sum(filename_stripped.count(c) for c in [' ', '.'])
             underscore_count = filename_stripped.count('_')
             
+            filename_for_fallback = filename_stripped.replace('][', '] [')
             if sep_chars > underscore_count:
-                parts = re.split(r'[\s\.]+', filename_stripped)
+                parts = re.split(r'[\s\.]+', filename_for_fallback)
             else:
-                parts = re.split(r'[\s\.\_]+', filename_stripped)
+                parts = re.split(r'[\s\.\_]+', filename_for_fallback)
                 
             if parts:
                 last_part = parts[-1].strip('[]()_-')
+                if len(parts) >= 2:
+                    prev_part = parts[-2].strip('[]()_-')
+                    if last_part in ('0', '1') and prev_part.isdigit():
+                        last_part = prev_part + '.' + last_part
+                    elif last_part in ('264', '265') and prev_part.upper() == 'H':
+                        last_part = prev_part + '.' + last_part
+                
                 
                 # Check if last_part is a known tag
                 known_tags_upper = {
@@ -278,9 +312,11 @@ class ReleaseParser:
                     # Languages
                     'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN', 'FASTSUB',
                     # Other common release properties
-                    'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'SUBBED', 'SUBS', 'MSUB'
+                    'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'SUBBED', 'SUBS', 'MSUB', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG'
                 }
                 
+                # Also handle glued bracket tags like [1080p][X265]
+                last_part = last_part.replace('][', '-')
                 last_part_up = last_part.upper()
                 sub_parts = [sp for sp in last_part_up.split('-') if sp]
                 is_known = False
@@ -290,10 +326,12 @@ class ReleaseParser:
                     is_known = all(
                         sp in known_tags_upper or
                         re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', sp) or
-                        re.match(r'^(19\d{2}|20\d{2})$', sp)
+                        re.match(r'^(19\d{2}|20\d{2})$', sp) or
+                        re.match(r'^([1-7]\.[01])$', sp) or
+                        sp in ('H.264', 'H.265')
                         for sp in sub_parts
                     )
-                if not is_known:
+                if not is_known and not result.get('group'):
                     result['group'] = last_part
 
     def _extract_season_episode(self, filename: str, result: Dict[str, Any]):
@@ -414,6 +452,12 @@ class ReleaseParser:
         
         title = title.replace('.', ' ').replace('_', ' ').strip()
         title = re.sub(r'\s+', ' ', title).strip(' -:_/\\')
+        
+        # Remove Anime group at the beginning if it matches the extracted group
+        if result.get('group'):
+            grp_pattern = re.escape(result['group'])
+            title = re.sub(rf'^\[{grp_pattern}\]\s*', '', title, flags=re.I)
+            
         result['title'] = title
 
     def _extract_episode_name(self, filename: str, result: Dict[str, Any]):
@@ -556,6 +600,10 @@ class ReleaseParser:
         
         # Check if the title length equals the filename length (indicating no metadata was parsed to split the title)
         if len(result['title']) == len(filename):
+            raise ValueError("Filename contains no valid metadata")
+            
+        # Reject audio-only/OST releases
+        if re.search(r'\b(OST|Bande originale|Soundtrack|Album)\b', filename, flags=re.I):
             raise ValueError("Filename contains no valid metadata")
             
         return result

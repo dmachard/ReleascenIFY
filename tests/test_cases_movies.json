@@ -507,6 +507,39 @@
       "extra": "Repack",
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Empire_of_Light_(2022)[WEBDL-2160p][DV_HDR10][EAC3_Atmos_5.1][h265].mkv",
+    "expected": {
+      "title": "Empire of Light",
+      "category": "movie",
+      "year": 2022,
+      "resolution": "2160P",
+      "quality": "WEB-DL",
+      "codec": "H265",
+      "audio": "EAC3 ATMOS",
+      "channels": "5.1",
+      "v_quality": "HDR10 DV",
+      "languages": [],
+      "group": null,
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Concert-Lady.Gaga-Mayhem.Requiem.2026.VO.1080p.x264.AC3.5.1.mkv",
+    "expected": {
+      "title": "Concert-Lady Gaga-Mayhem Requiem",
+      "category": "movie",
+      "year": 2026,
+      "resolution": "1080P",
+      "codec": "H264",
+      "audio": "AC3",
+      "channels": "5.1",
+      "languages": [
+        "VO"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]
-

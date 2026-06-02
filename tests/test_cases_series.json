@@ -218,7 +218,7 @@
     }
   },
   {
-    "filename": "Firefly Lane (2021) - S02E10 - All The World’s A Stage [WEBDL-2160p][DV HDR10][EAC3 Atmos 5.1][EN+FR][h265]-FRESH",
+    "filename": "Firefly Lane (2021) - S02E10 - All The World\u2019s A Stage [WEBDL-2160p][DV HDR10][EAC3 Atmos 5.1][EN+FR][h265]-FRESH",
     "expected": {
       "title": "Firefly Lane",
       "category": "series",
@@ -406,7 +406,7 @@
     }
   },
   {
-    "filename": "Halo (2024) - S02E06 - Onyx Multi.VFF.2160p.10bit.4KLight.HDR+Dolby.Vision.WEB.Custom.AC3.h265.⚡XRS-LazerTeam⚡.mkv",
+    "filename": "Halo (2024) - S02E06 - Onyx Multi.VFF.2160p.10bit.4KLight.HDR+Dolby.Vision.WEB.Custom.AC3.h265.\u26a1XRS-LazerTeam\u26a1.mkv",
     "expected": {
       "title": "Halo",
       "category": "series",
@@ -422,8 +422,44 @@
         "VFF",
         "MULTI"
       ],
-      "group": "⚡XRS-LazerTeam⚡",
+      "group": "\u26a1XRS-LazerTeam\u26a1",
       "container": "MKV"
+    }
+  },
+  {
+    "filename": "[SR-71] Kaifuku Jutsushi no Yarinaoshi S01 VOSTFR [1080p][X265][10BITS].zip",
+    "expected": {
+      "title": "Kaifuku Jutsushi no Yarinaoshi",
+      "category": "series",
+      "season": "1",
+      "resolution": "1080P",
+      "codec": "H265",
+      "v_quality": "10BIT",
+      "languages": [
+        "VOSTFR"
+      ],
+      "group": "SR-71",
+      "container": "ZIP"
+    }
+  },
+  {
+    "filename": "Naruto S02 E53-104 MULTi 1080p 10bits BluRay x265-SR-71.zip",
+    "expected": {
+      "title": "Naruto",
+      "category": "series",
+      "season": "2",
+      "episode": "53",
+      "episode_name": "104",
+      "resolution": "1080P",
+      "quality": "BLURAY",
+      "codec": "H265",
+      "v_quality": "10BIT",
+      "languages": [
+        "MULTI"
+      ],
+      "group": "SR-71",
+      "container": "ZIP",
+      "extra": null
     }
   }
 ]
