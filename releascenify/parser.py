@@ -408,18 +408,13 @@ class ReleaseParser:
                 
         if codec:
             base_audio = codec
-            if base_audio in ["E-AC3", "EAC3"]:
+            if base_audio.startswith("DDP") or base_audio in ["E-AC3", "EAC3"]:
                 base_audio = "EAC3"
-            elif base_audio.startswith("DDP"):
-                base_audio = "DDP"
                 
             if has_atmos:
                 result['audio'] = f"{base_audio} ATMOS"
             else:
-                if codec in ["E-AC3", "EAC3"]:
-                    result['audio'] = "EAC3"
-                else:
-                    result['audio'] = codec
+                result['audio'] = base_audio
         elif has_atmos:
             result['audio'] = "ATMOS"
 

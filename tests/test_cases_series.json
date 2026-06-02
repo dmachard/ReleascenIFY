@@ -10,7 +10,7 @@
       "resolution": "4KLIGHT",
       "quality": "WEBRIP",
       "codec": "H265",
-      "audio": "DDP ATMOS",
+      "audio": "EAC3 ATMOS",
       "channels": "5.1",
       "v_quality": "HDR DV",
       "languages": [
@@ -74,7 +74,7 @@
       "resolution": "1080P",
       "quality": "WEBRIP",
       "codec": "H265",
-      "audio": "DDP2.0",
+      "audio": "EAC3",
       "languages": [
         "MULTI"
       ]
@@ -126,7 +126,7 @@
       "quality": "WEB-DL",
       "codec": "H265",
       "v_quality": "HDR10+ DV 10BIT",
-      "audio": "DDP5.1",
+      "audio": "EAC3",
       "channels": "5.1",
       "languages": [
         "MULTI",
@@ -155,7 +155,7 @@
       "resolution": "1080P",
       "quality": "WEB-DL",
       "codec": "H264",
-      "audio": "DDP5.1",
+      "audio": "EAC3",
       "channels": "5.1",
       "network": "Amazon Prime",
       "languages": [
@@ -173,7 +173,7 @@
       "resolution": "2160P",
       "quality": "WEB-DL",
       "codec": "H265",
-      "audio": "DDP ATMOS",
+      "audio": "EAC3 ATMOS",
       "channels": "5.1",
       "network": "Netflix",
       "v_quality": "HDR"
@@ -207,7 +207,7 @@
       "resolution": "2160P",
       "quality": "WEB-DL",
       "codec": "H265",
-      "audio": "DDP5.1",
+      "audio": "EAC3",
       "channels": "5.1",
       "network": "Amazon Prime",
       "languages": [
@@ -267,7 +267,7 @@
       "episode": "1",
       "resolution": "2160P",
       "codec": "H265",
-      "audio": "DDP ATMOS",
+      "audio": "EAC3 ATMOS",
       "channels": "5.1",
       "v_quality": "HDR DV",
       "languages": [
@@ -314,7 +314,7 @@
       "resolution": "1080P",
       "quality": "WEB-DL",
       "codec": "H264",
-      "audio": "DDP5.1",
+      "audio": "EAC3",
       "channels": "5.1",
       "group": "NTb",
       "container": "MKV"
@@ -344,7 +344,7 @@
       "resolution": "720P",
       "quality": "WEB-DL",
       "codec": "H264",
-      "audio": "DDP2.0",
+      "audio": "EAC3",
       "channels": "2.0",
       "network": "Amazon Prime",
       "group": "NTb"
@@ -394,7 +394,7 @@
       "resolution": "4KLIGHT",
       "quality": "WEBRIP",
       "codec": "H265",
-      "audio": "DDP ATMOS",
+      "audio": "EAC3 ATMOS",
       "channels": "5.1",
       "v_quality": "HDR DV 10BIT",
       "languages": [

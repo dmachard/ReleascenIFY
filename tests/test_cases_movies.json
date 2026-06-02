@@ -24,7 +24,7 @@
       "quality": "WEB-DL",
       "codec": "H265",
       "v_quality": "HDR10+ DV",
-      "audio": "DDP ATMOS",
+      "audio": "EAC3 ATMOS",
       "channels": "5.1",
       "languages": []
     }
@@ -233,7 +233,7 @@
     }
   },
   {
-    "filename": "Indiana Jones et la Dernière Croisade 1989 VFI VO DOLBY TRUEHD ATMOS 2160P UHD BLURAY REMUX HEVC HDR10 DOLBY VISION-Obi (Indiana Jones and the Last Crusade)",
+    "filename": "Indiana Jones et la Derni\u00e8re Croisade 1989 VFI VO DOLBY TRUEHD ATMOS 2160P UHD BLURAY REMUX HEVC HDR10 DOLBY VISION-Obi (Indiana Jones and the Last Crusade)",
     "expected": {
       "title": "Indiana Jones et la Derniere Croisade",
       "category": "movie",
@@ -272,7 +272,7 @@
     }
   },
   {
-    "filename": "Vacancy (2007) 720p Bluray Dual Audio [Hindi + English] ⭐800 MB⭐ DD - 2.0 MSub x264 - Shadow (BonsaiHD)",
+    "filename": "Vacancy (2007) 720p Bluray Dual Audio [Hindi + English] \u2b50800 MB\u2b50 DD - 2.0 MSub x264 - Shadow (BonsaiHD)",
     "expected": {
       "title": "Vacancy",
       "category": "movie",

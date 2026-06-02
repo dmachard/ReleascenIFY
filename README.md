@@ -82,8 +82,12 @@ The source tags are normalized to standard quality keys:
 - **`BLURAY`**: Extracted from `BLURAY`, `BDRIP`, or `BRRIP`.
 - **`REMUX`** / **`DVDRIP`** / **`HDTV`** / **`WEBLIGHT`**
 
-### Audio Quality (`audio`)
-- Standard audio codecs: **`ATMOS`** / **`TRUEHD`** / **`DTS-HD`** (extracted from `DTS-HD`, `DTS-HDMA`, or `DTS-HD MA`) / **`DTS`** / **`EAC3`** / **`AC3`** / **`AAC`** / **`DDP`** / **`FLAC`** / **`MP3`** (Atmos can be appended, e.g., `EAC3 ATMOS`).
+### Audio Codecs (`audio`)
+To keep audio metadata consistent, standard audio codecs are normalized as follows:
+- **`EAC3`**: Normalized from inputs containing `EAC3`, `E-AC3`, `DDP`, `DDP2.0`, `DDP5.1`, `DDP7.1`, etc. (Dolby Digital Plus).
+- **`DTS-HD`**: Normalized from inputs containing `DTS-HD`, `DTS-HDMA`, or `DTS-HD MA`.
+- Other standard codecs extracted: **`TRUEHD`** / **`DTS`** / **`AC3`** / **`AAC`** / **`FLAC`** / **`MP3`**.
+- Note: If `ATMOS` is present, it is appended to the base codec (e.g., `EAC3 ATMOS`, `TRUEHD ATMOS`). If only Atmos is present, it will be `ATMOS`.
 
 ### Audio Channels (`channels`)
 - Standard channel counts: **`7.1`** / **`5.1`** / **`2.1`** / **`2.0`** / **`1.0`** (mono).
