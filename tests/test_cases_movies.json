@@ -596,5 +596,40 @@
       "group": null,
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Les.Ringards.1978_.WEBRip.FR.x264.AAC.2.0_Fz.mkv",
+    "expected": {
+      "title": "Les Ringards",
+      "year": 1978,
+      "category": "movie",
+      "resolution": null,
+      "quality": "WEBRIP",
+      "codec": "H264",
+      "audio": "AAC",
+      "channels": "2.0",
+      "languages": [
+        "VF"
+      ],
+      "group": "Fz",
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Junk.Head.2021.VOSTFR.1080p.BluRay.Remux.AVC.AC-3.mkv",
+    "expected": {
+      "title": "Junk Head",
+      "year": 2021,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": "REMUX",
+      "codec": null,
+      "audio": null,
+      "languages": [
+        "VOSTFR"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]

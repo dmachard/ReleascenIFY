@@ -134,7 +134,7 @@ class ReleaseParser:
             # Source/Quality
             'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDRIP', 'HDTV',
             # Audio
-            'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA',
+            'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA', 'DTSHD', 'DTSHDMA',
             # Other common properties
             'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG'
         }
@@ -178,9 +178,10 @@ class ReleaseParser:
                         else:
                             break
                     candidate_clean = '-'.join(sub_parts)
-                    tokens = [t.upper().strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_clean) if t]
+                    candidate_for_tokens = candidate_clean.upper().replace('AC-3', 'AC3').replace('E-AC3', 'EAC3').replace('DTS-HD', 'DTSHD').replace('WEB-DL', 'WEBDL')
+                    tokens = [t.strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_for_tokens) if t]
                     has_invalid_tag = False
-                    if len(tokens) > 3:
+                    if len(tokens) > 3 or (len(tokens) == 1 and tokens[0].isdigit()):
                         has_invalid_tag = True
                     else:
                         for token in tokens:
@@ -211,9 +212,10 @@ class ReleaseParser:
                             else:
                                 break
                         candidate_clean = '-'.join(sub_parts)
-                        tokens = [t.upper().strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_clean) if t]
+                        candidate_for_tokens = candidate_clean.upper().replace('AC-3', 'AC3').replace('E-AC3', 'EAC3').replace('DTS-HD', 'DTSHD').replace('WEB-DL', 'WEBDL')
+                        tokens = [t.strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_for_tokens) if t]
                         has_invalid_tag = False
-                        if len(tokens) > 3:
+                        if len(tokens) > 3 or (len(tokens) == 1 and tokens[0].isdigit()):
                             has_invalid_tag = True
                         else:
                             for token in tokens:
@@ -297,7 +299,7 @@ class ReleaseParser:
                 last_part = parts[-1].strip('[]()_-')
                 if len(parts) >= 2:
                     prev_part = parts[-2].strip('[]()_-')
-                    if last_part in ('0', '1') and prev_part.isdigit():
+                    if (last_part in ('0', '1') or re.match(r'^[01]_', last_part)) and prev_part.isdigit():
                         last_part = prev_part + '.' + last_part
                     elif last_part in ('264', '265') and prev_part.upper() == 'H':
                         last_part = prev_part + '.' + last_part
@@ -305,7 +307,7 @@ class ReleaseParser:
                 # Check if last_part is a known tag
                 
                 # Strip known audio channels or tags prepended without separator
-                m = re.match(r'(?i)^(2CH|6CH|8CH|[1-7]\.[01])(.*)', last_part)
+                m = re.match(r'(?i)^(2CH|6CH|8CH|[1-7]\.[01])[\s\_-]*(.*)', last_part)
                 if m and m.group(2):
                     last_part = m.group(2)
                 
@@ -317,7 +319,7 @@ class ReleaseParser:
                     # Source/Quality
                     'REMUX', 'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'WEBLIGHT', 'WEB', 'DVDRIP', 'HDRIP', 'HDTV', 'HD', 'SDR',
                     # Audio
-                    'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA',
+                    'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA', 'DTSHD', 'DTSHDMA',
                     # Languages
                     'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN', 'FASTSUB',
                     # Other common release properties
@@ -326,7 +328,7 @@ class ReleaseParser:
                 
                 # Also handle glued bracket tags like [1080p][X265]
                 last_part = last_part.replace('][', '-')
-                last_part_up = last_part.upper()
+                last_part_up = last_part.upper().replace('AC-3', 'AC3').replace('E-AC3', 'EAC3').replace('DTS-HD', 'DTSHD').replace('WEB-DL', 'WEBDL')
                 sub_parts = [sp for sp in last_part_up.split('-') if sp]
                 is_known = False
                 if not last_part_up:
