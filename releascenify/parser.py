@@ -50,7 +50,7 @@ class ReleaseParser:
             tags.append("HDR10+")
         elif "HDR10" in fn:
             tags.append("HDR10")
-        elif "HDR" in fn:
+        elif re.search(r'\bHDR\b', fn):
             tags.append("HDR")
             
         if "HLG" in fn: tags.append("HLG")
