@@ -11,8 +11,8 @@ class ReleaseParser:
             'episode': r'(?i)\b(?:e|ep|episode)[\.\-\s]*(\d{1,3})\b',
             'year': r'\b(19\d{2}|20[0-2]\d)\b',
             'resolution': r'(?i)(4KLIGHT|4K|2160[pP]|1080[pP]|720[pP]|UHD)',
-            'codec': r'(?i)(x265|x264|h[\.\-]?265|h[\.\-]?264|HEVC)',
-            'audio': r'(?i)(AAC|AC3|E-AC3|DTS-HD|DTS|ATMOS|TRUEHD|DDP\d\.\d|FLAC|MP3)',
+            'codec': r'(?i)(x265|x264|h[\.\-]?265|h[\.\-]?264|HEVC|AVC)',
+            'audio': r'(?i)(AAC|AC[\.\-]?3|E[\.\-]?AC3|DTS-HD|DTS|ATMOS|TRUEHD|DDP\d\.\d|FLAC|MP3)',
             'channels': r'(7\.1|5\.1|2\.1|2\.0|1\.0)\b',
             'network': r'(?i)\b(NF|AMZN|DSNP|ATV|DSNY|HMAX|HBO|HULU)\b',
         }
@@ -126,7 +126,7 @@ class ReleaseParser:
         
         invalid_tags = {
             # Codecs
-            'X264', 'X265', 'H264', 'H265', 'HEVC', 'AV1',
+            'X264', 'X265', 'H264', 'H265', 'HEVC', 'AVC', 'AV1',
             # Resolutions
             '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT',
             # Languages
@@ -313,7 +313,7 @@ class ReleaseParser:
                 
                 known_tags_upper = {
                     # Codecs
-                    'X264', 'X265', 'H264', 'H265', 'HEVC', 'AV1', 'DIVX', 'XVID',
+                    'X264', 'X265', 'H264', 'H265', 'HEVC', 'AVC', 'AV1', 'DIVX', 'XVID',
                     # Resolutions
                     '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT', '576P', '480P',
                     # Source/Quality
@@ -364,7 +364,7 @@ class ReleaseParser:
             codec_raw = match.group(1).upper().replace('.', '').replace('-', '')
             if codec_raw in ('X265', 'H265', 'HEVC'):
                 result['codec'] = 'H265'
-            elif codec_raw in ('X264', 'H264'):
+            elif codec_raw in ('X264', 'H264', 'AVC'):
                 result['codec'] = 'H264'
             else:
                 result['codec'] = codec_raw
@@ -411,7 +411,7 @@ class ReleaseParser:
         
         # Find base codec
         codec = None
-        for pat in [r'(TRUEHD)', r'(DTS-HD|DTS)', r'(E-AC3|EAC3|AC3|AAC|FLAC|MP3|DDP\d\.\d|DDP)']:
+        for pat in [r'(TRUEHD)', r'(DTS-HD|DTS)', r'(E-AC3|EAC3|AC-3|AC3|AAC|FLAC|MP3|DDP\d\.\d|DDP)']:
             match = re.search(pat, fn)
             if match:
                 codec = match.group(1)
@@ -421,6 +421,8 @@ class ReleaseParser:
             base_audio = codec
             if base_audio.startswith("DDP") or base_audio in ["E-AC3", "EAC3"]:
                 base_audio = "EAC3"
+            elif base_audio == "AC-3":
+                base_audio = "AC3"
                 
             if has_atmos:
                 result['audio'] = f"{base_audio} ATMOS"

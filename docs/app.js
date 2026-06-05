@@ -849,7 +849,7 @@ function renderDocs() {
             rows: [
                 ["AV1", `AV1 - ${i18n[currentLang].notes.codecAv1}`, `<span class="stars">★★★★★</span>`],
                 ["x265 / HEVC", `H.265 - ${i18n[currentLang].notes.codec265}`, `<span class="stars">★★★★☆</span>`],
-                ["x264", `H.264 - ${i18n[currentLang].notes.codec264}`, `<span class="stars">★★★☆☆</span>`]
+                ["x264 / AVC", `H.264 - ${i18n[currentLang].notes.codec264}`, `<span class="stars">★★★☆☆</span>`]
             ]
         },
         {

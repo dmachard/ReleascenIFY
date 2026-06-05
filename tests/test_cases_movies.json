@@ -623,8 +623,8 @@
       "category": "movie",
       "resolution": "1080P",
       "quality": "REMUX",
-      "codec": null,
-      "audio": null,
+      "codec": "H264",
+      "audio": "AC3",
       "languages": [
         "VOSTFR"
       ],
