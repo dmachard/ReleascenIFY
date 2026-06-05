@@ -183,6 +183,7 @@ const i18n = {
             srcWebripQual: "Bonne (capture ré-encodée)",
             srcHdtvSrc: "HDTV",
             srcHdtvQual: "Variable (capture TV)",
+            srcHdripQual: "Bonne (haute définition ré-encodée)",
             srcCamSrc: "HDCAM / CAM",
             srcCamQual: "À éviter (caméra en salle)",
             codec264: "H.264 standard de fait depuis 15 ans",
@@ -315,6 +316,7 @@ const i18n = {
             srcWebripQual: "Good (Captured and re-encoded)",
             srcHdtvSrc: "HDTV",
             srcHdtvQual: "Variable (Broadcast capture)",
+            srcHdripQual: "Good (High definition re-encoded)",
             srcCamSrc: "HDCAM / CAM",
             srcCamQual: "Avoid (Theater camera recording)",
             codec264: "Standard for the last 15 years",
@@ -821,6 +823,7 @@ function renderDocs() {
                 ["BluRay / BDRip / BRRip", i18n[currentLang].notes.srcBlurayQual, `<span class="stars">★★★★☆</span>`],
                 ["WEB-DL", i18n[currentLang].notes.srcWebdlQual, `<span class="stars">★★★★☆</span>`],
                 ["WEBRip", i18n[currentLang].notes.srcWebripQual, `<span class="stars">★★★☆☆</span>`],
+                ["HDRip", i18n[currentLang].notes.srcHdripQual, `<span class="stars">★★★☆☆</span>`],
                 ["HDTV", i18n[currentLang].notes.srcHdtvQual, `<span class="stars">★★☆☆☆</span>`],
                 ["HDCAM / CAM", i18n[currentLang].notes.srcCamQual, `<span class="stars">☆☆☆☆☆</span>`]
             ]

@@ -541,5 +541,24 @@
       "group": null,
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Art.Of.Love.2024.Multi.HDRIP.mp4",
+    "expected": {
+      "title": "Art Of Love",
+      "year": 2024,
+      "category": "movie",
+      "resolution": null,
+      "quality": "HDRIP",
+      "codec": null,
+      "audio": null,
+      "channels": null,
+      "v_quality": "",
+      "languages": [
+        "MULTI"
+      ],
+      "group": null,
+      "container": "MP4"
+    }
   }
 ]

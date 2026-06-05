@@ -132,7 +132,7 @@ class ReleaseParser:
             # Languages
             'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2',
             # Source/Quality
-            'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDTV',
+            'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDRIP', 'HDTV',
             # Audio
             'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA',
             # Other common properties
@@ -306,7 +306,7 @@ class ReleaseParser:
                     # Resolutions
                     '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT', '576P', '480P',
                     # Source/Quality
-                    'REMUX', 'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'WEBLIGHT', 'WEB', 'DVDRIP', 'HDTV', 'HD', 'SDR',
+                    'REMUX', 'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'WEBLIGHT', 'WEB', 'DVDRIP', 'HDRIP', 'HDTV', 'HD', 'SDR',
                     # Audio
                     'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA',
                     # Languages
@@ -420,7 +420,7 @@ class ReleaseParser:
 
     def _extract_quality(self, filename: str, result: Dict[str, Any]):
         """Extracts source quality with priority matching."""
-        for pat in [r'(?i)(REMUX)', r'(?i)(BLURAY|BDRIP|BRRIP)', r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)', r'(?i)(DVDRIP)', r'(?i)(HDTV)']:
+        for pat in [r'(?i)(REMUX)', r'(?i)(BLURAY|BDRIP|BRRIP)', r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)', r'(?i)(DVDRIP)', r'(?i)(HDRIP)', r'(?i)(HDTV)']:
             match = re.search(pat, filename)
             if match:
                 qual_raw = match.group(1).upper()
@@ -437,7 +437,7 @@ class ReleaseParser:
 
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
-            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
@@ -472,7 +472,7 @@ class ReleaseParser:
         post_se = filename[se_match.end():]
         tags_to_split = [
             'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
-            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
