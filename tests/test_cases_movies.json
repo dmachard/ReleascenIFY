@@ -580,5 +580,21 @@
       "group": "⚡-KyX-LazerTeam⚡",
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Asterix_-_1985_-_Asterix_Et_La_Surprise_De_Cesar_-_1080p.mkv",
+    "expected": {
+      "title": "Asterix",
+      "year": 1985,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": null,
+      "audio": null,
+      "channels": null,
+      "languages": [],
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]

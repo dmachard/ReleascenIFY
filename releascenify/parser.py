@@ -180,10 +180,13 @@ class ReleaseParser:
                     candidate_clean = '-'.join(sub_parts)
                     tokens = [t.upper().strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_clean) if t]
                     has_invalid_tag = False
-                    for token in tokens:
-                        if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
-                            has_invalid_tag = True
-                            break
+                    if len(tokens) > 3:
+                        has_invalid_tag = True
+                    else:
+                        for token in tokens:
+                            if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
+                                has_invalid_tag = True
+                                break
                     if not has_invalid_tag:
                         raw_suffix = candidate_raw
                         is_valid_match = True
@@ -210,10 +213,13 @@ class ReleaseParser:
                         candidate_clean = '-'.join(sub_parts)
                         tokens = [t.upper().strip('[]()') for t in re.split(r'[\s\.\-\_]+', candidate_clean) if t]
                         has_invalid_tag = False
-                        for token in tokens:
-                            if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
-                                has_invalid_tag = True
-                                break
+                        if len(tokens) > 3:
+                            has_invalid_tag = True
+                        else:
+                            for token in tokens:
+                                if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
+                                    has_invalid_tag = True
+                                    break
                         if not has_invalid_tag:
                             raw_suffix = candidate_raw
                             is_valid_match = True
@@ -229,17 +235,15 @@ class ReleaseParser:
             cleaned_parts = []
             removed_tags = []
             for part in parts:
-                if '.' in part:
-                    sub_parts = part.split('.')
-                    while len(sub_parts) > 1:
-                        last_sub = sub_parts[-1].upper().strip('[]()_-')
-                        if last_sub in invalid_tags or last_sub in {'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM'}:
-                            removed_tags.append(sub_parts.pop())
-                        else:
-                            break
+                sub_parts = part.split('.')
+                while len(sub_parts) > 0:
+                    last_sub = sub_parts[-1].upper().strip('[]()_-')
+                    if last_sub in invalid_tags or last_sub in {'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM'}:
+                        removed_tags.append(sub_parts.pop())
+                    else:
+                        break
+                if sub_parts:
                     cleaned_parts.append('.'.join(sub_parts))
-                else:
-                    cleaned_parts.append(part)
             
             # Iterate backwards through cleaned_parts (excluding the last one) to find the last part containing a dot
             for i in range(len(cleaned_parts) - 2, -1, -1):
