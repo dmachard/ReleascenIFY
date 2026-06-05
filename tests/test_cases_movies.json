@@ -560,5 +560,25 @@
       "group": null,
       "container": "MP4"
     }
+  },
+  {
+    "filename": "HamLeT.(1990).MULTI.VFF.[ST.FrF-Fr-En].mHD.1080P.x264.AC3.2ch⚡-KyX-LazerTeam⚡.mkv",
+    "expected": {
+      "title": "HamLeT",
+      "year": 1990,
+      "category": "movie",
+      "resolution": "1080P",
+      "quality": null,
+      "codec": "H264",
+      "audio": "AC3",
+      "languages": [
+        "VFF",
+        "MULTI",
+        "VF",
+        "EN"
+      ],
+      "group": "⚡-KyX-LazerTeam⚡",
+      "container": "MKV"
+    }
   }
 ]

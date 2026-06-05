@@ -298,8 +298,13 @@ class ReleaseParser:
                     elif last_part in ('264', '265') and prev_part.upper() == 'H':
                         last_part = prev_part + '.' + last_part
                 
-                
                 # Check if last_part is a known tag
+                
+                # Strip known audio channels or tags prepended without separator
+                m = re.match(r'(?i)^(2CH|6CH|8CH|[1-7]\.[01])(.*)', last_part)
+                if m and m.group(2):
+                    last_part = m.group(2)
+                
                 known_tags_upper = {
                     # Codecs
                     'X264', 'X265', 'H264', 'H265', 'HEVC', 'AV1', 'DIVX', 'XVID',
