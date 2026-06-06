@@ -110,6 +110,12 @@ class ReleaseParser:
         """Extracts media container from filename extension and returns stripped filename."""
         fn_strip = filename.strip()
         media_exts = {'mkv', 'mp4', 'avi', 'flv', 'mov', 'wmv', 'mpg', 'mpeg', 'm4v', 'ts', 'm2ts', 'webm', 'mp3', 'flac', 'mka', 'm4a', 'aac', 'zip', 'rar', '7z'}
+        
+        part_match = re.search(r'\.(part\d+\.rar)$', fn_strip, flags=re.I)
+        if part_match:
+            result['container'] = part_match.group(1).upper()
+            return fn_strip[:-len(part_match.group(0))]
+            
         ext_match = re.search(r'\.([a-z0-9]{3,4})$', fn_strip, flags=re.I)
         if ext_match:
             ext_val = ext_match.group(1).lower()

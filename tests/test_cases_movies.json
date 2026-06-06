@@ -562,7 +562,7 @@
     }
   },
   {
-    "filename": "HamLeT.(1990).MULTI.VFF.[ST.FrF-Fr-En].mHD.1080P.x264.AC3.2ch⚡-KyX-LazerTeam⚡.mkv",
+    "filename": "HamLeT.(1990).MULTI.VFF.[ST.FrF-Fr-En].mHD.1080P.x264.AC3.2ch\u26a1-KyX-LazerTeam\u26a1.mkv",
     "expected": {
       "title": "HamLeT",
       "year": 1990,
@@ -577,7 +577,7 @@
         "VF",
         "EN"
       ],
-      "group": "⚡-KyX-LazerTeam⚡",
+      "group": "\u26a1-KyX-LazerTeam\u26a1",
       "container": "MKV"
     }
   },
@@ -633,7 +633,7 @@
     }
   },
   {
-    "filename": "I ROBOT 2004.BluRay.2160.10bit.4KLight HDR.MULTi.VFF.Sub.AC3@640Kbps.H265⚡XRS-LazerTeam⚡.mkv",
+    "filename": "I ROBOT 2004.BluRay.2160.10bit.4KLight HDR.MULTi.VFF.Sub.AC3@640Kbps.H265\u26a1XRS-LazerTeam\u26a1.mkv",
     "expected": {
       "title": "I ROBOT",
       "category": "movie",
@@ -647,7 +647,7 @@
         "VFF",
         "MULTI"
       ],
-      "group": "⚡XRS-LazerTeam⚡",
+      "group": "\u26a1XRS-LazerTeam\u26a1",
       "container": "MKV"
     }
   },
@@ -687,6 +687,22 @@
       ],
       "group": null,
       "container": "MKV"
+    }
+  },
+  {
+    "filename": "Deathstalker.2025.MULTi.1080p.BluRay.x264-Ulysse.part01.rar",
+    "expected": {
+      "title": "Deathstalker",
+      "category": "movie",
+      "year": 2025,
+      "resolution": "1080P",
+      "quality": "BLURAY",
+      "codec": "H264",
+      "languages": [
+        "MULTI"
+      ],
+      "group": "Ulysse",
+      "container": "PART01.RAR"
     }
   }
 ]

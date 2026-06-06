@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://pypi.org/project/releascenify/"><img src="https://img.shields.io/pypi/v/releascenify.svg" alt="PyPI version"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-71%20passed-success" alt="Tests status"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-72%20passed-success" alt="Tests status"></a>
 </p>
 
 Parse Scene and P2P release names into structured metadata and compare release quality automatically. Built with a rule/regex engine.
