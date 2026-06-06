@@ -13,7 +13,7 @@ class ReleaseParser:
             'resolution': r'(?i)(4KLIGHT|4K|2160[pP]|1080[pP]|720[pP]|UHD)',
             'codec': r'(?i)(x265|x264|h[\.\-]?265|h[\.\-]?264|HEVC|AVC)',
             'audio': r'(?i)(AAC|AC[\.\-]?3|E[\.\-]?AC3|DTS-HD|DTS|ATMOS|TRUEHD|DDP\d\.\d|FLAC|MP3)',
-            'channels': r'(7\.1|5\.1|2\.1|2\.0|1\.0)\b',
+            'channels': r'(7\.1|5\.1|2\.1|2\.0|1\.0)(?:c|ch)?\b',
             'network': r'(?i)\b(NF|AMZN|DSNP|ATV|DSNY|HMAX|HBO|HULU)\b',
         }
         
@@ -299,7 +299,7 @@ class ReleaseParser:
                 last_part = parts[-1].strip('[]()_-')
                 if len(parts) >= 2:
                     prev_part = parts[-2].strip('[]()_-')
-                    if (last_part in ('0', '1') or re.match(r'^[01]_', last_part)) and prev_part.isdigit():
+                    if (last_part.lower() in ('0', '1', '0c', '1c', '0ch', '1ch') or re.match(r'(?i)^[01]c?_', last_part)) and prev_part.isdigit():
                         last_part = prev_part + '.' + last_part
                     elif last_part in ('264', '265') and prev_part.upper() == 'H':
                         last_part = prev_part + '.' + last_part
@@ -307,7 +307,7 @@ class ReleaseParser:
                 # Check if last_part is a known tag
                 
                 # Strip known audio channels or tags prepended without separator
-                m = re.match(r'(?i)^(2CH|6CH|8CH|[1-7]\.[01])[\s\_-]*(.*)', last_part)
+                m = re.match(r'(?i)^(2CH|6CH|8CH|[1-7]\.[01]c?)[\s\_-]*(.*)', last_part)
                 if m and m.group(2):
                     last_part = m.group(2)
                 
@@ -345,7 +345,7 @@ class ReleaseParser:
                         sp in known_tags_upper or
                         re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', sp) or
                         re.match(r'^(19\d{2}|20\d{2})$', sp) or
-                        re.match(r'^([1-7]\.[01])$', sp) or
+                        re.match(r'^([1-7]\.[01]C?)$', sp) or
                         sp in ('H.264', 'H.265')
                         for sp in sub_parts
                     )

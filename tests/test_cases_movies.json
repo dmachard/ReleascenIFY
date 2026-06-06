@@ -670,5 +670,23 @@
       "container": "MKV",
       "extra": null
     }
+  },
+  {
+    "filename": "Marsupilami 2026 Fr 4K HDR WebLight AC3 5.1c.mkv",
+    "expected": {
+      "title": "Marsupilami",
+      "category": "movie",
+      "year": 2026,
+      "resolution": "2160P",
+      "quality": "WEBLIGHT",
+      "audio": "AC3",
+      "channels": "5.1",
+      "v_quality": "HDR",
+      "languages": [
+        "VF"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]
