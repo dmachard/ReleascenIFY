@@ -328,6 +328,13 @@ class ReleaseParser:
                 
                 # Also handle glued bracket tags like [1080p][X265]
                 last_part = last_part.replace('][', '-')
+                
+                # Handle cases where known codec/quality tags are glued to the group name with a special character
+                for tag in ['x265', 'x264', 'h265', 'h264', 'hevc', 'avc', 'remux', 'web-dl', 'webrip', 'ac3']:
+                    if last_part.lower().startswith(tag) and len(last_part) > len(tag):
+                        if not last_part[len(tag)].isalnum():
+                            last_part = last_part[len(tag):].strip('[]()_-')
+                            break
                 last_part_up = last_part.upper().replace('AC-3', 'AC3').replace('E-AC3', 'EAC3').replace('DTS-HD', 'DTSHD').replace('WEB-DL', 'WEBDL')
                 sub_parts = [sp for sp in last_part_up.split('-') if sp]
                 is_known = False
@@ -450,8 +457,8 @@ class ReleaseParser:
 
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
-            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
+            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]
@@ -485,8 +492,8 @@ class ReleaseParser:
         post_se = filename[se_match.end():]
         tags_to_split = [
             'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
-            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
+            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]

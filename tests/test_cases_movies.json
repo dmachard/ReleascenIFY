@@ -631,5 +631,44 @@
       "group": null,
       "container": "MKV"
     }
+  },
+  {
+    "filename": "I ROBOT 2004.BluRay.2160.10bit.4KLight HDR.MULTi.VFF.Sub.AC3@640Kbps.H265⚡XRS-LazerTeam⚡.mkv",
+    "expected": {
+      "title": "I ROBOT",
+      "category": "movie",
+      "year": 2004,
+      "resolution": "4KLIGHT",
+      "quality": "BLURAY",
+      "codec": "H265",
+      "audio": "AC3",
+      "v_quality": "HDR 10BIT",
+      "languages": [
+        "VFF",
+        "MULTI"
+      ],
+      "group": "⚡XRS-LazerTeam⚡",
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "1917 (m4K HDR10+ 10bit x265-QTZ) [Multi TrueHD 7.1 Atmos].mkv",
+    "expected": {
+      "title": "1917",
+      "category": "movie",
+      "year": 1917,
+      "resolution": "2160P",
+      "quality": null,
+      "codec": "H265",
+      "audio": "TRUEHD ATMOS",
+      "channels": "7.1",
+      "v_quality": "HDR10+ 10BIT",
+      "languages": [
+        "MULTI"
+      ],
+      "group": "QTZ",
+      "container": "MKV",
+      "extra": null
+    }
   }
 ]
