@@ -434,7 +434,7 @@ class ReleaseParser:
         
         # Find base codec
         codec = None
-        for pat in [r'(TRUEHD)', r'(DTS-HD|DTS)', r'(E-AC3|EAC3|AC-3|AC3|AAC|FLAC|MP3|DDP\d\.\d|DDP)']:
+        for pat in [r'(TRUEHD)', r'(DTSHDMA|DTS-HD[\.\-\s\_]?MA|DTS-HD|DTS)', r'(E-AC3|EAC3|AC-3|AC3|AAC|FLAC|MP3|DDP\d\.\d|DDP)']:
             match = re.search(pat, fn)
             if match:
                 codec = match.group(1)
@@ -446,6 +446,8 @@ class ReleaseParser:
                 base_audio = "EAC3"
             elif base_audio == "AC-3":
                 base_audio = "AC3"
+            elif base_audio in ["DTSHDMA", "DTS-HD_MA", "DTS-HD MA", "DTS-HDMA"]:
+                base_audio = "DTS-HD MA"
                 
             if has_atmos:
                 result['audio'] = f"{base_audio} ATMOS"
@@ -474,7 +476,7 @@ class ReleaseParser:
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+(?:E\d+)+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
+            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]
@@ -509,7 +511,7 @@ class ReleaseParser:
         tags_to_split = [
             r'\d{1,2}x\d{1,3}', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
+            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]
@@ -571,6 +573,7 @@ class ReleaseParser:
         if not filename: return {}
         
         filename = self._unquote_filename(filename)
+        filename = re.sub(r'(?i)DTS-HD[\s_]?MA', 'DTSHDMA', filename)
         
         result = {
             "title": "", "category": "movie", "year": None, "season": None, "episode": None,

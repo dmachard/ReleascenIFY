@@ -184,7 +184,7 @@
       "resolution": "4KLIGHT",
       "quality": "BLURAY",
       "codec": "H265",
-      "audio": "DTS-HD",
+      "audio": "DTS-HD MA",
       "channels": "7.1",
       "v_quality": "HDR 10BIT",
       "languages": [
@@ -456,7 +456,7 @@
       "resolution": "2160P",
       "quality": null,
       "codec": "H265",
-      "audio": "DTS-HD",
+      "audio": "DTS-HD MA",
       "channels": "5.1",
       "v_quality": "HDR10 DV",
       "languages": [
@@ -703,6 +703,22 @@
       ],
       "group": "Ulysse",
       "container": "PART01.RAR"
+    }
+  },
+  {
+    "filename": "Insidious_-Chapitre_2[1080p][DTS-HD_MA][VO-VFF].mkv",
+    "expected": {
+      "title": "Insidious -Chapitre 2",
+      "category": "movie",
+      "resolution": "1080P",
+      "audio": "DTS-HD MA",
+      "languages": [
+        "VFF",
+        "VO",
+        "MULTI"
+      ],
+      "group": null,
+      "container": "MKV"
     }
   }
 ]
