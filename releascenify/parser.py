@@ -355,14 +355,19 @@ class ReleaseParser:
 
     def _extract_season_episode(self, filename: str, result: Dict[str, Any]):
         """Extracts season and episode number, supporting joint and separate formats."""
-        se_match = re.search(r'(?i)\b(?:s(\d{1,2})[\.\-\s]?[ex](\d{1,3})|(\d{1,2})x(\d{1,3}))\b', filename)
+        se_match = re.search(r'(?i)\b(?:s(\d{1,2})[\.\-\s]?[ex](\d{1,3})((?:[\.\-\s]?[ex]\d{1,3})*)|(\d{1,2})x(\d{1,3}))\b', filename)
         if se_match:
             if se_match.group(1):
                 result['season'] = str(int(se_match.group(1)))
-                result['episode'] = str(int(se_match.group(2)))
+                ep = str(int(se_match.group(2)))
+                if se_match.group(3):
+                    extra_eps = re.findall(r'\d+', se_match.group(3))
+                    if extra_eps:
+                        ep = f"{ep}-{int(extra_eps[-1])}"
+                result['episode'] = ep
             else:
-                result['season'] = str(int(se_match.group(3)))
-                result['episode'] = str(int(se_match.group(4)))
+                result['season'] = str(int(se_match.group(4)))
+                result['episode'] = str(int(se_match.group(5)))
         else:
             s_match = re.search(self.patterns['season'], filename)
             if s_match: result['season'] = str(int(s_match.group(1)))
@@ -461,7 +466,7 @@ class ReleaseParser:
         fn_clean = unicodedata.normalize('NFKD', fn_clean).encode('ASCII', 'ignore').decode('utf-8')
 
         tags_to_split = [
-            r'S\d+', r'E\d+', r'S\d+E\d+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
+            r'S\d+', r'E\d+', r'S\d+(?:E\d+)+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
@@ -485,7 +490,7 @@ class ReleaseParser:
         if result['category'] != 'series' or not result['episode']:
             return
             
-        se_match = re.search(r'(?i)\b(?:s(\d{1,2})[\.\-\s]?[ex](\d{1,3})|(\d{1,2})x(\d{1,3}))\b', filename)
+        se_match = re.search(r'(?i)\b(?:s(\d{1,2})[\.\-\s]?[ex](\d{1,3})(?:[\.\-\s]?[ex]\d{1,3})*|(\d{1,2})x(\d{1,3}))\b', filename)
         if not se_match:
             e_match = re.search(self.patterns['episode'], filename)
             if e_match:

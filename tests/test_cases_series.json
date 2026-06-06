@@ -497,5 +497,20 @@
       "group": null,
       "container": "MKV"
     }
+  },
+  {
+    "filename": "The.Sommerdahl.Murders.S05E07E08.FiNAL.Un.gros.poisson.FRENCH.WEBRip.x264.mp4",
+    "expected": {
+      "title": "The Sommerdahl Murders",
+      "category": "series",
+      "season": "5",
+      "episode": "7-8",
+      "quality": "WEBRIP",
+      "codec": "H264",
+      "languages": [
+        "FRENCH"
+      ],
+      "container": "MP4"
+    }
   }
 ]
