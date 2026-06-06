@@ -350,14 +350,19 @@ class ReleaseParser:
                         for sp in sub_parts
                     )
                 if not is_known and not result.get('group'):
-                    result['group'] = last_part
+                    if not (last_part.isdigit() and len(last_part) <= 2):
+                        result['group'] = last_part
 
     def _extract_season_episode(self, filename: str, result: Dict[str, Any]):
         """Extracts season and episode number, supporting joint and separate formats."""
-        se_match = re.search(r'(?i)\bs(\d{1,2})[\.\-\s]?[ex](\d{1,3})\b', filename)
+        se_match = re.search(r'(?i)\b(?:s(\d{1,2})[\.\-\s]?[ex](\d{1,3})|(\d{1,2})x(\d{1,3}))\b', filename)
         if se_match:
-            result['season'] = str(int(se_match.group(1)))
-            result['episode'] = str(int(se_match.group(2)))
+            if se_match.group(1):
+                result['season'] = str(int(se_match.group(1)))
+                result['episode'] = str(int(se_match.group(2)))
+            else:
+                result['season'] = str(int(se_match.group(3)))
+                result['episode'] = str(int(se_match.group(4)))
         else:
             s_match = re.search(self.patterns['season'], filename)
             if s_match: result['season'] = str(int(s_match.group(1)))
@@ -456,7 +461,7 @@ class ReleaseParser:
         fn_clean = unicodedata.normalize('NFKD', fn_clean).encode('ASCII', 'ignore').decode('utf-8')
 
         tags_to_split = [
-            r'S\d+', r'E\d+', r'S\d+E\d+', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
+            r'S\d+', r'E\d+', r'S\d+E\d+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
@@ -480,7 +485,7 @@ class ReleaseParser:
         if result['category'] != 'series' or not result['episode']:
             return
             
-        se_match = re.search(r'(?i)\bs(\d{1,2})[\.\-\s]?[ex](\d{1,3})\b', filename)
+        se_match = re.search(r'(?i)\b(?:s(\d{1,2})[\.\-\s]?[ex](\d{1,3})|(\d{1,2})x(\d{1,3}))\b', filename)
         if not se_match:
             e_match = re.search(self.patterns['episode'], filename)
             if e_match:
@@ -491,7 +496,7 @@ class ReleaseParser:
             
         post_se = filename[se_match.end():]
         tags_to_split = [
-            'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
+            r'\d{1,2}x\d{1,3}', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
@@ -508,8 +513,14 @@ class ReleaseParser:
             ep_name = ep_name.replace('.', ' ').replace('_', ' ').strip()
             ep_name = re.sub(r'\s+', ' ', ep_name).strip(' -:_/\\')
             
-            if result.get('group') and ep_name.upper() == result['group'].upper():
-                ep_name = ""
+            if result.get('group'):
+                ep_up = ep_name.upper()
+                grp_up = result['group'].upper()
+                if ep_up == grp_up:
+                    ep_name = ""
+                elif ep_up.endswith(' ' + grp_up) or ep_up.endswith('.' + grp_up) or ep_up.endswith('_' + grp_up):
+                    # Falsely identified group from fallback space-split logic
+                    result['group'] = None
                 
             if ep_name:
                 result['episode_name'] = ep_name

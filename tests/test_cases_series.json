@@ -461,5 +461,41 @@
       "container": "ZIP",
       "extra": null
     }
+  },
+  {
+    "filename": "Ten Pound Poms - 1x01 - \u00c9pisode 1.mkv",
+    "expected": {
+      "title": "Ten Pound Poms",
+      "category": "series",
+      "season": "1",
+      "episode": "1",
+      "episode_name": "\u00c9pisode 1",
+      "group": null,
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Gomorra S04E08 - Vices cach\u00e9s.mkv",
+    "expected": {
+      "title": "Gomorra",
+      "category": "series",
+      "season": "4",
+      "episode": "8",
+      "episode_name": "Vices cach\u00e9s",
+      "group": null,
+      "container": "MKV"
+    }
+  },
+  {
+    "filename": "Les Myst\u00e8res de l_ouest - S02E16 - La Nuit des traquenards.mkv",
+    "expected": {
+      "title": "Les Mysteres de l ouest",
+      "category": "series",
+      "season": "2",
+      "episode": "16",
+      "episode_name": "La Nuit des traquenards",
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]
