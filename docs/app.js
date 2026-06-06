@@ -337,7 +337,7 @@ const i18n = {
             audioDd: "Dolby Digital 5.1 (AC3 / DD5.1)",
             audioAac: "Standard Web Audio (AAC / MP3)",
             audioDdp: "Dolby Digital Plus (E-AC3 / DDP5.1)",
-            audioDtshdma: "DTS-HD Master Audio (lossless format, usually written with a space)",
+            audioDtshdma: "DTS-HD Master Audio (lossless format)",
             audioDts: "DTS Surround (high-fidelity)",
             vQualityHdr: "High Dynamic Range (HDR, HDR10, HDR10+)",
             vQualityDv: "Dolby Vision dynamic metadata (DV)",
