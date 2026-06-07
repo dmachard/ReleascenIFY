@@ -11,9 +11,9 @@ class ReleaseParser:
             'episode': r'(?i)\b(?:e|ep|episode)[\.\-\s]*(\d{1,3})\b',
             'year': r'\b(19\d{2}|20[0-2]\d)\b',
             'resolution': r'(?i)(4KLIGHT|4K|2160[pP]|1080[pP]|720[pP]|UHD)',
-            'codec': r'(?i)(x265|x264|h[\.\-]?265|h[\.\-]?264|HEVC|AVC)',
+            'codec': r'(?i)(x265|x264|h[\.\-]?265|h[\.\-]?264|HEVC|AVC|VC[\.\-]?1)',
             'audio': r'(?i)(AAC|AC[\.\-]?3|E[\.\-]?AC3|DTS-HD|DTS|ATMOS|TRUEHD|DDP\d\.\d|FLAC|MP3)',
-            'channels': r'(7\.1|5\.1|2\.1|2\.0|1\.0)(?:c|ch)?\b',
+            'channels': r'(7\.1|5\.1|3\.1|2\.1|2\.0|1\.0)(?:cs|ch|c)?\b',
             'network': r'(?i)\b(NF|AMZN|DSNP|ATV|DSNY|HMAX|HBO|HULU)\b',
         }
         
@@ -109,7 +109,7 @@ class ReleaseParser:
     def _extract_container(self, filename: str, result: Dict[str, Any]) -> str:
         """Extracts media container from filename extension and returns stripped filename."""
         fn_strip = filename.strip()
-        media_exts = {'mkv', 'mp4', 'avi', 'flv', 'mov', 'wmv', 'mpg', 'mpeg', 'm4v', 'ts', 'm2ts', 'webm', 'mp3', 'flac', 'mka', 'm4a', 'aac', 'zip', 'rar', '7z'}
+        media_exts = {'mkv', 'mp4', 'avi', 'flv', 'mov', 'wmv', 'mpg', 'mpeg', 'm4v', 'ts', 'm2ts', 'webm', 'mp3', 'flac', 'mka', 'm4a', 'aac', 'zip', 'rar', '7z', 'iso'}
         
         part_match = re.search(r'\.(part\d+\.rar)$', fn_strip, flags=re.I)
         if part_match:
@@ -132,7 +132,7 @@ class ReleaseParser:
         
         invalid_tags = {
             # Codecs
-            'X264', 'X265', 'H264', 'H265', 'HEVC', 'AVC', 'AV1',
+            'X264', 'X265', 'H264', 'H265', 'HEVC', 'AVC', 'AV1', 'VC1',
             # Resolutions
             '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT',
             # Languages
@@ -305,7 +305,7 @@ class ReleaseParser:
                 last_part = parts[-1].strip('[]()_-')
                 if len(parts) >= 2:
                     prev_part = parts[-2].strip('[]()_-')
-                    if (last_part.lower() in ('0', '1', '0c', '1c', '0ch', '1ch') or re.match(r'(?i)^[01]c?_', last_part)) and prev_part.isdigit():
+                    if (re.match(r'(?i)^[01](?:cs|ch|c)?$', last_part) or re.match(r'(?i)^[01](?:cs|ch|c)?_', last_part)) and prev_part.isdigit():
                         last_part = prev_part + '.' + last_part
                     elif last_part in ('264', '265') and prev_part.upper() == 'H':
                         last_part = prev_part + '.' + last_part
@@ -313,13 +313,13 @@ class ReleaseParser:
                 # Check if last_part is a known tag
                 
                 # Strip known audio channels or tags prepended without separator
-                m = re.match(r'(?i)^(2CH|6CH|8CH|[1-7]\.[01]c?)[\s\_-]*(.*)', last_part)
+                m = re.match(r'(?i)^(2CH|6CH|8CH|[1-7]\.[01](?:cs|ch|c)?)[\s\_-]*(.*)', last_part)
                 if m and m.group(2):
                     last_part = m.group(2)
                 
                 known_tags_upper = {
                     # Codecs
-                    'X264', 'X265', 'H264', 'H265', 'HEVC', 'AVC', 'AV1', 'DIVX', 'XVID',
+                    'X264', 'X265', 'H264', 'H265', 'HEVC', 'AVC', 'AV1', 'DIVX', 'XVID', 'VC1',
                     # Resolutions
                     '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT', '576P', '480P',
                     # Source/Quality
@@ -359,7 +359,7 @@ class ReleaseParser:
                         sp in known_tags_upper or
                         re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', sp) or
                         re.match(r'^(19\d{2}|20\d{2})$', sp) or
-                        re.match(r'^([1-7]\.[01]C?)$', sp) or
+                        re.match(r'^([1-7]\.[01](?:CS|CH|C)?)$', sp) or
                         sp in ('H.264', 'H.265')
                         for sp in sub_parts
                     )
@@ -409,6 +409,8 @@ class ReleaseParser:
                 result['codec'] = 'H265'
             elif codec_raw in ('X264', 'H264', 'AVC'):
                 result['codec'] = 'H264'
+            elif codec_raw == 'VC1':
+                result['codec'] = 'VC-1'
             else:
                 result['codec'] = codec_raw
 
@@ -478,11 +480,11 @@ class ReleaseParser:
 
     def _extract_quality(self, filename: str, result: Dict[str, Any]):
         """Extracts source quality with priority matching."""
-        for pat in [r'(?i)(REMUX)', r'(?i)(BLURAY|BDRIP|BRRIP)', r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)', r'(?i)(DVDRIP)', r'(?i)(HDRIP)', r'(?i)(HDTV)']:
+        for pat in [r'(?i)(REMUX)', r'(?i)(BLU[\.\-]?RAY|BDRIP|BRRIP)', r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)', r'(?i)(DVDRIP)', r'(?i)(HDRIP)', r'(?i)(HDTV)']:
             match = re.search(pat, filename)
             if match:
-                qual_raw = match.group(1).upper()
-                if qual_raw in ('WEBDL', 'WEB-DL', 'WEB'):
+                qual_raw = match.group(1).upper().replace('-', '').replace('.', '')
+                if qual_raw in ('WEBDL', 'WEB'):
                     result['quality'] = 'WEB-DL'
                 else:
                     result['quality'] = qual_raw
@@ -496,7 +498,7 @@ class ReleaseParser:
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+(?:E\d+)+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
+            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]
@@ -531,7 +533,7 @@ class ReleaseParser:
         tags_to_split = [
             r'\d{1,2}x\d{1,3}', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
-            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
+            'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             r'19\d{2}', r'20[0-2]\d'
         ]

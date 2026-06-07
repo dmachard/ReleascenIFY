@@ -757,5 +757,40 @@
       "group": "⚡XRS-LazerTeam⚡",
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Blood.Diamond.2006.MULTI.Full.Blu-Ray.Multi.1080p.VC-1-NoTag.iso",
+    "expected": {
+      "title": "Blood Diamond",
+      "category": "movie",
+      "year": 2006,
+      "resolution": "1080P",
+      "quality": "BLURAY",
+      "codec": "VC-1",
+      "languages": [
+        "MULTI"
+      ],
+      "group": "NoTag",
+      "container": "ISO"
+    }
+  },
+  {
+    "filename": "Le flingueur 1972 Fr stfi 4K HDR WebLight AC3 3.1cs.mkv",
+    "expected": {
+      "title": "Le flingueur",
+      "category": "movie",
+      "year": 1972,
+      "resolution": "2160P",
+      "quality": "WEBLIGHT",
+      "codec": null,
+      "audio": "AC3",
+      "channels": "3.1",
+      "v_quality": "HDR",
+      "languages": [
+        "VF"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]
