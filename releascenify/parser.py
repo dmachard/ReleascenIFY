@@ -336,11 +336,19 @@ class ReleaseParser:
                 last_part = last_part.replace('][', '-')
                 
                 # Handle cases where known codec/quality tags are glued to the group name with a special character
-                for tag in ['x265', 'x264', 'h265', 'h264', 'hevc', 'avc', 'remux', 'web-dl', 'webrip', 'ac3']:
-                    if last_part.lower().startswith(tag) and len(last_part) > len(tag):
-                        if not last_part[len(tag)].isalnum():
-                            last_part = last_part[len(tag):].strip('[]()_-')
-                            break
+                known_glued = ['x265', 'x264', 'h265', 'h264', 'hevc', 'avc', 'remux', 'web-dl', 'webrip', 'ac3', 'eac3', 'aac', 'dts']
+                while True:
+                    matched_glued = False
+                    for tag in known_glued:
+                        if last_part.lower().startswith(tag) and len(last_part) > len(tag):
+                            next_char = last_part[len(tag)]
+                            remainder = last_part[len(tag):]
+                            if not next_char.isalnum() or not next_char.isascii() or any(remainder.lower().startswith(t) for t in known_glued):
+                                last_part = remainder.strip('[]()_-')
+                                matched_glued = True
+                                break
+                    if not matched_glued:
+                        break
                 last_part_up = last_part.upper().replace('AC-3', 'AC3').replace('E-AC3', 'EAC3').replace('DTS-HD', 'DTSHD').replace('WEB-DL', 'WEBDL')
                 sub_parts = [sp for sp in last_part_up.split('-') if sp]
                 is_known = False

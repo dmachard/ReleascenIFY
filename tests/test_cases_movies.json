@@ -737,5 +737,25 @@
       "group": null,
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Footloose.(1984).Multi.VFF.HDLight.4K.10bIt.Dolby.Vision.AC3x265⚡XRS-LazerTeam⚡.mkv",
+    "expected": {
+      "title": "Footloose",
+      "category": "movie",
+      "year": 1984,
+      "resolution": "2160P",
+      "quality": null,
+      "codec": "H265",
+      "audio": "AC3",
+      "channels": null,
+      "v_quality": "DV 10BIT",
+      "languages": [
+        "VFF",
+        "MULTI"
+      ],
+      "group": "⚡XRS-LazerTeam⚡",
+      "container": "MKV"
+    }
   }
 ]
