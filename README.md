@@ -67,6 +67,7 @@ Here are the metadata fields extracted by `releascenify` and how their values ar
 To make release metadata processing and quality comparison consistent, the parser normalizes various representations of codecs:
 - **`H265`**: Normalized from inputs containing `H265`, `x265`, `HEVC` (including variants with dots or hyphens like `H.265` or `H-265`).
 - **`H264`**: Normalized from inputs containing `H264`, `x264`, `AVC` (including variants with dots or hyphens like `H.264` or `H-264`).
+- **`VC-1`**: Normalized from inputs containing `VC1` or `VC-1`.
 
 ### Resolutions (`resolution`)
 To keep resolution metadata consistent, they are normalized to standard keys:

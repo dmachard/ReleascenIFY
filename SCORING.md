@@ -47,6 +47,7 @@ Modern codecs generally improve efficiency and quality.
 | AV1 | Highest |
 | H265 / HEVC | High |
 | H264 / x264 | Medium |
+| VC-1 | Medium-Low |
 | XviD / older codecs | Low |
 
 ---
