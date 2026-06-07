@@ -720,5 +720,22 @@
       "group": null,
       "container": "MKV"
     }
+  },
+  {
+    "filename": "Kill.Bill.II-2004-Truefrench-DVDrip-x264-AC3.mkv",
+    "expected": {
+      "title": "Kill Bill II",
+      "category": "movie",
+      "year": 2004,
+      "resolution": null,
+      "quality": "DVDRIP",
+      "codec": "H264",
+      "audio": "AC3",
+      "languages": [
+        "VFF"
+      ],
+      "group": null,
+      "container": "MKV"
+    }
   }
 ]

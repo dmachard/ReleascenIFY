@@ -356,8 +356,20 @@ class ReleaseParser:
                         for sp in sub_parts
                     )
                 if not is_known and not result.get('group'):
-                    if not (last_part.isdigit() and len(last_part) <= 2):
-                        result['group'] = last_part
+                    lp_parts = last_part.split('-')
+                    while len(lp_parts) > 0:
+                        last_sub = lp_parts[-1].upper().strip('[]()_-')
+                        if last_sub in known_tags_upper or re.match(r'^(19\d{2}|20\d{2})$', last_sub) or re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', last_sub) or last_sub in ('H.264', 'H.265'):
+                            lp_parts.pop()
+                        else:
+                            break
+                    if lp_parts:
+                        stripped_last_part = '-'.join(lp_parts)
+                        if not (stripped_last_part.isdigit() and len(stripped_last_part) <= 2):
+                            if len(stripped_last_part) <= 2 and stripped_last_part != last_part:
+                                pass # ignore likely title leftovers
+                            else:
+                                result['group'] = stripped_last_part
 
     def _extract_season_episode(self, filename: str, result: Dict[str, Any]):
         """Extracts season and episode number, supporting joint and separate formats."""
