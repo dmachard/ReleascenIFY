@@ -554,10 +554,14 @@ class ReleaseParser:
             if result.get('group'):
                 ep_up = ep_name.upper()
                 grp_up = result['group'].upper()
-                if ep_up == grp_up:
+                grp_up_spaced = grp_up.replace('_', ' ').replace('.', ' ')
+                
+                if ep_up == grp_up or ep_up == grp_up_spaced:
                     ep_name = ""
-                elif ep_up.endswith(' ' + grp_up) or ep_up.endswith('.' + grp_up) or ep_up.endswith('_' + grp_up):
+                elif ep_up.endswith(' ' + grp_up) or ep_up.endswith('.' + grp_up) or ep_up.endswith('_' + grp_up) or ep_up.endswith(' ' + grp_up_spaced) or ep_up.endswith('(' + grp_up_spaced + ')'):
                     # Falsely identified group from fallback space-split logic
+                    result['group'] = None
+                elif ep_up.startswith(grp_up_spaced + ' ') or ep_up.startswith(grp_up_spaced + '(') or ep_up.startswith(grp_up + ' ') or ep_up.startswith(grp_up + '('):
                     result['group'] = None
                 
             if ep_name:

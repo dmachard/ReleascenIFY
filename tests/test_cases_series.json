@@ -528,5 +528,16 @@
             ],
             "container": "7Z"
         }
+    },
+    {
+        "filename": "The_Mandalorian_S01E05_-_Le_Mercenaire_(The_Gunslinger).mkv",
+        "expected": {
+            "title": "The Mandalorian",
+            "category": "series",
+            "season": "1",
+            "episode": "5",
+            "episode_name": "Le Mercenaire (The Gunslinger)",
+            "container": "MKV"
+        }
     }
 ]
