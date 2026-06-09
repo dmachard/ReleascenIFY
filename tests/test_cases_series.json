@@ -539,5 +539,16 @@
             "episode_name": "Le Mercenaire (The Gunslinger)",
             "container": "MKV"
         }
+    },
+    {
+        "filename": "Tropiques_criminels_-_S07E06_-_La_prairie.mkv",
+        "expected": {
+            "title": "Tropiques criminels",
+            "category": "series",
+            "season": "7",
+            "episode": "6",
+            "episode_name": "La prairie",
+            "container": "MKV"
+        }
     }
 ]

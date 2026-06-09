@@ -190,10 +190,10 @@ class ReleaseParser:
                     if len(tokens) > 3 or (len(tokens) == 1 and tokens[0].isdigit()):
                         has_invalid_tag = True
                     else:
-                        for token in tokens:
-                            if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
-                                has_invalid_tag = True
-                                break
+                            for token in tokens:
+                                if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token) or re.match(r'^(S\d+|E\d+|S\d+(?:E\d+)+|SAISON\d+|EPISODE\d+)$', token):
+                                    has_invalid_tag = True
+                                    break
                     if not has_invalid_tag:
                         raw_suffix = candidate_raw
                         is_valid_match = True
@@ -225,7 +225,7 @@ class ReleaseParser:
                             has_invalid_tag = True
                         else:
                             for token in tokens:
-                                if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token):
+                                if token in invalid_tags or re.match(r'^(19\d{2}|20\d{2})$', token) or re.match(r'^(S\d+|E\d+|S\d+(?:E\d+)+|SAISON\d+|EPISODE\d+)$', token):
                                     has_invalid_tag = True
                                     break
                         if not has_invalid_tag:
@@ -557,7 +557,10 @@ class ReleaseParser:
                 grp_up_spaced = grp_up.replace('_', ' ').replace('.', ' ')
                 
                 if ep_up == grp_up or ep_up == grp_up_spaced:
-                    ep_name = ""
+                    if '_' in result['group'] or '.' in result['group']:
+                        result['group'] = None
+                    else:
+                        ep_name = ""
                 elif ep_up.endswith(' ' + grp_up) or ep_up.endswith('.' + grp_up) or ep_up.endswith('_' + grp_up) or ep_up.endswith(' ' + grp_up_spaced) or ep_up.endswith('(' + grp_up_spaced + ')'):
                     # Falsely identified group from fallback space-split logic
                     result['group'] = None
