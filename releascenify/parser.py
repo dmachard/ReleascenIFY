@@ -116,7 +116,7 @@ class ReleaseParser:
             result['container'] = part_match.group(1).upper()
             return fn_strip[:-len(part_match.group(0))]
             
-        ext_match = re.search(r'\.([a-z0-9]{3,4})$', fn_strip, flags=re.I)
+        ext_match = re.search(r'\.([a-z0-9]{2,4})$', fn_strip, flags=re.I)
         if ext_match:
             ext_val = ext_match.group(1).lower()
             if ext_val in media_exts:
