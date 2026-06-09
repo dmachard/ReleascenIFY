@@ -350,7 +350,7 @@ class ReleaseParser:
                     if not matched_glued:
                         break
                 last_part_up = last_part.upper().replace('AC-3', 'AC3').replace('E-AC3', 'EAC3').replace('DTS-HD', 'DTSHD').replace('WEB-DL', 'WEBDL')
-                sub_parts = [sp for sp in last_part_up.split('-') if sp]
+                sub_parts = [sp for sp in re.split(r'[-_]+', last_part_up) if sp]
                 is_known = False
                 if not last_part_up:
                     is_known = True
@@ -364,15 +364,18 @@ class ReleaseParser:
                         for sp in sub_parts
                     )
                 if not is_known and not result.get('group'):
-                    lp_parts = last_part.split('-')
+                    lp_parts = [p for p in re.split(r'([-_]+)', last_part) if p]
                     while len(lp_parts) > 0:
+                        if re.match(r'^[-_]+$', lp_parts[-1]):
+                            lp_parts.pop()
+                            continue
                         last_sub = lp_parts[-1].upper().strip('[]()_-')
                         if last_sub in known_tags_upper or re.match(r'^(19\d{2}|20\d{2})$', last_sub) or re.match(r'^(S\d+|E\d+|S\d+E\d+|SAISON\d+|EPISODE\d+)$', last_sub) or last_sub in ('H.264', 'H.265'):
                             lp_parts.pop()
                         else:
                             break
                     if lp_parts:
-                        stripped_last_part = '-'.join(lp_parts)
+                        stripped_last_part = ''.join(lp_parts)
                         if not (stripped_last_part.isdigit() and len(stripped_last_part) <= 2):
                             if len(stripped_last_part) <= 2 and stripped_last_part != last_part:
                                 pass # ignore likely title leftovers
