@@ -550,5 +550,17 @@
             "episode_name": "La prairie",
             "container": "MKV"
         }
+    },
+    {
+        "filename": "Lethal Weapon S01E06 Retrouvailles.mkv",
+        "expected": {
+            "title": "Lethal Weapon",
+            "category": "series",
+            "season": "1",
+            "episode": "6",
+            "episode_name": "Retrouvailles",
+            "container": "MKV",
+            "group": null
+        }
     }
 ]
