@@ -86,9 +86,10 @@ The source tags are normalized to standard quality keys:
 ### Audio Codecs (`audio`)
 To keep audio metadata consistent, standard audio codecs are normalized as follows:
 - **`EAC3`**: Normalized from inputs containing `EAC3`, `E-AC3`, `DDP`, `DDP2.0`, `DDP5.1`, `DDP7.1`, etc. (Dolby Digital Plus).
-- **`DTS-HD`**: Normalized from inputs containing `DTS-HD`, `DTS-HDMA`, or `DTS-HD MA`.
+- **`DTS-HD MA`**: Normalized from inputs containing `DTS-HD MA`, `DTSHDMA`, `DTS-HD.MA`, `DTS-HD-MA`, `DTS-HD_MA`, etc. (DTS-HD Master Audio).
+- **`DTS-HD`**: Normalized from inputs containing `DTS-HD`, `DTS.HD`, `DTS_HD`, `DTS HD`, `DTSHD`, etc. when the Master Audio suffix is not present.
 - Other standard codecs extracted: **`TRUEHD`** / **`DTS`** / **`AC3`** / **`AAC`** / **`FLAC`** / **`MP3`**.
-- Note: If `ATMOS` is present, it is appended to the base codec (e.g., `EAC3 ATMOS`, `TRUEHD ATMOS`). If only Atmos is present, it will be `ATMOS`.
+- Note: If `ATMOS` is present, it is appended to the base codec (e.g., `EAC3 ATMOS`, `TRUEHD ATMOS`, `DTS-HD MA ATMOS`). If only Atmos is present, it will be `ATMOS`.
 
 ### Audio Channels (`channels`)
 - Standard channel counts: **`7.1`** / **`5.1`** / **`2.1`** / **`2.0`** / **`1.0`** (mono).

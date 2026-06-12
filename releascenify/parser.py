@@ -459,7 +459,7 @@ class ReleaseParser:
         
         # Find base codec
         codec = None
-        for pat in [r'(TRUEHD)', r'(DTSHDMA|DTS-HD[\.\-\s\_]?MA|DTS-HD|DTS)', r'(E-AC3|EAC3|AC-3|AC3|AAC|FLAC|MP3|DDP\d\.\d|DDP)']:
+        for pat in [r'(TRUEHD)', r'(DTSHDMA|DTS-HD[\.\-\s\_]?MA|DTS-HD|DTSHD|DTS)', r'(E-AC3|EAC3|AC-3|AC3|AAC|FLAC|MP3|DDP\d\.\d|DDP)']:
             match = re.search(pat, fn)
             if match:
                 codec = match.group(1)
@@ -471,8 +471,11 @@ class ReleaseParser:
                 base_audio = "EAC3"
             elif base_audio == "AC-3":
                 base_audio = "AC3"
-            elif base_audio in ["DTSHDMA", "DTS-HD_MA", "DTS-HD MA", "DTS-HDMA"]:
-                base_audio = "DTS-HD MA"
+            elif "DTS" in base_audio and "HD" in base_audio:
+                if "MA" in base_audio:
+                    base_audio = "DTS-HD MA"
+                else:
+                    base_audio = "DTS-HD"
                 
             if has_atmos:
                 result['audio'] = f"{base_audio} ATMOS"
@@ -602,7 +605,8 @@ class ReleaseParser:
         if not filename: return {}
         
         filename = self._unquote_filename(filename)
-        filename = re.sub(r'(?i)DTS-HD[\s_]?MA', 'DTSHDMA', filename)
+        filename = re.sub(r'(?i)DTS[\s\.\-_]?HD[\s\.\-_]?MA', 'DTSHDMA', filename)
+        filename = re.sub(r'(?i)DTS[\s\.\-_]?HD(?!\s*[\.\-_]?\s*MA)', 'DTSHD', filename)
         
         result = {
             "title": "", "category": "movie", "year": None, "season": None, "episode": None,

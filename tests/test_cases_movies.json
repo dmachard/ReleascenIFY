@@ -809,5 +809,81 @@
             ],
             "container": "MKV"
         }
+    },
+    {
+        "filename": "Redemption.2013.MULTi.VFF.1080p.BluRay.DTS-HD.MA.x264.mkv",
+        "expected": {
+            "title": "Redemption",
+            "category": "movie",
+            "year": 2013,
+            "resolution": "1080P",
+            "quality": "BLURAY",
+            "codec": "H264",
+            "audio": "DTS-HD MA",
+            "languages": [
+                "VFF",
+                "MULTI"
+            ],
+            "container": "MKV",
+            "group": null,
+            "extra": null
+        }
+    },
+    {
+        "filename": "Redemption.2013.MULTi.VFF.1080p.BluRay.DTS-HD-MA.x264.mkv",
+        "expected": {
+            "title": "Redemption",
+            "category": "movie",
+            "year": 2013,
+            "resolution": "1080P",
+            "quality": "BLURAY",
+            "codec": "H264",
+            "audio": "DTS-HD MA",
+            "languages": [
+                "VFF",
+                "MULTI"
+            ],
+            "container": "MKV",
+            "group": null,
+            "extra": null
+        }
+    },
+    {
+        "filename": "Redemption.2013.MULTi.VFF.1080p.BluRay.DTS.HD.x264.mkv",
+        "expected": {
+            "title": "Redemption",
+            "category": "movie",
+            "year": 2013,
+            "resolution": "1080P",
+            "quality": "BLURAY",
+            "codec": "H264",
+            "audio": "DTS-HD",
+            "languages": [
+                "VFF",
+                "MULTI"
+            ],
+            "container": "MKV",
+            "group": null,
+            "extra": null
+        }
+    },
+    {
+        "filename": "Redemption.2013.MULTi.VFF.1080p.BluRay.DTS-HD.MA.ATMOS.x264.mkv",
+        "expected": {
+            "title": "Redemption",
+            "category": "movie",
+            "year": 2013,
+            "resolution": "1080P",
+            "quality": "BLURAY",
+            "codec": "H264",
+            "audio": "DTS-HD MA ATMOS",
+            "languages": [
+                "VFF",
+                "MULTI"
+            ],
+            "container": "MKV",
+            "group": null,
+            "extra": null
+        }
     }
 ]
