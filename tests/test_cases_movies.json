@@ -885,5 +885,21 @@
             "group": null,
             "extra": null
         }
+    },
+    {
+        "filename": "Bat-man.1989.Fanedit.Silent-Film.1080p.AAC.x265.mkv",
+        "expected": {
+            "title": "Bat-man",
+            "category": "movie",
+            "year": 1989,
+            "resolution": "1080P",
+            "quality": null,
+            "codec": "H265",
+            "audio": "AAC",
+            "languages": [],
+            "container": "MKV",
+            "group": null,
+            "extra": null
+        }
     }
 ]

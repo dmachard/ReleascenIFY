@@ -142,7 +142,8 @@ class ReleaseParser:
             # Audio
             'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA', 'DTSHD', 'DTSHDMA',
             # Other common properties
-            'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG'
+            'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG',
+            'FILM', 'SILENT', 'FANEDIT'
         }
         
         # Check for Anime style group at the beginning: [Group] Title...
@@ -329,7 +330,8 @@ class ReleaseParser:
                     # Languages
                     'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN', 'FASTSUB',
                     # Other common release properties
-                    'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'SUBBED', 'SUBS', 'MSUB', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG'
+                    'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'SUBBED', 'SUBS', 'MSUB', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG',
+                    'FILM', 'SILENT', 'FANEDIT'
                 }
                 
                 # Also handle glued bracket tags like [1080p][X265]
@@ -506,6 +508,7 @@ class ReleaseParser:
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
+            'FILM', 'SILENT', 'FANEDIT',
             r'19\d{2}', r'20[0-2]\d'
         ]
         pattern = r'[\.\[\(\s\-\_](?:' + '|'.join(tags_to_split) + r')\b'
@@ -541,6 +544,7 @@ class ReleaseParser:
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
+            'FILM', 'SILENT', 'FANEDIT',
             r'19\d{2}', r'20[0-2]\d'
         ]
         pattern = r'[\.\[\(\s\-\_](?:' + '|'.join(tags_to_split) + r')\b'
@@ -597,6 +601,27 @@ class ReleaseParser:
                         if part_clean == val_up or part_clean in val_up or val_up in part_clean:
                             already_parsed = True
                             break
+                        if k == 'codec':
+                            if (part_clean in ('X265', 'H265', 'HEVC') and val_up == 'H265') or \
+                               (part_clean in ('X264', 'H264', 'AVC') and val_up == 'H264') or \
+                               (part_clean in ('VC1', 'VC-1') and val_up == 'VC-1'):
+                                already_parsed = True
+                                break
+                        elif k == 'resolution':
+                            if part_clean in ('4K', 'UHD', '2160P') and val_up == '2160P':
+                                already_parsed = True
+                                break
+                        elif k == 'quality':
+                            if part_clean in ('WEBDL', 'WEB') and val_up == 'WEB-DL':
+                                already_parsed = True
+                                break
+                        elif k == 'audio':
+                            if (part_clean in ('DDP', 'E-AC3', 'EAC3') and val_up == 'EAC3') or \
+                               (part_clean == 'AC-3' and val_up == 'AC3') or \
+                               ('DTS' in part_clean and 'HD' in part_clean and 'MA' in part_clean and val_up == 'DTS-HD MA') or \
+                               ('DTS' in part_clean and 'HD' in part_clean and 'MA' not in part_clean and val_up == 'DTS-HD'):
+                                already_parsed = True
+                                break
             if not already_parsed:
                 cleaned_parts.append(part)
         result['extra'] = '.'.join(cleaned_parts) if cleaned_parts else None
