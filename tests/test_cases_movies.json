@@ -901,5 +901,34 @@
             "group": null,
             "extra": null
         }
+    },
+    {
+        "filename": "Cry.Macho.2021.MULTi.BluRay.2160p.REMUX.HEVC.HDR10.DTS-HDMA5.1-PéPiTE.mkv",
+        "expected": {
+            "title": "Cry Macho",
+            "category": "movie",
+            "year": 2021,
+            "resolution": "2160P",
+            "quality": "REMUX",
+            "codec": "H265",
+            "audio": "DTS-HD MA",
+            "channels": "5.1",
+            "v_quality": "HDR10",
+            "languages": [
+                "MULTI"
+            ],
+            "container": "MKV",
+            "group": "PéPiTE"
+        }
+    },
+    {
+        "filename": "Police_Story_4_-Contre_Attaque(1996).mkv",
+        "expected": {
+            "title": "Police Story 4 -Contre Attaque",
+            "category": "movie",
+            "year": 1996,
+            "container": "MKV",
+            "group": null
+        }
     }
 ]

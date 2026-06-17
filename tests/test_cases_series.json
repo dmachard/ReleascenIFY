@@ -562,5 +562,29 @@
             "container": "MKV",
             "group": null
         }
+    },
+    {
+        "filename": "The.Fall.of.the.House.of.Usher.S01.x265.rar",
+        "expected": {
+            "title": "The Fall of the House of Usher",
+            "category": "series",
+            "season": "1",
+            "episode": null,
+            "episode_name": null,
+            "codec": "H265",
+            "container": "RAR"
+        }
+    },
+    {
+        "filename": "[1923] S01 x265.rar",
+        "expected": {
+            "title": "1923",
+            "category": "series",
+            "year": 1923,
+            "season": "1",
+            "episode": null,
+            "codec": "H265",
+            "container": "RAR"
+        }
     }
 ]

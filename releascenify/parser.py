@@ -127,7 +127,7 @@ class ReleaseParser:
     def _extract_group_and_extra(self, filename_stripped: str, result: Dict[str, Any]):
         """Extracts the release group and sets initial extra field from the end of stripped filename."""
         # Strip trailing bracketed/parenthesized distributor tag if it's not the whole group (e.g. -ASAP[ettv] -> -ASAP)
-        filename_stripped = re.sub(r'((?:\-|[\.\s]\@)[^\[\(]+)(\[[^\]]+\]|\([^\]\)]+\))$', r'\1', filename_stripped)
+        filename_stripped = re.sub(r'((?:\-|[\.\s]\@)[^\[\(]+)(\[(?!19\d{2}\b|20[0-2]\d\b)[^\]]+\]|\((?!19\d{2}\b|20[0-2]\d\b)[^\]\)]+\))$', r'\1', filename_stripped)
         filename_stripped = filename_stripped.strip()
         
         invalid_tags = {
@@ -168,7 +168,7 @@ class ReleaseParser:
             if char == '-':
                 # Suffix starts after the hyphen
                 suffix_candidate = filename_stripped[i+1:]
-                match = re.match(r'^[\s\.]*(\[?[A-Za-z0-9_@\.-]+\]?)$', suffix_candidate)
+                match = re.match(r'^[\s\.]*(\[?[\w@\.-]+\]?)$', suffix_candidate)
                 if match:
                     candidate_raw = match.group(1)
                     # Check for invalid tags in this candidate
@@ -203,7 +203,7 @@ class ReleaseParser:
                 # Suffix starts with @ (must be preceded by a space, dot, or another @, or start of string)
                 if i == 0 or filename_stripped[i-1] in (' ', '.', '@'):
                     suffix_candidate = filename_stripped[i:]
-                    match = re.match(r'^(\[?@[A-Za-z0-9_@\.-]+\]?)$', suffix_candidate)
+                    match = re.match(r'^(\[?@[\w@\.-]+\]?)$', suffix_candidate)
                     if match:
                         candidate_raw = match.group(1)
                         if candidate_raw.startswith('[') and candidate_raw.endswith(']'):
@@ -356,6 +356,8 @@ class ReleaseParser:
                 is_known = False
                 if not last_part_up:
                     is_known = True
+                elif re.search(r'\b(19\d{2}|20[0-2]\d)\b', last_part):
+                    is_known = True
                 elif sub_parts:
                     is_known = all(
                         sp in known_tags_upper or
@@ -387,6 +389,9 @@ class ReleaseParser:
     def _extract_season_episode(self, filename: str, result: Dict[str, Any]):
         """Extracts season and episode number, supporting joint and separate formats."""
         se_match = re.search(r'(?i)\b(?:s(\d{1,2})[\.\-\s]?[ex](\d{1,3})((?:[\.\-\s]?[ex]\d{1,3})*)|(\d{1,2})x(\d{1,3}))\b', filename)
+        if se_match and re.search(r'(?i)x26[456]', se_match.group(0)):
+            se_match = None
+            
         if se_match:
             if se_match.group(1):
                 result['season'] = str(int(se_match.group(1)))
@@ -512,10 +517,21 @@ class ReleaseParser:
             r'19\d{2}', r'20[0-2]\d'
         ]
         pattern = r'[\.\[\(\s\-\_](?:' + '|'.join(tags_to_split) + r')\b'
-        title = re.split(pattern, fn_clean, flags=re.I)[0]
+        split_idx = len(fn_clean)
+        for m in re.finditer(pattern, fn_clean, flags=re.I):
+            if m.start() > 0:
+                split_idx = m.start()
+                break
+        title = fn_clean[:split_idx]
         
         title = title.replace('.', ' ').replace('_', ' ').strip()
         title = re.sub(r'\s+', ' ', title).strip(' -:_/\\')
+        
+        # Strip outer enclosing brackets or parentheses if they wrap the entire title
+        if title.startswith('[') and title.endswith(']'):
+            title = title[1:-1].strip()
+        elif title.startswith('(') and title.endswith(')'):
+            title = title[1:-1].strip()
         
         # Remove Anime group at the beginning if it matches the extracted group
         if result.get('group'):
