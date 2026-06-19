@@ -945,5 +945,18 @@
             "group": null,
             "container": "MKV"
         }
+    },
+    {
+        "filename": "Banzaï_1080p_x264_DTSHDMA2.0_SUBFRFORCED.mkv",
+        "expected": {
+            "title": "Banzai",
+            "category": "movie",
+            "resolution": "1080P",
+            "codec": "H264",
+            "audio": "DTS-HD MA",
+            "channels": "2.0",
+            "group": null,
+            "container": "MKV"
+        }
     }
 ]
