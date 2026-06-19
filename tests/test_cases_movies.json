@@ -930,5 +930,20 @@
             "container": "MKV",
             "group": null
         }
+    },
+    {
+        "filename": "La_Charge_Fantastique_(1941)_-VFR-720p-_AC3.mkv",
+        "expected": {
+            "title": "La Charge Fantastique",
+            "category": "movie",
+            "year": 1941,
+            "resolution": "720P",
+            "audio": "AC3",
+            "languages": [
+                "VF"
+            ],
+            "group": null,
+            "container": "MKV"
+        }
     }
 ]

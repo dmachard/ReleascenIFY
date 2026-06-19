@@ -73,6 +73,7 @@ class ReleaseParser:
         if "VF2" in fn_up: langs.append("VF2")
         elif "VFI" in fn_up: langs.append("VFI")
         elif "VFQ" in fn_up: langs.append("VFQ")
+        elif "VFR" in fn_up: langs.append("VF")
         elif re.search(r'\bVF\b', fn_up.replace('.', ' ').replace('-', ' ').replace('_', ' ')): langs.append("VF")
         
         # Detect FR, EN and VO tags
@@ -136,7 +137,7 @@ class ReleaseParser:
             # Resolutions
             '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT',
             # Languages
-            'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2',
+            'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VFR',
             # Source/Quality
             'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDRIP', 'HDTV',
             # Audio
@@ -328,7 +329,7 @@ class ReleaseParser:
                     # Audio
                     'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA', 'DTSHD', 'DTSHDMA',
                     # Languages
-                    'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VO', 'FR', 'EN', 'FASTSUB',
+                    'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VFR', 'VO', 'FR', 'EN', 'FASTSUB',
                     # Other common release properties
                     'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'SUBBED', 'SUBS', 'MSUB', '10BIT', '10BITS', '12BIT', '12BITS', 'HDR', 'HDR10', 'HDR10+', 'DV', 'DOVI', 'HLG',
                     'FILM', 'SILENT', 'FANEDIT'
@@ -509,7 +510,7 @@ class ReleaseParser:
         fn_clean = unicodedata.normalize('NFKD', fn_clean).encode('ASCII', 'ignore').decode('utf-8')
 
         tags_to_split = [
-            r'S\d+', r'E\d+', r'S\d+(?:E\d+)+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
+            r'S\d+', r'E\d+', r'S\d+(?:E\d+)+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VFR', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
@@ -556,7 +557,7 @@ class ReleaseParser:
             
         post_se = filename[se_match.end():]
         tags_to_split = [
-            r'\d{1,2}x\d{1,3}', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VOST', 'STFI', 'FASTSUB',
+            r'\d{1,2}x\d{1,3}', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VFR', 'VOST', 'STFI', 'FASTSUB',
             '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
