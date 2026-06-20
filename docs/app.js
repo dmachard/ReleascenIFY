@@ -184,6 +184,7 @@ const i18n = {
             srcHdtvSrc: "HDTV",
             srcHdtvQual: "Broadcast capture",
             srcHdripQual: "Réencodé depuis une source HD",
+            srcHdlightQual: "Version HD légère (très compressée)",
             srcCamSrc: "HDCAM / CAM",
             srcCamQual: "Caméra en salle",
             codec264: "H.264 standard de fait depuis 15 ans",
@@ -319,6 +320,7 @@ const i18n = {
             srcHdtvSrc: "HDTV",
             srcHdtvQual: "Broadcast capture",
             srcHdripQual: "Re-encoded from an HD source",
+            srcHdlightQual: "Lightweight HD version (highly compressed)",
             srcCamSrc: "HDCAM / CAM",
             srcCamQual: "Theater camera recording",
             codec264: "Standard for the last 15 years",
@@ -504,8 +506,9 @@ function getFieldComparison(key, valA, valB) {
 
     if (key === 'quality') {
         const getSrcRank = (q) => {
-            if (q.includes('bluray') || q.includes('bdrip')) return 3;
-            if (q.includes('web')) return 2;
+            if (q.includes('bluray') || q.includes('bdrip')) return 4;
+            if (q.includes('web')) return 3;
+            if (q.includes('hdlight') || q.includes('hdrip')) return 2;
             if (q.includes('hdtv')) return 1;
             return 0;
         };
@@ -828,6 +831,7 @@ function renderDocs() {
                 ["WEB-DL", i18n[currentLang].notes.srcWebdlQual, `<span class="stars">★★★★☆</span>`],
                 ["WEBRip", i18n[currentLang].notes.srcWebripQual, `<span class="stars">★★★☆☆</span>`],
                 ["HDRip", i18n[currentLang].notes.srcHdripQual, `<span class="stars">★★★☆☆</span>`],
+                ["HDLight", i18n[currentLang].notes.srcHdlightQual, `<span class="stars">★★★☆☆</span>`],
                 ["HDTV", i18n[currentLang].notes.srcHdtvQual, `<span class="stars">★★☆☆☆</span>`],
                 ["HDCAM / CAM", i18n[currentLang].notes.srcCamQual, `<span class="stars">☆☆☆☆☆</span>`]
             ]

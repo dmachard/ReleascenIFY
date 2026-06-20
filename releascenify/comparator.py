@@ -42,6 +42,7 @@ def get_quality_score(parsed_release: Dict[str, Any]) -> int:
     if "remux" in q: score += 12
     elif "bluray" in q or "bdrip" in q: score += 10
     elif "web" in q: score += 7
+    elif "hdlight" in q or "hdrip" in q: score += 5
     elif "hdtv" in q: score += 3
     
     # 6. Codec (HEVC / x265 > x264)

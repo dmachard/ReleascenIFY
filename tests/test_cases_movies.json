@@ -99,6 +99,7 @@
             "year": 2012,
             "category": "movie",
             "resolution": "1080P",
+            "quality": "HDLIGHT",
             "codec": "H265",
             "languages": [
                 "VF",
@@ -291,7 +292,7 @@
             "year": 2019,
             "category": "movie",
             "resolution": "1080P",
-            "quality": null,
+            "quality": "HDLIGHT",
             "codec": "H264",
             "languages": [
                 "VFF"
@@ -362,7 +363,7 @@
             "year": 1943,
             "category": "movie",
             "resolution": "1080P",
-            "quality": null,
+            "quality": "HDLIGHT",
             "codec": "H264",
             "audio": "AC3",
             "languages": [
@@ -745,7 +746,7 @@
             "category": "movie",
             "year": 1984,
             "resolution": "2160P",
-            "quality": null,
+            "quality": "HDLIGHT",
             "codec": "H265",
             "audio": "AC3",
             "channels": null,
@@ -973,6 +974,21 @@
             ],
             "group": "FS",
             "container": "MP4"
+        }
+    },
+    {
+        "filename": "Kirikou.Et.Les.Betes.Sauvages.2005.French.1080P.Hdlight.mkv",
+        "expected": {
+            "title": "Kirikou Et Les Betes Sauvages",
+            "year": 2005,
+            "category": "movie",
+            "resolution": "1080P",
+            "quality": "HDLIGHT",
+            "languages": [
+                "FRENCH"
+            ],
+            "group": null,
+            "container": "MKV"
         }
     }
 ]
