@@ -958,5 +958,21 @@
             "group": null,
             "container": "MKV"
         }
+    },
+    {
+        "filename": "The.Death.of.Robin.Hood.2026.1080p.VOSTFR.CAM.x264-FS.mp4",
+        "expected": {
+            "title": "The Death of Robin Hood",
+            "year": 2026,
+            "category": "movie",
+            "resolution": "1080P",
+            "quality": "CAM",
+            "codec": "H264",
+            "languages": [
+                "VOSTFR"
+            ],
+            "group": "FS",
+            "container": "MP4"
+        }
     }
 ]
