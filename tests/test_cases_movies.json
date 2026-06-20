@@ -956,6 +956,9 @@
             "codec": "H264",
             "audio": "DTS-HD MA",
             "channels": "2.0",
+            "languages": [
+                "SUBFRFORCED"
+            ],
             "group": null,
             "container": "MKV"
         }

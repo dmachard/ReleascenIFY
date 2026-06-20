@@ -70,6 +70,11 @@ class ReleaseParser:
         if "VOSTFR" in fn_up or "VOST" in fn_up: langs.append("VOSTFR")
         if "FASTSUB" in fn_up: langs.append("FASTSUB")
         
+        if "SUBFRFORCED" in fn_up or "SUBFORCED" in fn_up:
+            langs.append("SUBFRFORCED")
+        elif "SUBFR" in fn_up:
+            langs.append("SUBFR")
+        
         if "VF2" in fn_up: langs.append("VF2")
         elif "VFI" in fn_up: langs.append("VFI")
         elif "VFQ" in fn_up: langs.append("VFQ")
