@@ -1010,5 +1010,21 @@
             "group": "Dread-Team",
             "container": "MKV"
         }
+    },
+    {
+        "filename": "Masters_of_the_Universe._2026.1080p.VOSTFR.DCPRiP.x264-FS.mkv",
+        "expected": {
+            "title": "Masters of the Universe",
+            "year": 2026,
+            "category": "movie",
+            "resolution": "1080P",
+            "quality": "DCPRIP",
+            "codec": "H264",
+            "languages": [
+                "VOSTFR"
+            ],
+            "group": "FS",
+            "container": "MKV"
+        }
     }
 ]

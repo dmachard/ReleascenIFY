@@ -187,6 +187,7 @@ const i18n = {
             srcHdlightQual: "Version HD légère (très compressée)",
             srcCamSrc: "HDCAM / CAM",
             srcCamQual: "Caméra en salle",
+            srcDcpripQual: "Rip de package de cinéma numérique (DCPRip)",
             codec264: "H.264 standard de fait depuis 15 ans",
             codec265: "H.265 / HEVC (meilleure compression)",
             codecAv1: "AV1 (émergent, encodage lent)",
@@ -323,6 +324,7 @@ const i18n = {
             srcHdlightQual: "Lightweight HD version (highly compressed)",
             srcCamSrc: "HDCAM / CAM",
             srcCamQual: "Theater camera recording",
+            srcDcpripQual: "Digital Cinema Package Rip (DCPRip)",
             codec264: "Standard for the last 15 years",
             codec265: "Better compression",
             codecAv1: "Emerging, slow to encode",
@@ -506,7 +508,7 @@ function getFieldComparison(key, valA, valB) {
 
     if (key === 'quality') {
         const getSrcRank = (q) => {
-            if (q.includes('bluray') || q.includes('bdrip')) return 4;
+            if (q.includes('bluray') || q.includes('bdrip') || q.includes('dcp')) return 4;
             if (q.includes('web')) return 3;
             if (q.includes('hdlight') || q.includes('hdrip')) return 2;
             if (q.includes('hdtv')) return 1;
@@ -829,6 +831,7 @@ function renderDocs() {
                 ["UHD.BluRay / REMUX", i18n[currentLang].notes.srcRemuxQual, `<span class="stars">★★★★★</span>`],
                 ["BluRay / BDRip / BRRip", i18n[currentLang].notes.srcBlurayQual, `<span class="stars">★★★★☆</span>`],
                 ["WEB-DL", i18n[currentLang].notes.srcWebdlQual, `<span class="stars">★★★★☆</span>`],
+                ["DCPRip", i18n[currentLang].notes.srcDcpripQual, `<span class="stars">★★★★☆</span>`],
                 ["WEBRip", i18n[currentLang].notes.srcWebripQual, `<span class="stars">★★★☆☆</span>`],
                 ["HDRip", i18n[currentLang].notes.srcHdripQual, `<span class="stars">★★★☆☆</span>`],
                 ["HDLight", i18n[currentLang].notes.srcHdlightQual, `<span class="stars">★★★☆☆</span>`],

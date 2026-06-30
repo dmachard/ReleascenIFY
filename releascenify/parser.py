@@ -144,7 +144,7 @@ class ReleaseParser:
             # Languages
             'FRENCH', 'TRUEFRENCH', 'MULTI', 'VOSTFR', 'VOST', 'VFF', 'VFI', 'VFQ', 'VF2', 'VFR', 'SUBFRFORCED', 'FORCED', 'SUBFR', 'SUBFORCED',
             # Source/Quality
-            'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDRIP', 'HDTV', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT',
+            'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'DVDRIP', 'HDRIP', 'HDTV', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT', 'DCPRIP',
             # Audio
             'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA', 'DTSHD', 'DTSHDMA',
             # Other common properties
@@ -330,7 +330,7 @@ class ReleaseParser:
                     # Resolutions
                     '1080P', '720P', '2160P', '4K', 'UHD', '4KLIGHT', '576P', '480P',
                     # Source/Quality
-                    'REMUX', 'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'WEBLIGHT', 'WEB', 'DVDRIP', 'HDRIP', 'HDTV', 'HD', 'SDR', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT',
+                    'REMUX', 'BLURAY', 'BDRIP', 'BRRIP', 'WEBDL', 'WEB-DL', 'WEBRIP', 'WEBLIGHT', 'WEB', 'DVDRIP', 'HDRIP', 'HDTV', 'HD', 'SDR', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT', 'DCPRIP',
                     # Audio
                     'AC3', 'EAC3', 'DTS', 'AAC', 'MP3', 'FLAC', 'ATMOS', 'TRUEHD', 'DDP', 'HDMA', 'DTSHD', 'DTSHDMA',
                     # Languages
@@ -505,6 +505,7 @@ class ReleaseParser:
             r'(?i)(WEB-DL|WEBDL|WEBRIP|WEBLIGHT|WEB)',
             r'(?i)(DVDRIP)',
             r'(?i)(HDLIGHT)',
+            r'(?i)(DCP[\.\-]?RiP|DCPRIP)',
             r'(?i)(HDRIP)',
             r'(?i)(HDTV)',
             r'(?i)\b(HDCAM|CAMRIP|CAM)\b',
@@ -530,7 +531,7 @@ class ReleaseParser:
 
         tags_to_split = [
             r'S\d+', r'E\d+', r'S\d+(?:E\d+)+', r'\d{1,2}x\d{1,3}', r'SAISON[\.\-\s]?\d+', r'EPISODE[\.\-\s]?\d+', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VFR', 'VOST', 'STFI', 'FASTSUB', 'SUBFRFORCED', 'FORCED', 'SUBFR', 'SUBFORCED',
-            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT', 'DCPRIP',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             'FILM', 'SILENT', 'FANEDIT',
@@ -577,7 +578,7 @@ class ReleaseParser:
         post_se = filename[se_match.end():]
         tags_to_split = [
             r'\d{1,2}x\d{1,3}', 'MULTI', 'FRENCH', 'TRUEFRENCH', 'VOSTFR', 'SUBFRENCH', 'SUBBED', 'SUBS', 'MSUB', 'VFF', 'VFI', 'VFQ', 'VF2', 'VFR', 'VOST', 'STFI', 'FASTSUB', 'SUBFRFORCED', 'FORCED', 'SUBFR', 'SUBFORCED',
-            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT',
+            '1080P', '720P', '2160P', '4K', '4KLIGHT', 'UHD', 'M4K', 'M1080P', 'M720P', 'MHD', 'BLURAY', 'BDRIP', 'DVDRIP', 'HDRIP', 'WEBRIP', 'WEB-DL', 'WEBDL', 'WEBLIGHT', 'WEB', 'CAM', 'HDCAM', 'CAMRIP', 'TS', 'TELESYNC', 'HDLIGHT', 'DCPRIP',
             'HDR', 'HDR10', 'HDR10+', '10BIT', '10BITS', '12BIT', '12BITS', 'SDR', 'DV', 'HEVC', 'X264', 'X265', 'H264', 'H265', 'VC1', 'VC-1', 'REPACK', 'PROPER', 'FINAL', 'INTERNAL', 'CUSTOM', 'AC3', 'DDP', 'DTSHDMA', 'DTS', 'ATMOS', 'FLAC', 'MP3', 'HDMA',
             'NF', 'AMZN', 'DSNP', 'ATV', 'DSNY', 'HMAX', 'HBO', 'HULU', 'REMUX',
             'FILM', 'SILENT', 'FANEDIT',
@@ -733,7 +734,13 @@ class ReleaseParser:
         self._cleanup_extra(result)
         
         # Check if the title length equals the filename length (indicating no metadata was parsed to split the title)
-        if len(result['title']) == len(filename):
+        # We sanitize the filename in the same way as the title to handle characters dropped during ASCII conversion.
+        sanitized_filename = html.unescape(filename)
+        sanitized_filename = unicodedata.normalize('NFKD', sanitized_filename).encode('ASCII', 'ignore').decode('utf-8')
+        sanitized_filename = sanitized_filename.replace('.', ' ').replace('_', ' ').strip()
+        sanitized_filename = re.sub(r'\s+', ' ', sanitized_filename).strip(' -:_/\\')
+        
+        if len(result['title']) == len(sanitized_filename):
             raise ValueError("Filename contains no valid metadata")
             
         # Reject audio-only/OST releases

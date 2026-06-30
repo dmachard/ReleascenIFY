@@ -49,6 +49,9 @@ def test_invalid_filenames():
     with pytest.raises(ValueError, match="Filename contains no valid metadata"):
         parse_filename("Le Chant des forêts (Bande originale du film) [FLAC 16Bit].rar")
 
+    with pytest.raises(ValueError, match="Filename contains no valid metadata"):
+        parse_filename("V La s\ufffdrie.rar")
+
     # Verify that a filename with metadata parses correctly
     res = parse_filename("Avatar.2009.mkv")
     assert res['title'] == 'Avatar'
