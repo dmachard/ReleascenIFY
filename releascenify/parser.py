@@ -269,7 +269,7 @@ class ReleaseParser:
             valid_parts = [p for p in cleaned_parts if '.' not in p and p]
             if valid_parts:
                 grp = valid_parts[-1].strip('[]()_-')
-                if len(valid_parts) > 1 and (grp.isdigit() or len(grp) <= 2):
+                if len(valid_parts) > 1 and (grp.isdigit() or len(grp) <= 2 or grp.upper() == 'TEAM'):
                     grp_prev = valid_parts[-2].strip('[]()_-')
                     grp = f"{grp_prev}-{grp}"
                     used_parts = [valid_parts[-2], valid_parts[-1]]

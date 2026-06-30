@@ -993,5 +993,22 @@
             "group": null,
             "container": "MKV"
         }
+    },
+    {
+        "filename": "The.Plague.Dogs.1982.VOSTFR.1080p.HDLight.AC3.x264-Dread-Team.mkv",
+        "expected": {
+            "title": "The Plague Dogs",
+            "year": 1982,
+            "category": "movie",
+            "resolution": "1080P",
+            "quality": "HDLIGHT",
+            "codec": "H264",
+            "audio": "AC3",
+            "languages": [
+                "VOSTFR"
+            ],
+            "group": "Dread-Team",
+            "container": "MKV"
+        }
     }
 ]
